@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+  background-color: #acd3d0;
+}
+
+h1 {
+  color: #eae6d4;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 36px;
+}
+
+center{
+    text-align: center;
+}
+
+.left{
+    position: absolute;
+    left: 0px;
+}
+
+
+img{
+    height: 18%;
+    width: 18%;
+}
+
+
+</style>
+</head>
+<body>
+
+<h1><script> 
+    var x = new Date();
+    var day = x.getDate();
+    var month = x.getMonth() + 1;
+    var year = x.getFullYear();
+
+    document.write(('0' + day).slice(-2) + '.' +  ('0' + month).slice(-2) + '.' + year);
+
+</script></h1>
+
+
+<left>
+    <img src = "cloudRight.png" alt="right">
+</left>
+
+<center>
+<img src="title.jpg" alt="Yousaf Zahir">
+</center>
+
+<right>
+    <img style ="float: right;"  src = "cloudLeft.png" alt = "left">
+</right>
+
+</body>
+</html>

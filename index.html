@@ -2,15 +2,78 @@
 <html>
 <head>
     <link rel="icon" type="image/png" href="favicon.png"/>
+
+<title>Yousaf Zahir </title>
 <style>
 body {
-  background-color: #000000;
+  background-color: #222222;
 }
 
-h1 {
-  color: #eae6d4;
-  font-family: "Times New Roman", Times, serif;
-  font-size: 36px;
+.titleText {
+  color: #ffffff;
+  font-family: "Garamond Premier Pro"; 
+  font-size: 64px;
+  -webkit-font-smoothing: antialised; 
+}
+
+.selectedNav{
+    color: #ffffff;
+    font-family: "Garamond Premier Pro";
+    font-size: 24px;
+}
+
+.navigation {
+    color: #a8a8a8;
+    font-family: "Garamond Premier Pro";
+    font-size: 24px;
+}
+
+
+.projects {
+    color: #a8a8a8;
+    font-family: "Garamond Premier Pro";
+    font-size: 16px;
+}
+
+.projIndent{
+    text-indent: 30px;
+}
+
+.bodyPanel {
+    color:#ffffff;
+    font-family: "Futura PT";
+    font-size: 22px;
+}
+
+.navigationDiv{
+    text-align: left;
+}
+
+.bodyDiv{
+    text-align: left;
+    display: block;
+}
+
+.wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    grid-auto-rows: minmax(100px, auto);
+}
+
+.title{
+    grid-row: 1;
+    grid-column: 2/3;
+}
+
+.navigationBar{
+    grid-row: 2/10;
+    grid-column: 1/10;
+}
+
+.bodyText{
+    grid-row: 2/10;
+    grid-column: 2/5;
 }
 
 center{
@@ -21,40 +84,46 @@ center{
     position: absolute;
     left: 0px;
 }
-
-
-img{
-    height: 18%;
-    width: 18%;
-}
-
-
 </style>
 </head>
 <body>
 
-<h1><script> 
-    var x = new Date();
-    var day = x.getDate();
-    var month = x.getMonth() + 1;
-    var year = x.getFullYear();
 
-    document.write(('0' + day).slice(-2) + '.' +  ('0' + month).slice(-2) + '.' + year);
+<div class="wrapper">
+    <div class="title">
+    <center><h class="titleText">Yousaf Zahir</h></center>
+    </div>
 
-</script></h1>
+    <div class="navigationBar">
+        <div class="navigationDiv">
+            <h class="selectedNav">About <br></h> <h class="navigation"> Projects </h><br><h class="projects"> Website <br> Pathfinder <br> Fallball <br></h>
+        </div>
+    </div>
 
-
-<left>
-    <img src = "cloudRight.png" alt="right">
-</left>
-
-<center>
-<img src="title.jpg" alt="Yousaf Zahir">
-</center>
-
-<right>
-    <img style ="float: right;"  src = "cloudLeft.png" alt = "left">
-</right>
-
+    <div class="bodyText">
+        <div class="bodyDiv">
+            <h class="bodyPanel">Hi, my name is Yousaf Zahir (as you can probably tell from the massive letters above), <br>
+                a 3rd Year university student studying Computer Science at The University of Calgary. <br>
+                I have a passion for programming and video game design. I am interested in acquiring <br>
+                an internship as a Software Developer, Software Engineer or Gameplay Programmer. <br>
+                <br>
+                Some of my completed classes include, but are not limited to: <br>
+                    > Algorithms and Data Structures <br>
+                    > Operating Systems (in progress) <br>
+                    > Game Development in Unity <br>
+                <br>
+                My Skillset: <br>
+                <h class="projIndent">
+                    > C# <br> 
+                    > Java <br>
+                    > C++ <br>
+                </h>
+                <br>
+                <br>
+                You can contact me using my E-mail: yousafz1@hotmail.com <br>
+            </h>
+        </div>
+    </div>
+</div>
 </body>
 </html>

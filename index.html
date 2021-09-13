@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="utf-8">
     <link rel="icon" type="image/png" href="favicon.png"/>  
     <link rel="stylesheet" href="https://use.typekit.net/zni7xla.css"> 
     <title>Yousaf Zahir </title>
@@ -16,7 +17,7 @@
   font-weight: 600;
   font-style: normal;
 
-  font-size: 64px;
+  font-size: 72px;
   -webkit-font-smoothing: antialised; 
 }
 
@@ -29,7 +30,7 @@
     font-weight: 400;
     font-style: normal;
 
-    font-size: 28px;
+    font-size: 36px;
 }
 
 .navigation {
@@ -39,7 +40,7 @@
     font-weight: 400;
     font-style: normal;
 
-    font-size: 28px;
+    font-size: 36px;
 }
 
 .navigationDiv{
@@ -53,7 +54,7 @@
     font-weight: 400;
     font-style: normal;
 
-    font-size: 20px;
+    font-size: 18px;
 }
 
 
@@ -88,32 +89,38 @@ center{
     text-align: center;
 }
 
+
 .left{
     position: absolute;
     left: 0px;
 }
 
+.right{
+    text-align: right;
+    right: 10px;
+}
+
 /* Grid Setup */
 .wrapper {
     display: grid;
-    grid-template-columns: repeat(25, 1fr);
+    grid-template-columns: repeat(100, 1fr);
     gap: 10px;
     grid-auto-rows: minmax(100px, auto);
 }
 
 .title{
     grid-row: 1;
-    grid-column: 10/15;
+    grid-column: 30/75;
 }
 
 .navigationBar{
-    grid-row: 3/6;
+    grid-row: 2/8;
     grid-column: 2/4;
 }
 
 .bodyText{
-    grid-row: 2/15;
-    grid-column: 6/22;
+    grid-row: 2/8;
+    grid-column: 25/80;
 }
 
 </style>
@@ -128,7 +135,10 @@ center{
 
     <div class="navigationBar">
         <div class="navigationDiv">
-            <h class="selectedNav">About <br></h> <h class="navigation"> Projects </h><br><h class="projects"> Website <br> Pathfinder <br> Fallball <br></h>
+            <h class="selectedNav">About <br></h> <h class="navigation"> Projects </h><br>
+            <div class="right">
+            <h class="projects"> Website <br> Pathfinder <br> Fallball <br></h>
+            </div>
         </div>
     </div>
 

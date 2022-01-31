@@ -1,7 +1,7 @@
 # TO-DO
 1)
   Change fonts to free alternatives:
-  Futura -> Jost \n
+  Futura -> Jost
   Garamond Premier Pro -> bembo, Playfair Display
 
 2)

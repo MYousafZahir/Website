@@ -2,7 +2,7 @@
 1)
   Change fonts to free alternatives:
   Futura -> Jost
-  Garamond Premier Pro -> bembo, Playfair Display
+  Garamond Premier Pro -> bembo, Playfair Display, EB Garamond
 
 2)
   Create Different SubPages

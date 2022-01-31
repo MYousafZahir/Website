@@ -1,8 +1,8 @@
 # TO-DO
 1)
   Change fonts to free alternatives:
-  Futura -> Jost
-  Garamond Premier Pro -> bembo
+  Futura -> Jost \n
+  Garamond Premier Pro -> bembo, Playfair Display
 
 2)
   Create Different SubPages

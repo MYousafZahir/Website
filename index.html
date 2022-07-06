@@ -10,17 +10,17 @@
 
 /* Prevents the the look of hyperlinks changing */
 a:link{
-    color:inherit;
+    color: #f0f412;
     text-decoration: none;
 }
 
 a:visited{
-    color:inherit;
+    color: #086d79;
     text-decoration: none;
 }
 
 a:hover{
-    color:inherit;
+    color:#fdfefe;
     text-decoration: none;
 }
 
@@ -28,6 +28,46 @@ a:active{
     color:inherit;
     text-decoration: none;
 }
+
+p {
+    padding : 0;
+    margin : 0;
+    line-height : 20px;
+}
+
+p.shifted {
+    padding : 0;
+    margin : 0;
+    line-height : 20px;
+    margin-left: 30px;
+}
+
+p.fineGrayb {
+    color: #a8a8a8;
+    font-family: garamond-premier-pro, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 18px;
+
+    padding : 0;
+    margin : 0;
+    line-height : 20px;
+    margin-left: 30px;
+}
+
+p.fineGrayb2 {
+    color: #d0d0d0;
+    font-family: futura-p, sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    font-size: 14px;
+
+    padding : 0;
+    margin : 0;
+    line-height : 20px;
+    margin-left: 30px;
+}
+
 
 /*Title*/
 .titleText {
@@ -41,6 +81,28 @@ a:active{
   -webkit-font-smoothing: antialised; 
 }
 
+.subTitleText {
+  color: #b2b2b2;
+
+  font-family: futura-pt, sans-serif;
+  font-weight: 300;
+  font-style: normal;
+
+  font-size: 25px;
+  -webkit-font-smoothing: antialised; 
+}
+
+.subTitleText2 {
+  color: #ffffff;
+
+  font-family: futura-pt, sans-serif;
+  font-weight: 520;
+  font-style: normal;
+
+  font-size: 30px;
+  -webkit-font-smoothing: antialised; 
+}
+
 .titleSectionText {
   color: #ffffff;
 
@@ -51,7 +113,8 @@ a:active{
   font-size: 88px;
   -webkit-font-smoothing: antialised; 
 }
-/*Navigation bar */
+
+/*Navigation bar 
 
 .selectedNav{
     color: #ffffff;
@@ -76,18 +139,26 @@ a:active{
 .navigationDiv{
     text-align: left;
 }
-
-.projects {
+*/
+.fineGray {
     color: #a8a8a8;
 
     font-family: futura-pt, sans-serif;
+    font-weight: 700;
+    font-style: normal;
+
+    font-size: 14px;
+}
+
+.smallWhite {
+    color: #ffffff;
+
+    font-family: garamond-premier-pro, serif;
     font-weight: 400;
     font-style: normal;
 
-    font-size: 18px;
+    font-size: 22px;
 }
-
-
 
 /*Body*/
 body {
@@ -113,12 +184,14 @@ body {
     text-indent: 4%;
 }
 
-/*Other*/
+.doubleBodyIndent{
+    text-indent: 8%;
+}
 
+/*Other*/
 center{
     text-align: center;
 }
-
 
 .left{
     position: absolute;
@@ -160,55 +233,81 @@ center{
 
 <div class="wrapper">
     <div class="title">
-    <center><h class="titleText">Yousaf Zahir </h>
-    <h class="titleSectionText">| About</h></center>
-    </div>
-
-    <div class="navigationBar">
-        <div class="navigationDiv">
-            <div class="right">
-            <h class="selectedNav">About <br></h> <h class="navigation"> Projects</h>
-            <h class="projects"> Website <br> Pathfinder <br> <a href="Fallball.html">Fallball </a><br></h>
-            </div>
-        </div>
+    <center><h class="titleText">Yousaf Zahir </h> 
+    <h class="subTitleText"><br> Computer Science Student @ University of Calgary</h>
     </div>
 
     <div class="bodyText">
         <div class="bodyDiv">
-            <h class="bodyPanel">Hi! my name is Yousaf Zahir (as you probably would have guessed by now), 
-                a 3rd Year university student studying Computer Science at The University of Calgary. 
-                I have a passion for programming and video game design. I am interested in acquiring 
-                an internship as a Software Developer, Software Engineer or Gameplay Programmer. 
+            <!-- Top Paragragh-->
+            <h class="bodyPanel">
+                Welcome to my website, here are links to some recordings of my personal projects. <br>
+                These links are intended to be used in conjunction with my resume which is available <a href = "https://link.storjshare.io/s/jxqpitcvteklnq5w5of64dpkugbq/shared-files/Resume,%20Yousaf%20Zahir.pdf" target="_blank">here</a>.
                 <br>
                 <br>
-                Some of my completed classes include, but are not limited to: <br>
-                    <div class="bodyIndent">
-                    → Algorithms and Data Structures <br>
-                    </div>
-                    <div class="bodyIndent">
-                    → Operating Systems <br>
-                    </div>
-                    <div class="bodyIndent">
-                    → Game Development in Unity <br>
-                    </div>
+                <center><h class="fineGray"> THE PROJECTS ARE ORDERED CHRONOLOGICALLY FROM MOST RECENT TO OLDEST. </h></center>
+       
+                <!-- Project 1-->
+                <h class="subTitleText2">KorEscape </h>
                 <br>
-                My Skillset: <br>
-                    <div class="bodyIndent">
-                    → C# <br> 
-                    </div>
-                    <div class="bodyIndent">
-                    → Java <br>
-                    </div>
-                    <div class="bodyIndent">
-                    → C++ <br>
-                    </div>
+                <p class="fineGrayb2">
+                    The GDD can be downloaded from <a href = "https://link.storjshare.io/jugdv63pjqxltalhswxofplruuuq/shared-files%2F503%20Group%205%20GDD.pdf" target="_blank"> here </a>.
+                </p>
+                <p class="fineGrayb">
+                    <br>
+                    This is KorEscape, a game my group and I made for Art 503 during the Winter semester of 2022. It was made using the Unity Engine and C#.
+                    To get a proper breakdown of all the features in the game you can download the game design document from above. All of the programming and 
+                    implmentation (setting up animations, setting up the map layout, etc.) were my responsibility.
+                    <br>
+                    <br>
+                    <br>
+                    <!-- </p> -->
+                </p>
+                <p class="shifted"> 
+                    <h class="smallWhite">
+                        <p style="text-align:center;">
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/hN0WAwhGIsw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </p>
+                    </h>
+                </p>  
+                <br>
+                <br>
+                <br>
+                <!-- End of project 1-->
 
+                <!-- Project 2-->
+                <h class="subTitleText2">Untitled Unity 3D Game </h>
+                <br>
+                <p class="fineGrayb">
+                    <!-- <p class="shifted"> -->
+                        Description 1. <br>
+                        Description 2. <br>
+                        <br>
+                        <br>
+                    <!-- </p> -->
+                </p>
+                <p class="shifted"> 
+                    <h class="smallWhite">
+                        <p style="text-align:center;">
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/hN0WAwhGIsw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </p>
+                    </h>
+                </p>  
                 <br>
                 <br>
-                You can contact me using my E-mail: yousafz1@hotmail.com <br>
+                <br>
+                <!-- End of project 2-->
 
-            </h>
+                
         </div>
+
+
+        <!-- End of projects-->
+                <br>
+                <br>
+                <h class="bodyPanel">
+                    You can contact me using my E-mail: yousafz1@hotmail.com <br>
+                </h>
     </div>
 </div>
 </body>

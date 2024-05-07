@@ -32,15 +32,15 @@ p.indented, p.grayText, p.lightGrayText {
 
 p.grayText {
     color: #a8a8a8;
-    font-family: garamond-premier-pro, sans-serif;
+    font-family: "tinos", serif; 
     font-weight: 400;
-    font-style: normal;
-    font-size: 18px;
+    font-style: oblique;
+    font-size: 17px;
 }
 
 p.lightGrayText {
     color: #d0d0d0;
-    font-family: futura-p, sans-serif;
+    font-family: futura-pt, sans-serif;
     font-weight: 600;
     font-style: normal;
     font-size: 14px;
@@ -104,6 +104,8 @@ body {
     font-weight: 400;
     font-style: normal;
     font-size: 28px;
+    letter-spacing: -0.5px; 
+    line-height: 1;
 }
 
 .bodyTextBlock {
@@ -133,7 +135,6 @@ body {
     right: 10px;
 }
 
-/* Grid Setup */
 .gridWrapper {
     display: grid;
     grid-template-columns: repeat(100, 1fr);

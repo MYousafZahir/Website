@@ -1,215 +1,127 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Yousaf Zahir | Computer Science Student</title>
-    <link rel="icon" type="image/png" href="favicon.png">
+    <meta charset="utf-8">
+    <link rel="icon" type="image/png" href="favicon.png" />
     <link rel="stylesheet" href="https://use.typekit.net/zni7xla.css">
-    <style>
-        /* General Styles */
-        body {
-            background-color: #222222;
-            color: #eeeeee;
-            font-family: garamond-premier-pro, serif;
-            font-size: 28px;
-            font-style: normal;
-            font-weight: 400;
-        }
-
-        a {
-            color: #f0f412;
-            text-decoration: none;
-        }
-
-        a:visited {
-            color: #086d79;
-        }
-
-        a:hover {
-            color: #fdfefe;
-        }
-
-        a:active {
-            color: inherit;
-        }
-
-        p, h {
-            margin: 0;
-            padding: 0;
-        }
-
-        /* Specific Text Styles */
-        .titleText, .subTitleText, .subTitleText2, .titleSectionText {
-            color: #ffffff;
-            font-family: futura-pt, sans-serif;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        .titleText { font-size: 44px; font-weight: 500; }
-        .subTitleText { font-size: 25px; font-weight: 300; }
-        .subTitleText2 { font-size: 30px; font-weight: 520; }
-        .titleSectionText { font-size: 88px; font-weight: 400; }
-
-        .fineGray, .fineGrayb, .fineGrayb2 {
-            color: #a8a8a8;
-            font-family: futura-pt, sans-serif;
-            font-weight: 700;
-            font-size: 14px;
-        }
-
-        .fineGrayb { font-family: garamond-premier-pro; font-size: 18px; }
-        .fineGrayb2 { font-family: futura-p; font-weight: 600; font-size: 14px; }
-
-        .smallWhite {
-            color: #ffffff;
-            font-family: garamond-premier-pro, serif;
-            font-size: 22px;
-        }
-
-        /* Layout Styles */
-        .wrapper {
-            display: grid;
-            grid-template-columns: repeat(100, 1fr);
-            gap: 10px;
-            grid-auto-rows: minmax(100px, auto);
-        }
-
-        .title { grid-row: 1; grid-column: 20/80; text-align: center; }
-        .bodyText { grid-row: 2/8; grid-column: 20/80; }
-
-        .shifted { margin-left: 30px; }
-        .center { text-align: center; }
-    </style>
+    <link rel="stylesheet" href="style.css">
+    <title>Yousaf Zahir | Computer Science Student</title>
 </head>
 <body>
-    <div class="wrapper">
-        <div class="title">
-            <h1 class="titleText">Yousaf Zahir</h1>
-            <h2 class="subTitleText">Computer Science Student @ University of Calgary</h2>
-        </div>
-        <div class="bodyText">
-            <div class="center">
-                <p>Welcome to my website, here are links to some recordings of my personal projects.</p>
-                <p>These links are intended to be used in conjunction with my resume.</p>
-                <p class="fineGray">THE PROJECTS ARE ORDERED CHRONOLOGICALLY FROM MOST RECENT TO OLDEST.</p>
+    <div class="gridWrapper">
+        <div class="gridTitle">
+            <div class="centerText">
+                <h class="mainTitle">Yousaf Zahir</h>
+                <h class="subTitle"><br> Computer Science Student @ University of Calgary</h>
             </div>
-            
- <div class="bodyDiv">
-                <!-- Top Paragragh-->
-                <h class="bodyPanel">
-                    <center>
-                    Welcome to my website, here are links to some recordings of my personal projects. <br>
-                    These links are intended to be used in conjunction with my resume.
-                    </center>
-                    <br>
-                    <center><h class="fineGray"> THE PROJECTS ARE ORDERED CHRONOLOGICALLY FROM MOST RECENT TO OLDEST. </h></center>
+        </div>
 
-                    <!-- Project 0-->
-                    <h class="subTitleText2">Pathfinder</h>
-                    <h class="fineGray"> 2022</h>
-                    <p class="fineGrayb">
-                        This is Pathfinder, a project I made over the summer of 2022 to learn and implement pathfinding algorithms, specifically BFS and DFS. I had learned them for the first time a 
-                        a year ago or so and had forgotten them over time. So, I came up with a project to work on which would help me practice and understand the algorithms.
-                        The project was made using Unity 3D and C#, and I relearned the algorithms using MIT OCW.
-                        <br>
-                        <br>
-                        <br>
-                        <!-- </p> -->
-                    </p>
-                    <p class="shifted"> 
-                        <h class="smallWhite">
-                            <p style="text-align:center;">
-                                <iframe width="560" height="315" src="https://www.youtube.com/embed/QtSbB8NFYrA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                            </p>
-                        </h>
-                    </p> 
+        <div class="gridBodyText">
+            <div class="bodyTextBlock">
+                <!-- Top Paragraph -->
+                <h class="bodyTextPanel">
+                    <div class="centerText">
+                        Welcome to my website, here are links to some recordings of my personal projects. <br>
+                        These links are intended to be used in conjunction with my resume.
+                    </div>
                     <br>
-                    <br>
-                    <br>
-                    <!-- End of project 0-->
+                    <div class="centerText"><h class="grayText"> THE PROJECTS ARE ORDERED CHRONOLOGICALLY FROM MOST RECENT TO OLDEST. </h></div>
 
-                    <!-- Project 1-->
-                    <h class="subTitleText2">KorEscape</h>
-                    <h class="fineGray"> 2022</h>
+                    <!-- Project 0 -->
+                    <div>
+                        <h2 class="subTitleAlt">Pathfinder 2022</h2>
+                        <p class="grayText">
+                            This is Pathfinder, a project I made over the summer of 2022 to learn and implement pathfinding algorithms, specifically BFS and DFS. I had learned them for the first time a
+                            year ago or so and had forgotten them over time. So, I came up with a project to work on which would help me practice and understand the algorithms.
+                            The project was made using Unity 3D and C#, and I relearned the algorithms using MIT OCW.
+                        </p>
+                        <div class="centerText">
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/QtSbB8NFYrA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <br>
+                    </div>
+
+                    <!-- End of project 0 -->
+                    <!-- Project 1 -->
+                    <h class="subTitleAlt">KorEscape</h>
+                    <h class="grayText"> 2022</h>
                     <br>
-                    <p class="fineGrayb2">
-                        The GDD can be downloaded from <a href = "https://link.storjshare.io/jugdv63pjqxltalhswxofplruuuq/shared-files%2F503%20Group%205%20GDD.pdf" target="_blank"> here</a>.
+                    <p class="lightGrayText">
+                        The GDD can be downloaded from <a href="https://link.storjshare.io/jugdv63pjqxltalhswxofplruuuq/shared-files%2F503%20Group%205%20GDD.pdf" target="_blank"> here</a>.
                     </p>
-                    <p class="fineGrayb">
+                    <p class="grayText">
                         <br>
                         This is KorEscape, a game my group and I made for Art 503 during the Winter semester of 2022. It was made using the Unity Engine and C#.
-                        To get a proper breakdown of all the features in the game you can download the game design document from above. All of the programming and 
+                        To get a proper breakdown of all the features in the game you can download the game design document from above. All of the programming and
                         implementation (setting up animations, setting up the map layout, etc.) were exclusively my responsibility.
                         <br>
                         <br>
                         <br>
-                        <!-- </p> -->
                     </p>
-                    <p class="shifted"> 
-                        <h class="smallWhite">
-                            <p style="text-align:center;">
+                    <p class="indented">
+                        <h class="smallWhiteText">
+                            <div class="centerText">
                                 <iframe width="560" height="315" src="https://www.youtube.com/embed/hN0WAwhGIsw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                            </p>
+                            </div>
                         </h>
-                    </p>  
-                    <br>
-                    <br>
-                    <br>
-                    <!-- End of project 1-->
-
-                    <!-- Project 2-->
-                    <h class="subTitleText2">Untitled Unity 3D Game</h>
-                    <h class="fineGray"> 2021</h>
-                    <br>
-                    <p class="fineGrayb">
-                        <!-- <p class="shifted"> -->
-                            This is a game made for the GDN 2021 Game Jam over the course of 4-days that was actively worked on
-                            by myself and one other person in Europe who I met online for the purpose of the game jam. We both worked on it 
-                            remotely using Unity 3D, C# and GitHub. This was my first time working with another person on a game jam as well
-                            as working with Unity 3D.
-                            <br>
-                            <br>
-                        <!-- </p> -->
                     </p>
-                    <p class="shifted"> 
-                        <h class="smallWhite">
-                            <p style="text-align:center;">
+                    <br>
+                    <br>
+                    <br>
+                    <!-- End of project 1 -->
+                    <!-- Project 2 -->
+                    <h class="subTitleAlt">Untitled Unity 3D Game</h>
+                    <h class="grayText"> 2021</h>
+                    <br>
+                    <p class="grayText">
+                        This is a game made for the GDN 2021 Game Jam over the course of 4-days that was actively worked on
+                        by myself and one other person in Europe who I met online for the purpose of the game jam. We both worked on it
+                        remotely using Unity 3D, C# and GitHub. This was my first time working with another person on a game jam as well
+                        as working with Unity 3D.
+                        <br>
+                        <br>
+                    </p>
+                    <p class="indented">
+                        <h class="smallWhiteText">
+                            <div class="centerText">
                                 <iframe width="560" height="315" src="https://www.youtube.com/embed/wjXZZsmJJzY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                            </p>
+                            </div>
                         </h>
-                    </p>  
-                    <br>
-                    <br>
-                    <br>
-                    <!-- End of project 2-->
-
-                    <!-- Project 3-->
-                    <h class="subTitleText2">Fallball</h>
-                    <h class="fineGray"> 2021</h>
-                    <br>
-                    <p class="fineGrayb">
-                        <!-- <p class="shifted"> -->
-                            This is a game I made for the Innovators' Jam 2021, a solo game jam with the theme of "can't stop moving". I designed 
-                            and developed this game over the course of 48 hours using Unity 2D and C#. This was also my first ever game jam.
-                            <br>
-                            <br>
-                        <!-- </p> -->
                     </p>
-                    <p class="shifted"> 
-                        <h class="smallWhite">
-                            <p style="text-align:center;">
+                    <br>
+                    <br>
+                    <br>
+                    <!-- End of project 2 -->
+                    <!-- Project 3 -->
+                    <h class="subTitleAlt">Fallball</h>
+                    <h class="grayText"> 2021</h>
+                    <br>
+                    <p class="grayText">
+                        This is a game I made for the Innovators' Jam 2021, a solo game jam with the theme of "can't stop moving". I designed
+                        and developed this game over the course of 48 hours using Unity 2D and C#. This was also my first ever game jam.
+                        <br>
+                        <br>
+                    </p>
+                    <p class="indented">
+                        <h class="smallWhiteText">
+                            <div class="centerText">
                                 <iframe width="560" height="315" src="https://www.youtube.com/embed/eN1k3sq_sLc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                            </p>
+                            </div>
                         </h>
-                    </p>  
+                    </p>
                     <br>
                     <br>
                     <br>
-                    <!-- End of project 3-->
-            
-            <!-- Additional project details should be added here following the existing format -->
-            <div class="center">
-                <p>You can contact me using my E-mail: yousafz1@hotmail.com</p>
+                    <!-- End of project 3 -->
+</div>
+
+            <!-- End of projects -->
+            <br>
+            <br>
+            <div class="centerText">
+                <h class="bodyTextPanel"> You can contact me using my E-MAIL: yousafz1@hotmail.com </h>
+                <br>
+                <br>
             </div>
         </div>
     </div>

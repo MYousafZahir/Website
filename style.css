@@ -1,0 +1,157 @@
+/* Link styles */
+a:link, a:visited, a:hover, a:active {
+    text-decoration: none;
+}
+
+a:link {
+    color: #f0f412;
+}
+
+a:visited {
+    color: #086d79;
+}
+
+a:hover {
+    color: #fdfefe;
+}
+
+a:active {
+    color: inherit;
+}
+
+/* Paragraph styles */
+p, p.indented, p.grayText, p.lightGrayText {
+    padding: 0;
+    margin: 0;
+    line-height: 20px;
+}
+
+p.indented, p.grayText, p.lightGrayText {
+    margin-left: 30px;
+}
+
+p.grayText {
+    color: #a8a8a8;
+    font-family: garamond-premier-pro, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 18px;
+}
+
+p.lightGrayText {
+    color: #d0d0d0;
+    font-family: futura-p, sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    font-size: 14px;
+}
+
+/* Title styles */
+.mainTitle, .subTitle, .subTitleAlt, .sectionTitle {
+    font-family: futura-pt, sans-serif;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+}
+
+.mainTitle {
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 44px;
+}
+
+.subTitle {
+    color: #a8a8a8;
+    font-weight: 300;
+    font-size: 25px;
+}
+
+.subTitleAlt {
+    color: #ffffff;
+    font-weight: 520;
+    font-size: 30px;
+}
+
+.sectionTitle {
+    color: #ffffff;
+    font-weight: 400;
+    font-size: 88px;
+}
+
+.grayText {
+    color: #a8a8a8;
+    font-family: futura-pt, sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 14px;
+}
+
+.smallWhiteText {
+    color: #ffffff;
+    font-family: garamond-premier-pro, serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 22px;
+}
+
+/* Body styles */
+body {
+    background-color: #222222;
+}
+
+.bodyTextPanel {
+    color: #eeeeee;
+    font-family: garamond-premier-pro, serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 28px;
+}
+
+.bodyTextBlock {
+    text-align: left;
+    display: block;
+}
+
+.bodyTextIndent, .bodyTextDoubleIndent {
+    text-indent: 4%;
+}
+
+.bodyTextDoubleIndent {
+    text-indent: 8%;
+}
+
+/* Other styles */
+.centerText, .leftAlign, .rightAlign {
+    text-align: center;
+}
+
+.leftAlign {
+    position: absolute;
+    left: 0px;
+}
+
+.rightAlign {
+    right: 10px;
+}
+
+/* Grid Setup */
+.gridWrapper {
+    display: grid;
+    grid-template-columns: repeat(100, 1fr);
+    gap: 10px;
+    grid-auto-rows: minmax(100px, auto);
+}
+
+.gridTitle {
+    grid-row: 1;
+    grid-column: 20/80;
+}
+
+.gridNavBar {
+    grid-row: 3/4;
+    grid-column: 7/10;
+}
+
+.gridBodyText {
+    grid-row: 2/8;
+    grid-column: 20/80;
+}

@@ -177,12 +177,17 @@ body {
     z-index: 1;
 }
 
+.arrow:hover {
+    transform: scale(1.5) translateY(-50%);
+
+}
+
 .left-arrow {
-    left: 140px;
+    left: 12%
 }
 
 .right-arrow {
-    right: 140px;
+    right: 12%
 }
 
 .gallery {

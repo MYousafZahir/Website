@@ -12,7 +12,7 @@
         <div class="gridTitle">
             <div class="centerText">
                 <h class="mainTitle">Yousaf Zahir</h>
-                <h class="subTitle"><br> Computer Science Student @ University of Calgary</h>
+                <h class="subTitle"><br> Computer Scientist 🕹️ The University of Calgary</h>
             </div>
         </div>
 
@@ -29,11 +29,11 @@
                     <br>
 
                     <!-- Project (-1) -->
-                    <h class="subTitleAlt">Kingdom of Predators</h>
+                    <h class="subTitleAlt">🐺Kingdom of Predators</h>
                     <h class="grayText"> 2024</h>
                     <br>
                     <p class="lightGrayText">
-                        The Paper can be requested via email.
+                        &nbsp;&nbsp;&nbsp;&nbsp;The Paper can be requested via email.
                     </p>
                     <br>
                     <p class="grayText">
@@ -45,19 +45,116 @@
                         <br>
                         <br>
                     </p>
-                    <p class="indented">
-                        <h class="smallWhiteText">
-                            <div class="centerText">
-                                <iframe width="560" height="315" src="https://www.youtube.com/embed/ccGZDkIhPIY?si=dsI6RaBcYCZd6EIe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+                    <!-- Collapsible C++ Code Block-->
+                    <button class="collapsible">Sample C++ Code From Project</button>
+                    <div class="content">
+                        <pre><code class="cpp">
+// Called every frame
+void UData::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+{
+    Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+    FVector OwnerLocation = Owner->GetActorLocation();
+    FRotator OwnerRotation = Owner->GetActorRotation().Clamp();
+
+    int arrOffSet = OwnerRotation.Yaw;
+    directionalArr = &memory[arrOffSet];
+
+    if(lastHit > 0) lastHit -= DeltaTime;
+
+    if (energy > 0) {
+        energy -= DeltaTime;
+        if (energy <= 0) ProcessHit(attr_health);
+    }
+
+    UpdateHealth();
+
+
+    // Raycast parameters
+    FCollisionQueryParams TraceParams;
+    TraceParams.AddIgnoredActor(Owner);
+    FHitResult HitResult;
+
+
+    for (int32 i = 0; i < directionalArrSize; i++) {
+        // this is used to know the direction of the raycast relative to the owner
+        FVector Direction = OwnerRotation.RotateVector(std::get<1>(directionTuple[i]));
+
+        TArray<FHitResult> Hits;
+
+        // Perform the raycast
+        if (GetWorld()->LineTraceMultiByObjectType(Hits, OwnerLocation, OwnerLocation + Direction * 1000.0f, PawnsAndCorpses, TraceParams))
+        {
+            int sumOfHits = 0;
+            for (auto Hit : Hits) {
+                if (Hit.GetActor()->GetName().Mid(0, 12) == "BP_Character") {
+                    if (!IDMap.Contains(Hit.GetActor()->FindComponentByClass<UData>()->ID)) {
+                        IDMap.Add(Hit.GetActor()->FindComponentByClass<UData>()->ID, CalcAttraction(Hit.GetActor()));
+
+                    }
+
+                    if (!(Hit.GetActor()->FindComponentByClass<UData>()->IDMap.Contains(ID))) {
+						Hit.GetActor()->FindComponentByClass<UData>()->IDMap.Add(ID, CalcAttraction(Owner));
+
+					}
+                }
+
+
+                sumOfHits += gameObjectToAffinity(Hit.GetActor());
+
+            }
+
+            memory[(arrOffSet + i) % 360] = sumOfHits;
+
+            // update highest if necessary
+            if (sumOfHits > highestHit) {
+				highestHit = sumOfHits;
+				highestHitI = (arrOffSet + i) % 360;
+			}
+
+            // Get Play_UI 
+            if(seeDebugLines)DrawDebugLine(GetWorld(), OwnerLocation, OwnerLocation + Direction * 1000.0f, FColor::Red, false, 0.1f, 0, 1.0f);
+
+        } else {
+            if (seeDebugLines)DrawDebugLine(GetWorld(), OwnerLocation, OwnerLocation + Direction * 1000.0f, FColor::Green, false, 0.1f, 0, 1.0f);
+            
+        }
+    }
+
+    DecayMemory();
+
+}
+                        </code></pre>
+                    </div>
+                
+                    <br>
+
+                    <div class="gallery-container">
+                        <div class="gallery">
+                            <span class="arrow left-arrow" onclick="prevMedia()">&#10094;</span>
+                            <div class="gallery-content active">
+                                <iframe width="560" height="315" src="https://www.youtube.com/embed/ccGZDkIhPIY?si=fm1Olv93T7xxhA4x"  title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                             </div>
-                        </h>
-                    </p>
+                            <div class="gallery-content">
+                                <img src="image1.png" alt="Image 1">
+                            </div>
+                            <div class="gallery-content">
+                                <img src="image2.png" alt="Image 2">
+                            </div>
+                            <span class="arrow right-arrow" onclick="nextMedia()">&#10095;</span>
+                        </div>
+                        <div class="gallery-caption">
+                            <p id="caption-text">This is the caption for the video.</p>
+                        </div>
+                    </div>
+                    
                     <br>
                     <br>
                     <br>
                     <!-- End of project (-1) -->
                     <!-- Project 0 -->
-                    <h class="subTitleAlt">Pathfinder</h>
+                    <h class="subTitleAlt">🌽Pathfinder</h>
                     <h class="grayText"> 2022</h>
                     <p class="grayText">
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This is Pathfinder, a project I made over the summer of 2022 to learn and implement pathfinding algorithms, specifically BFS and DFS. I had learned them for the first time a
@@ -79,7 +176,7 @@
                     <br>
                     <!-- End of project 0 -->
                     <!-- Project 1 -->
-                    <h class="subTitleAlt">KorEscape</h>
+                    <h class="subTitleAlt">👾KorEscape</h>
                     <h class="grayText"> 2022</h>
                     <br>
                     <p class="lightGrayText">
@@ -106,7 +203,7 @@
                     <br>
                     <!-- End of project 1 -->
                     <!-- Project 2 -->
-                    <h class="subTitleAlt">Untitled Unity 3D Game</h>
+                    <h class="subTitleAlt">⚔️Untitled Unity 3D Game</h>
                     <h class="grayText"> 2021</h>
                     <br>
                     <p class="grayText">
@@ -129,7 +226,7 @@
                     <br>
                     <!-- End of project 2 -->
                     <!-- Project 3 -->
-                    <h class="subTitleAlt">Fallball</h>
+                    <h class="subTitleAlt">⚽Fallball</h>
                     <h class="grayText"> 2021</h>
                     <br>
                     <p class="grayText">
@@ -161,5 +258,6 @@
             </div>
         </div>
     </div>
+    <script src="gallery.js"></script>
 </body>
 </html>

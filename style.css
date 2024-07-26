@@ -156,3 +156,90 @@ body {
     grid-row: 2/8;
     grid-column: 20/80;
 }
+
+
+.gallery-content {
+    display: none;
+    text-align: center; /* Center the content */
+}
+
+.gallery-content.active {
+    display: block;
+}
+
+.arrow {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-70%);
+    font-size: 2em;
+    color: #fff;
+    z-index: 1;
+}
+
+.left-arrow {
+    left: 140px;
+}
+
+.right-arrow {
+    right: 140px;
+}
+
+.gallery {
+    position: relative; /* Ensure positioning context for arrows */
+}
+
+
+.gallery-caption {
+    text-align: center;
+    color: #ffffff;
+    font-family: "futura-pt", sans-serif;
+    margin-top: 10px;
+}
+
+#caption-text {
+    font-size: 18px;
+    margin: 0;
+}
+
+
+/* Collapsible Section Styles */
+.collapsible {
+    background-color: #444;
+    color: white;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+    margin-top: 10px;
+}
+
+.active, .collapsible:hover {
+    background-color: #555;
+}
+
+.content {
+    padding: 0 18px;
+    display: none;
+    overflow: hidden;
+    background-color: #f1f1f1;
+    color: black;
+    margin-bottom: 10px;
+}
+
+pre {
+    background-color: #2d2d2d;
+    color: #f8f8f2;
+    padding: 10px;
+    border-radius: 5px;
+    font-family: "Fira Code", monospace;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+pre code {
+    white-space: pre-wrap;
+}

@@ -18,9 +18,9 @@ document.addEventListener("DOMContentLoaded", function () {
 let currentMediaIndex = 0;
 const galleryContents = document.querySelectorAll('.gallery-content');
 const captions = [
-    "This is the caption for the video.",
-    "This is the caption for Image 1.",
-    "This is the caption for Image 2."
+    "A short clip showing what the simulation looks like.",
+    "A state tree diagram for the behaviours of creatures.",
+    "Components of creatures including hearing range and vision cone."
 ];
 
 function showMedia(index) {

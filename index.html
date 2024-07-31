@@ -98,8 +98,8 @@ void UData::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentT
 
                     if (!(Hit.GetActor()->FindComponentByClass<UData>()->IDMap.Contains(ID))) {
 						Hit.GetActor()->FindComponentByClass<UData>()->IDMap.Add(ID, CalcAttraction(Owner));
+                    }
 
-					}
                 }
 
 
@@ -111,9 +111,9 @@ void UData::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentT
 
             // update highest if necessary
             if (sumOfHits > highestHit) {
-				highestHit = sumOfHits;
-				highestHitI = (arrOffSet + i) % 360;
-			}
+                highestHit = sumOfHits;
+                highestHitI = (arrOffSet + i) % 360;
+            }
 
             // Get Play_UI 
             if(seeDebugLines)DrawDebugLine(GetWorld(), OwnerLocation, OwnerLocation + Direction * 1000.0f, FColor::Red, false, 0.1f, 0, 1.0f);

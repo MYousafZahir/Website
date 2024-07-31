@@ -97,7 +97,7 @@ void UData::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentT
                     }
 
                     if (!(Hit.GetActor()->FindComponentByClass<UData>()->IDMap.Contains(ID))) {
-						Hit.GetActor()->FindComponentByClass<UData>()->IDMap.Add(ID, CalcAttraction(Owner));
+                        Hit.GetActor()->FindComponentByClass<UData>()->IDMap.Add(ID, CalcAttraction(Owner));
                     }
 
                 }

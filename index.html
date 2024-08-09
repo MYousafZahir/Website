@@ -102,9 +102,7 @@ void UData::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentT
 
                 }
 
-
                 sumOfHits += gameObjectToAffinity(Hit.GetActor());
-
             }
 
             memory[(arrOffSet + i) % 360] = sumOfHits;

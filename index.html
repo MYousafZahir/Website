@@ -87,7 +87,7 @@ void UData::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentT
     // the creature shoots raycasts in a conal shape in the direction it is facing. Each i corresponds to a degree.
     for (int32 i = 0; i < directionalArrSize; i++) {
         TArray Hits;
-            // this is used to know the direction of the raycast relative to the owner
+        // this is used to know the direction of the raycast relative to the owner
         FVector Direction = OwnerRotation.RotateVector(std::get<1>(directionTuple[i]));
 
         // Perform the raycast

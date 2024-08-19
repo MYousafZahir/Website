@@ -52,17 +52,22 @@
                     <button class="collapsible">SAMPLE C++ CODE</button>
                     <div class="content">
                         <pre><code class="language-cpp">
-// Called every frame
-void UData::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
+// This is sample code from a animal/creature actor in a simulation made in Unreal Engine 5. Comments have been added to provide additional context regarding some objects.
+// This code was entirely written by me, without the help of AI. It was written under significant time constraints as it was a small piece of a final project I worked on, I have decided to leave
+// many parts of the code unchanged (except for the addition of comments), so that it is a more realisitic depiction of how I write code under tight time constraints. That having been said,
+// looking back I would quite a few changes, which I would be happy to discuss. 
+
+void UData::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
     Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
     FVector OwnerLocation = Owner->GetActorLocation();
     FRotator OwnerRotation = Owner->GetActorRotation().Clamp();
 
+    // directionArr is a small array corresponding to the direction that character is facing, whereas memory is a 360 sized array corresponding to all the directions the creature can face.
     int arrOffSet = OwnerRotation.Yaw;
     directionalArr = &memory[arrOffSet];
 
+    // below code decays lastHit and energy variables over time.
     if(lastHit > 0) lastHit -= DeltaTime;
 
     if (energy > 0) {
@@ -79,25 +84,26 @@ void UData::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentT
     FHitResult HitResult;
 
 
+    // the creature shoots raycasts in a conal shape in the direction it is facing. Each i corresponds to a degree.
     for (int32 i = 0; i < directionalArrSize; i++) {
-        // this is used to know the direction of the raycast relative to the owner
+        TArray Hits;
+            // this is used to know the direction of the raycast relative to the owner
         FVector Direction = OwnerRotation.RotateVector(std::get<1>(directionTuple[i]));
 
-        TArray<FHitResult> Hits;
-
         // Perform the raycast
-        if (GetWorld()->LineTraceMultiByObjectType(Hits, OwnerLocation, OwnerLocation + Direction * 1000.0f, PawnsAndCorpses, TraceParams))
-        {
+        if (GetWorld()->LineTraceMultiByObjectType(Hits, OwnerLocation, OwnerLocation + Direction * 1000.0f, PawnsAndCorpses, TraceParams)) {
             int sumOfHits = 0;
             for (auto Hit : Hits) {
+                // check to see if a character was hit, if it was then we check cached information to see if we've computed owner creatures attraction to hit creature. If it's the first time hitting the creature, then we compute
+                // attraction and store the value.
                 if (Hit.GetActor()->GetName().Mid(0, 12) == "BP_Character") {
-                    if (!IDMap.Contains(Hit.GetActor()->FindComponentByClass<UData>()->ID)) {
-                        IDMap.Add(Hit.GetActor()->FindComponentByClass<UData>()->ID, CalcAttraction(Hit.GetActor()));
+                    if (!IDMap.Contains(Hit.GetActor()->FindComponentByClass()->ID)) {
+                        IDMap.Add(Hit.GetActor()->FindComponentByClass()->ID, CalcAttraction(Hit.GetActor()));
 
                     }
 
-                    if (!(Hit.GetActor()->FindComponentByClass<UData>()->IDMap.Contains(ID))) {
-                        Hit.GetActor()->FindComponentByClass<UData>()->IDMap.Add(ID, CalcAttraction(Owner));
+                    if (!(Hit.GetActor()->FindComponentByClass()->IDMap.Contains(ID))) {
+                        Hit.GetActor()->FindComponentByClass()->IDMap.Add(ID, CalcAttraction(Owner));
                     }
 
                 }
@@ -105,6 +111,7 @@ void UData::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentT
                 sumOfHits += gameObjectToAffinity(Hit.GetActor());
             }
 
+            // this assigns an attraction value to a direction that the creature can move. The creatue will move in the direction of the highest attraction value.
             memory[(arrOffSet + i) % 360] = sumOfHits;
 
             // update highest if necessary
@@ -113,8 +120,8 @@ void UData::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentT
                 highestHitI = (arrOffSet + i) % 360;
             }
 
-            // Get Play_UI 
-            if(seeDebugLines)DrawDebugLine(GetWorld(), OwnerLocation, OwnerLocation + Direction * 1000.0f, FColor::Red, false, 0.1f, 0, 1.0f);
+            // if we are debugging, if we hit something draw the raycast red, otherwise green
+            if (seeDebugLines)DrawDebugLine(GetWorld(), OwnerLocation, OwnerLocation + Direction * 1000.0f, FColor::Red, false, 0.1f, 0, 1.0f);
 
         } else {
             if (seeDebugLines)DrawDebugLine(GetWorld(), OwnerLocation, OwnerLocation + Direction * 1000.0f, FColor::Green, false, 0.1f, 0, 1.0f);

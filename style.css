@@ -271,5 +271,6 @@ pre {
 }
 
 pre code {
-    white-space: pre-wrap;
+    white-space: pre;
+    overflow-x: auto;
 }

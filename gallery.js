@@ -40,7 +40,7 @@ class Gallery {
     }
 
     updateCaption(index) {
-        const captionText = document.querySelector(`#${this.id} #caption-text`);
+        const captionText = document.querySelector(`#${this.id} .gallery-caption p`);
         captionText.textContent = this.captions[index];
     }
 
@@ -55,7 +55,32 @@ class Gallery {
     }
 }
 
+
 // Initialize galleries
+document.addEventListener('DOMContentLoaded', () => {
+    const galleries = document.querySelectorAll('.gallery-container');
+    
+    galleries.forEach(gallery => {
+        const id = gallery.id;
+        const contents = gallery.querySelectorAll('.gallery-content');
+        const captions = Array.from(contents).map(content => content.getAttribute('data-caption') || '');
+
+        const galleryInstance = new Gallery(id, contents, captions);
+
+        // Make the gallery instance globally accessible
+        window[id] = galleryInstance;
+
+        // Remove inline onclick attributes and add event listeners instead
+        const leftArrow = gallery.querySelector('.left-arrow');
+        const rightArrow = gallery.querySelector('.right-arrow');
+
+        leftArrow.removeEventListener('click', () => galleryInstance.prevMedia());
+        rightArrow.removeEventListener('click', () => galleryInstance.nextMedia());
+
+        leftArrow.addEventListener('click', () => galleryInstance.prevMedia());
+        rightArrow.addEventListener('click', () => galleryInstance.nextMedia());
+    });
+});
 document.addEventListener('DOMContentLoaded', () => {
     const galleries = document.querySelectorAll('.gallery-container');
     

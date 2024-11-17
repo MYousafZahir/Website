@@ -44,7 +44,222 @@
                      <button class="collapsible">SAMPLE C++ CODE</button>
                      <div class="content">
                          <pre><code class="language-cpp">
-Put code here
+// Called when the game starts
+void UPlayerFunctionality::BeginPlay() {
+	Super::BeginPlay();
+	Initialize();
+
+	BIND_INPUT_KEY(LeftShift, Pressed, HandleSprintBegin);
+	BIND_INPUT_KEY(LeftShift, Released, DefaultSettings);
+
+	BIND_INPUT_KEY(RightMouseButton, Pressed, HandlePreThrow);
+	BIND_INPUT_KEY(RightMouseButton, Released, DefaultSettings);
+
+	BIND_INPUT_KEY(LeftMouseButton, Pressed, PrepThrow);
+	BIND_INPUT_KEY(LeftMouseButton, Released, ThrowAxe);
+
+	BIND_INPUT_KEY(R, Pressed, RetrieveAxe);
+
+	ResetLerpValues();
+}
+
+
+void UPlayerFunctionality::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	// ---- Variables
+	float *CameraFOV = &OwnerCamera->FieldOfView;
+	float *PlayerMaxSpeed = &OwnerActor->GetCharacterMovement()->MaxWalkSpeed;
+	FVector CameraOffset = OwnerCamera->GetRelativeLocation();
+
+	// ---- Implementation
+	lerpAlpha += DeltaTime / lerpDuration;
+	lerpAlpha = FMath::Clamp(lerpAlpha, 0.f, 1.f);
+
+	// Run Camera
+	if (PlayerHelper->DistanceToTarget(&desiredCameraFov, CameraFOV) > 0.1f) {
+		*CameraFOV = FMath::Lerp(*CameraFOV, desiredCameraFov, lerpAlpha);
+	}
+
+	// Player Movement
+	if (PlayerHelper->DistanceToTarget(&desiredMaxSpeed, PlayerMaxSpeed) > 0.1f) {
+		*PlayerMaxSpeed = FMath::Lerp(*PlayerMaxSpeed, desiredMaxSpeed, lerpAlpha);
+	}
+
+	// Zoom Camera
+	if (PlayerHelper->DistanceToTarget(&CameraOffset, &desiredCameraOffset) > 0.1f) {
+		const FVector NewCameraOffset = FMath::Lerp(CameraOffset, desiredCameraOffset, lerpAlpha);
+		OwnerCamera->SetRelativeLocation(NewCameraOffset);
+	}
+
+	// Zoom -- Player turn with camera
+	// Notice: the last else-if only executes when b_rotationJitter doesn't change.
+	// It's ugly but don't change.
+	if (b_matchCamRotation) {
+		float ActorYaw = OwnerActor->GetActorRotation().Yaw;
+		float CameraYaw = OwnerCamera->GetComponentRotation().Yaw;
+
+		if (CameraYaw < ActorYaw && !b_rotationJitter) {
+			b_rotationJitter = true;
+
+		} else if (CameraYaw > ActorYaw && b_rotationJitter) {
+			b_rotationJitter = false;
+
+		} else if (FMath::Abs(ActorYaw - CameraYaw) > 0.1f) {
+			float NewActorYaw = FMath::Lerp(ActorYaw, CameraYaw, lerpAlpha);
+
+			FRotator NewActorRotation = OwnerActor->GetActorRotation();
+			NewActorRotation.Yaw = NewActorYaw;
+			OwnerActor->SetActorRotation(NewActorRotation);
+		}
+	}
+
+
+	if (b_axeBeingRetrieved) {
+		float DistanceToActor = FMath::Abs(FVector::Dist(Axe->GetComponentLocation(), OwnerActor->GetActorLocation()));
+		float SplinePoint2 = FVector::Dist(AxePath->GetLocationAtSplinePoint(1, ESplineCoordinateSpace::World), AxePath->GetLocationAtSplinePoint(0, ESplineCoordinateSpace::World));
+		
+		// plays catching animation
+		if (DistanceToActor <= SplinePoint2 && !Axe->GetAttachParent()) {
+			bCatchingAxe = true;
+		} 
+		
+		if (DistanceToActor < 150.f) {
+			b_axeBeingRetrieved = false;
+
+			Axe->AttachToComponent(OwnerActor->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket->SocketName);	
+			Axe->SetRelativeTransform(heldAxeTransform);
+			bCatchingAxe = false;
+			
+		} else {
+			Axe->AddLocalRotation(FRotator(10.f, 0.f, 0));
+		}
+
+	}
+
+
+	// controlling axe trail visibility
+	if (Axe->GetAttachParent() || (!Axe->IsSimulatingPhysics() && !b_axeBeingRetrieved)) {
+		AxeSpinVFX->Deactivate();
+		
+	} else {
+		AxeSpinVFX->Activate();
+
+	}
+
+	const FVector OwnerLocation = OwnerActor->GetActorLocation();
+	constexpr float PlayerHeight = 200.f;
+		
+	// Axe is in hand
+	if (Axe->GetAttachParent()) {
+		Spin = 0.f;
+		
+		FVector Start = OwnerCamera->GetComponentLocation();
+		FVector End = Start + OwnerCamera->GetForwardVector() * 6000.f;
+		
+		FHitResult Hit;
+		FCollisionQueryParams CollisionParams;
+		CollisionParams.AddIgnoredActor(OwnerActor);
+		
+		GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_WorldStatic, CollisionParams);
+		
+		if (Hit.GetActor()) {
+			// raycast has been hit
+			FVector Point2Dir = OwnerCamera->GetForwardVector();
+			Point2Dir.Normalize();
+
+			FVector Point2Location = Hit.Location + (Point2Dir * 3000.f);
+			Point2Location.Z = Hit.Location.Z;
+			
+			FVector Point3Location = Point2Location + (Point2Dir * 1800.f);
+			Point3Location.Z = 0.f;
+
+			AnchoredPoint1Pos = Hit.Location;
+			AnchoredPoint2Pos = Point2Location + FVector(0.f, 0.f, PlayerHeight);
+			AnchoredPoint3Pos = Point3Location;
+			
+			
+		} else {
+			// no raycast hit
+			AnchoredPoint1Pos = End;
+			
+			AnchoredPoint3Pos = End;
+			AnchoredPoint3Pos.Z = 0.f;
+
+			AnchoredPoint2Pos = FMath::Lerp(AnchoredPoint1Pos, AnchoredPoint3Pos, 0.5f);
+		}
+		
+	} else {
+		if (!Axe->IsSimulatingPhysics() && !b_axeBeingRetrieved){
+			//  Axe is on ground
+			/// -- Adjusting the up direction, so that on axe retrieve the axe will go in direction of the catching hand.
+			FVector CharToAxe = (AnchoredPoint3Pos - OwnerLocation).GetSafeNormal();
+			UpDirection = FVector::DotProduct(OwnerActor->GetActorForwardVector(), CharToAxe);
+			
+		} else {
+			// Axe in Air
+
+			if (bAxeMovingAway) {
+				// Axe is being thrown
+
+				/// -- Keep axe laterally tangential to spline. 
+				float curDistanceAlongSpline = AxePath->GetDistanceAlongSplineAtLocation(Axe->GetComponentLocation(), ESplineCoordinateSpace::World);
+				FVector curTangent = AxePath->GetTangentAtDistanceAlongSpline(curDistanceAlongSpline, ESplineCoordinateSpace::World);
+				FRotator DesiredRotation = FRotationMatrix::MakeFromXZ(curTangent, FVector::UpVector).Rotator();
+
+				// -- Roll axe is it goes over its throw path.
+				float totalRollingDistance = AxePath->GetDistanceAlongSplineAtSplinePoint(1);
+				float startRollingDistance = totalRollingDistance * 0.1f;
+				float endRollingDistance = totalRollingDistance * 0.9f;
+
+				if (curDistanceAlongSpline > startRollingDistance && curDistanceAlongSpline < endRollingDistance) {
+					float distanceRatio = (curDistanceAlongSpline - startRollingDistance) / (endRollingDistance - startRollingDistance);
+					float targetRoll = FMath::InterpEaseOut(110.0f, 470.0f, distanceRatio, 2.0f);
+
+					SpeedMag = FMath::InterpEaseOut(4.f, 1.f, distanceRatio, 2.0f); // ramp down axe speed from 4x to 1x speed
+				
+					DesiredRotation.Roll = targetRoll;  
+
+				} else {
+					DesiredRotation.Add(0.f, 0.f, 110.f);
+					SpeedMag = 1.0f;
+				}
+
+				
+				Axe->SetWorldRotation(DesiredRotation);
+
+				/// -- Spin Axe as it goes (Frisbee)
+				Spin += 1000.f * DeltaTime;
+				Axe->AddLocalRotation(FRotator(Spin, 0.f, 0.f));
+
+			} else {
+				// Axe is being retrieved
+
+				/// -- Adjusted the positions of the middle points.
+				AnchoredPoint1Pos = FMath::Lerp(OwnerLocation, AnchoredPoint3Pos, 0.25);
+				AnchoredPoint1Pos.Z = PlayerHeight;
+				
+				AnchoredPoint2Pos = FMath::Lerp(OwnerLocation, AnchoredPoint3Pos, 0.75);
+				AnchoredPoint2Pos.Z = PlayerHeight;
+				
+				/// -- Adjusting the lateral offset. 
+				FVector CharToAxe = (AnchoredPoint3Pos - OwnerLocation).GetSafeNormal();
+				
+				CharToAxe = FVector::CrossProduct(FVector(0.f, 0.f, UpDirection), CharToAxe).GetSafeNormal();
+				
+				FVector XOffSet = CharToAxe * 500.f;
+				AnchoredPoint1Pos += XOffSet;
+
+				AnchoredPoint2Pos += (XOffSet / 2);
+			}
+		}	
+	}
+	
+	AxePath->SetLocationAtSplinePoint(1, AnchoredPoint1Pos,ESplineCoordinateSpace::World, true);
+	AxePath->SetLocationAtSplinePoint(2, AnchoredPoint2Pos, ESplineCoordinateSpace::World, true);
+	AxePath->SetLocationAtSplinePoint(3, AnchoredPoint3Pos, ESplineCoordinateSpace::World, true);
+
+}
                          </code></pre>
                      </div>
                  

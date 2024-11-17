@@ -81,6 +81,8 @@ document.addEventListener('DOMContentLoaded', () => {
         rightArrow.addEventListener('click', () => galleryInstance.nextMedia());
     });
 });
+
+
 document.addEventListener('DOMContentLoaded', () => {
     const galleries = document.querySelectorAll('.gallery-container');
     

@@ -29,6 +29,52 @@
                     <div class="centerText"><h class="grayText"> THE PROJECTS ARE ORDERED CHRONOLOGICALLY FROM MOST RECENT TO OLDEST. </h></div>
                     <br>
 
+                     <!-- Project (-2) -->
+                     <h class="subTitleAlt">Gameplay Programming | Axe</h>
+                     <br>
+                     <p class="grayText">
+                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  An agent-based emergence simulation of a predator-prey ecosystem made in Unreal Engine 5 with C++ as my final project for CPSC 565: Emergent Computing class. This project was completely planned, designed, and implemented by me. Notably, the creatures' decisions are solely composed of information they can collect. In other words, there is no external data being transferred into the creatures; rather, the creatures are looking and listening to collect their own data. Here’s where the emergence comes in: all the creatures are relatively simple, but as a consequence of many of them acting together, more complex behaviors emerge. <br><br>
+
+                         <br>
+                         <br>
+                         <br>
+                     </p>
+ 
+                     <!-- Collapsible C++ Code Block-->
+                     <button class="collapsible">SAMPLE C++ CODE</button>
+                     <div class="content">
+                         <pre><code class="language-cpp">
+Put code here
+                         </code></pre>
+                     </div>
+                 
+                     <br>
+ 
+                     <div id="gallery2" class="gallery-container">
+                         <div class="gallery">
+                             <span class="arrow left-arrow" onclick="gallery2.prevMedia()">&#10094;</span>
+
+                             <div class="gallery-content active" data-caption="A short clip showing what the simulation looks like.">
+                                 <iframe width="560" height="315" src="https://youtu.be/Kudjz7VEUmA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                             </div>
+
+                             <div class="gallery-content" data-caption="A state tree diagram for the behaviours of creatures.">
+                                 <img src="Images/kop_state_diagram.png" alt="Kingdom of Predators, State Diagram">
+                             </div>
+
+                             <span class="arrow right-arrow" onclick="gallery2.nextMedia()">&#10095;</span>
+                         </div>
+                         <div class="gallery-caption">
+                             <p id="caption-text">This is the caption for the video.</p>
+                         </div>
+                     </div>
+                     
+                     
+                     <br>
+                     <br>
+                     <br>
+                     <!-- End of project (-2) -->
+                    
                     <!-- Project (-1) -->
                     <h class="subTitleAlt">Kingdom of Predators</h>
                     <h class="grayText"> 2024</h>
@@ -137,24 +183,25 @@ void UData::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentT
                 
                     <br>
 
-                    <div class="gallery-container">
+                    <div id="gallery1" class="gallery-container">
                         <div class="gallery">
-                            <span class="arrow left-arrow" onclick="prevMedia()">&#10094;</span>
-                            <div class="gallery-content active">
-                                <iframe width="560" height="315" src="https://www.youtube.com/embed/ccGZDkIhPIY?si=fm1Olv93T7xxhA4x"  title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                            <span class="arrow left-arrow" onclick="gallery1.prevMedia()">&#10094;</span>
+                            <div class="gallery-content active" data-caption="A short clip showing what the simulation looks like.">
+                                <iframe width="560" height="315" src="https://www.youtube.com/embed/ccGZDkIhPIY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                             </div>
-                            <div class="gallery-content">
+                            <div class="gallery-content" data-caption="A state tree diagram for the behaviours of creatures.">
                                 <img src="Images/kop_state_diagram.png" alt="Kingdom of Predators, State Diagram">
                             </div>
-                            <div class="gallery-content">
+                            <div class="gallery-content" data-caption="Components of creatures including hearing range and vision cone.">
                                 <img src="Images/kop_creature.png" alt="Kingdom of Predators, Creature Overview">
                             </div>
-                            <span class="arrow right-arrow" onclick="nextMedia()">&#10095;</span>
+                            <span class="arrow right-arrow" onclick="gallery1.nextMedia()">&#10095;</span>
                         </div>
                         <div class="gallery-caption">
                             <p id="caption-text">This is the caption for the video.</p>
                         </div>
                     </div>
+                    
                     
                     <br>
                     <br>

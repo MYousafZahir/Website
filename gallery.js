@@ -14,36 +14,63 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-// Gallery Navigation Script
-let currentMediaIndex = 0;
-const galleryContents = document.querySelectorAll('.gallery-content');
-const captions = [
-    "A short clip showing what the simulation looks like.",
-    "A state tree diagram for the behaviours of creatures.",
-    "Components of creatures including hearing range and vision cone."
-];
 
-function showMedia(index) {
-    galleryContents.forEach((content, i) => {
-        content.classList.toggle('active', i === index);
+
+
+// Galleries
+class Gallery {
+    constructor(id, contents, captions) {
+        this.id = id;
+        this.contents = contents;
+        this.captions = captions;
+        this.currentMediaIndex = 0;
+
+        this.initialize();
+    }
+
+    initialize() {
+        this.showMedia(this.currentMediaIndex);
+    }
+
+    showMedia(index) {
+        this.contents.forEach((content, i) => {
+            content.classList.toggle('active', i === index);
+        });
+        this.updateCaption(index);
+    }
+
+    updateCaption(index) {
+        const captionText = document.querySelector(`#${this.id} #caption-text`);
+        captionText.textContent = this.captions[index];
+    }
+
+    nextMedia() {
+        this.currentMediaIndex = (this.currentMediaIndex + 1) % this.contents.length;
+        this.showMedia(this.currentMediaIndex);
+    }
+
+    prevMedia() {
+        this.currentMediaIndex = (this.currentMediaIndex - 1 + this.contents.length) % this.contents.length;
+        this.showMedia(this.currentMediaIndex);
+    }
+}
+
+// Initialize galleries
+document.addEventListener('DOMContentLoaded', () => {
+    const galleries = document.querySelectorAll('.gallery-container');
+    
+    galleries.forEach(gallery => {
+        const id = gallery.id;
+        const contents = gallery.querySelectorAll('.gallery-content');
+        const captions = Array.from(contents).map(content => content.getAttribute('data-caption') || '');
+
+        const galleryInstance = new Gallery(id, contents, captions);
+
+        // Attach event listeners for navigation
+        const nextButton = gallery.querySelector('.next-button');
+        const prevButton = gallery.querySelector('.prev-button');
+
+        nextButton.addEventListener('click', () => galleryInstance.nextMedia());
+        prevButton.addEventListener('click', () => galleryInstance.prevMedia());
     });
-    updateCaption(index);
-}
-
-function updateCaption(index) {
-    const captionText = document.getElementById('caption-text');
-    captionText.textContent = captions[index];
-}
-
-function nextMedia() {
-    currentMediaIndex = (currentMediaIndex + 1) % galleryContents.length;
-    showMedia(currentMediaIndex);
-}
-
-function prevMedia() {
-    currentMediaIndex = (currentMediaIndex - 1 + galleryContents.length) % galleryContents.length;
-    showMedia(currentMediaIndex);
-}
-
-// Initialize the first media as active
-showMedia(currentMediaIndex);
+});

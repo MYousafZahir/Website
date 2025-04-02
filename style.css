@@ -1,793 +1,276 @@
-/* Basic Reset & Swiss Design Font */
-*, *::before, *::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html {
-    scroll-behavior: smooth; /* Enable smooth scrolling */
-}
-
-body {
-  /* Ensure Akkurat font is loaded. Using standard sans-serif fallbacks. */
-  font-family: Akkurat, 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-weight: 400;
-  line-height: 1.7;
-  color: #e0e0e0; /* Brighter default text */
-  /* High Contrast Background */
-  background-color: #0a0a0a; /* Very dark base */
-  background-image: none; /* Ensure no background image */
-  background-size: 100% 100%;
-  background-position: center;
-  background-attachment: fixed;
-  min-height: 100vh;
-  display: flex; /* Needed for centering wrapper */
-  justify-content: center;
-  align-items: flex-start; /* Align wrapper to top */
-  padding: 40px 20px 40px 220px; /* Add left padding for TOC */
-  position: relative; /* For TOC positioning context if needed */
-}
-
-.background-overlay {
-  /* Styles for overlay if needed */
-}
-
-/* Table of Contents */
-#toc {
-    position: fixed; /* Keep it visible */
-    left: 20px;
-    top: 40px;
-    width: 180px; /* Width of the TOC */
-    height: calc(100vh - 80px); /* Adjust height based on body padding */
-    overflow-y: auto; /* Allow scrolling within TOC if needed */
-    padding: 15px;
-    font-family: Akkurat, 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-size: 0.9rem;
-    z-index: 500;
-}
-
-#toc h4 {
-    font-family: Futura, 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-weight: 600;
-    color: #a0a0a0; /* Muted heading */
-    font-size: 1rem;
-    margin-bottom: 15px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-#toc ul {
-    list-style: none;
-    padding-left: 0;
-}
-
-#toc ul ul {
-    padding-left: 15px; /* Indent sub-items */
-    margin-top: 5px;
-}
-
-#toc li {
-    margin-bottom: 8px;
-}
-
-#toc a {
-    color: #888888; /* Muted link color */
+/* Link styles */
+a:link, a:visited, a:hover, a:active {
     text-decoration: none;
-    transition: color 0.2s ease;
-    display: block; /* Make link clickable area larger */
 }
 
-#toc a:hover,
-#toc a:focus {
-    color: #cccccc; /* Brighter on hover/focus */
+a:link {
+    color: #f0f412;
 }
 
-/* Style for the primary active TOC link (brightest) */
-#toc a.toc-active-primary {
-    color: #ffffff; /* White color */
-    font-weight: 600; /* Bold */
+a:visited {
+    color: #086d79;
 }
 
-/* Style for secondary active TOC links (dimmer) */
-#toc a.toc-active-secondary {
-    color: #b0b0b0; /* Grey color */
-    /* Optionally use opacity: color: #ffffff; opacity: 0.6; */
-    font-weight: 400; /* Normal weight */
+a:hover {
+    color: #fdfefe;
 }
 
-
-/* Frosted Glass Container */
-.content-wrapper {
-  position: relative; /* Needed for z-index stacking */
-  z-index: 1;
-  width: 100%;
-  max-width: 950px; /* Slightly wider */
-  /* High Contrast Container */
-  background-color: rgba(18, 18, 18, 0.85); /* Darker, more opaque */
-  backdrop-filter: blur(8px) saturate(100%); /* Less blur/saturation */
-  -webkit-backdrop-filter: blur(8px) saturate(100%);
-  border-radius: 6px; /* Sharper radius */
-  border: 1px solid rgba(255, 255, 255, 0.15); /* Slightly more visible border */
-  padding: 50px 60px;
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6); /* Stronger shadow */
-  overflow: hidden; /* Ensure content respects border radius */
-  /* Removed inner shadow for cleaner look */
-}
-
-
-/* Swiss Design Inspired Layout & Typography */
-header {
-  text-align: left;
-  margin-bottom: 60px; /* Even more space below header */
-  padding-bottom: 15px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15); /* Even subtler border */
-}
-
-header h1, h2, h3 {
-    /* Ensure Futura font is loaded. Using standard sans-serif fallbacks. */
-    font-family: Futura, 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    color: #ffffff; /* White headings for high contrast */
-}
-
-header h1 {
-    font-size: 3.2rem; /* Slightly larger */
-    font-weight: 700; /* Bold Futura */
-    letter-spacing: -1.5px; /* Tighter spacing */
-}
-
-main {
-  /* Main content area */
-}
-
-.main-content {
-  display: flex; /* Use flex for columns */
-  gap: 60px; /* Space between columns */
-  margin-bottom: 60px;
-}
-
-section, header { /* Add scroll margin to sections and header */
-  scroll-margin-top: 20px; /* Adjust as needed */
-}
-
-section {
-  flex: 1;
-  min-width: 0;
-  margin-bottom: 0;
-}
-
-h2 { /* Section titles like About Me, Contact, Projects */
-  font-size: 1.6rem;
-  font-weight: 600; /* Bold Futura */
-  margin-bottom: 20px; /* More space below */
-  border-bottom: none;
-  padding-bottom: 5px;
-  letter-spacing: 0.2px;
-}
-
-p {
-    font-family: Akkurat, 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Ensure body font */
-    font-weight: 400; /* Ensure normal weight */
-    font-size: 1rem; /* Standard body size */
-    line-height: 1.7;
-    color: #c8c8c8; /* Lighter grey body text */
-    max-width: 70ch; /* Adjust line length */
-}
-
-footer {
-  text-align: left;
-  margin-top: 40px;
-  padding-top: 15px;
-  border-top: 1px solid rgba(255, 255, 255, 0.2); /* Lighter separator */
-  font-size: 0.9rem;
-  color: #bbbbbb; /* Light text */
-}
-
-
-/* Projects Section Styling */
-#projects {
-  margin-top: 50px; /* Space above the projects section */
-  width: 100%;
-}
-
-
-/* Cleaner Project Item Styling */
-.project-item {
-  background-color: transparent;
-  border: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 0;
-  padding: 40px 0;
-  margin-bottom: 0;
-  scroll-margin-top: 60px; /* Increase offset for project items */
-  box-shadow: none;
-}
-/* Add top border to the first project item as well */
-#projects > .project-item:first-of-type {
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.project-content-grid {
-    display: flex;
-    gap: 40px; /* Space between description and media/code */
-    margin-top: 15px; /* Space below title */
-}
-
-.project-description {
-    flex: 1; /* Takes up available space */
-    min-width: 0;
-}
-
-.project-media-code {
-    flex: 1; /* Takes up available space */
-    min-width: 0;
-    /* Contains gallery and code section */
-}
-
-
-.project-item h3 { /* Project Titles */
-  font-size: 1.4rem;
-  font-weight: 700; /* Bold Futura */
-  color: #ffffff;
-  margin-bottom: 15px; /* More space below title */
-  border-bottom: none;
-  padding-bottom: 5px;
-  letter-spacing: -0.5px;
-}
-
-.project-item p {
-  font-family: Akkurat, 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Ensure body font */
-  font-weight: 400; /* Ensure normal weight */
-  font-size: 1rem; /* Standard body size */
-  color: #c8c8c8; /* Lighter grey body text */
-  margin-bottom: 25px;
-}
-
-/* Gallery Styling */
-.gallery {
-  position: relative; /* Needed for positioning nav buttons */
-}
-
-.gallery h4 { /* "Gallery" label */
-  font-family: Futura, 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Header font */
-  font-weight: 500;
-  color: #d0d0d0; /* Slightly brighter label */
-  margin-bottom: 12px;
-  text-transform: uppercase;
-  font-size: 0.85rem; /* Slightly larger label */
-  letter-spacing: 1.5px; /* More spacing */
-}
-
-.gallery-frame {
-    border: 1px solid rgba(255, 255, 255, 0.15); /* Frame border */
-    padding: 15px 15px 10px 15px; /* Adjust padding: Top, R/L, Bottom */
-    border-radius: 6px; /* Frame radius */
-    background-color: rgba(255, 255, 255, 0.03); /* Subtle frame background */
-}
-
-.gallery-viewport {
-  position: relative;
-  overflow: hidden;
-  border-radius: 4px;
-  background-color: rgba(0, 0, 0, 0.2);
-  min-height: 200px;
-  border: none;
-}
-
-.gallery-items {
-  display: flex; /* Use flex to manage items (though only one is visible) */
-}
-
-.gallery-item {
-  display: none; /* Hide all items by default */
-  width: 100%; /* Ensure item takes full width */
-  height: auto;
-  vertical-align: middle; /* Align media nicely */
-  flex-shrink: 0;
-}
-
-.gallery-item.active {
-  display: block;
-}
-
-/* Container for pan/zoom functionality */
-.image-pan-zoom-container {
-    width: 100%;
-    height: 250px; /* Default height for inline gallery images */
-    overflow: hidden;
-    position: relative; /* Needed for absolute positioning if required, and for cursor */
-    cursor: grab; /* Indicate interactivity */
-    background-color: #000; /* Background if image doesn't cover */
-    border-radius: 4px; /* Match viewport radius */
-    position: relative; /* Ensure positioning context for pseudo-elements */
-}
-
-/* Add a zoom indicator icon on hover */
-.image-pan-zoom-container::after {
-    content: '\f00e'; /* Font Awesome zoom-in icon */
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 1.2rem;
-    color: rgba(255, 255, 255, 0.7);
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 5px 8px;
-    border-radius: 3px;
-    opacity: 0;
-    transition: opacity 0.2s ease-in-out;
-    pointer-events: none; /* Don't let the icon interfere with clicks */
-    z-index: 10; /* Ensure it's above the image */
-}
-
-.image-pan-zoom-container:hover::after {
-    opacity: 1; /* Show icon on hover */
-}
-
-
-.image-pan-zoom-container.panning {
-    cursor: grabbing; /* Cursor while panning */
-}
-
-/* Style for images within the pan/zoom container */
-.image-pan-zoom-container img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: contain; /* Start contained, zoom will scale it */
-    transform-origin: 0 0; /* Set transform origin for scaling/panning */
-    transition: transform 0.1s ease-out; /* Smooth transition for zoom */
-    user-select: none; /* Prevent text selection */
-    -webkit-user-drag: none; /* Prevent default drag */
-}
-
-
-/* Responsive Video Container */
-.video-container {
-    position: relative;
-    padding-bottom: 56.25%; /* 16:9 aspect ratio */
-    height: 0;
-    overflow: hidden;
-    max-width: 100%;
-    background: #000; /* Black background for loading */
-}
-
-.video-container iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: 0; /* Remove iframe border */
-}
-
-.gallery-nav {
-  display: flex;
-  justify-content: center; /* Center buttons below */
-  align-items: center; /* Vertically align buttons */
-  gap: 8px; /* Slightly smaller gap */
-  background-color: rgba(0, 0, 0, 0.2); /* Darker background */
-  padding: 5px 8px; /* Adjust padding to contain buttons nicely */
-  margin-top: 10px; /* Add space between viewport and nav background */
-  border-radius: 4px; /* Optional: slightly round the nav background */
-}
-
-/* Minimalist Gallery Nav Buttons (Consolidated) */
-.gallery-nav button,
-.gallery-expand-button {
-  background-color: rgba(255, 255, 255, 0.05);
-  border: none;
-  color: #a0a0a0;
-  padding: 8px 10px; /* Adjust padding for icons */
-  border-radius: 3px;
-  cursor: pointer;
-  font-size: 0.9rem; /* Icon size */
-  line-height: 1;
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-.gallery-nav button:hover,
-.gallery-expand-button:hover {
-  background-color: rgba(255, 255, 255, 0.1); /* Subtle hover */
-  color: #fff; /* Brighten text */
-}
-
-.gallery-nav button:active,
-.gallery-expand-button:active {
-    transform: none; /* Remove transform */
-    background-color: rgba(255, 255, 255, 0.03); /* Darker active */
-}
-
-/* Expandable Section Styling - Removed */
-
-
-/* Code Controls Wrapper */
-.code-controls {
-    margin-bottom: 10px;
-    min-height: 34px; /* Ensure consistent height */
-    /* Container for button and placeholder */
-}
-
-/* Code Toggle Button Styling - Default: Full Width Bar */
-.toggle-code {
-  display: block; /* Make it a block element */
-  width: 100%; /* Default to full width */
-  gap: 8px; /* Space between icon and text */
-  background-color: rgba(0, 0, 0, 0.2); /* Keep darker background */
-  border: none; /* Explicitly remove border */
-  color: #b0b0b0; /* Muted text color */
-  padding: 8px 15px; /* Keep padding */
-  border-radius: 4px; /* Keep rounded corners */
-  cursor: pointer;
-  font-size: 0.9rem;
-  line-height: 1;
-  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-  font-family: Akkurat, 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-weight: 500; /* Medium weight */
-  box-shadow: none;
-  text-align: center; /* Ensure text is centered if flex centering fails */
-}
-
-/* Icon within the toggle button */
-.toggle-code i {
-    font-size: 0.9rem;
-    line-height: 1;
-}
-
-/* Style for the expand icon placeholder - Hidden by default */
-.code-expand-placeholder {
-    display: none; /* Hidden by default */
-    display: flex; /* Keep flex for alignment */
-    align-items: center;
-    min-width: 20px; /* Ensure it takes some space */
-}
-
-/* Style for the expand icon itself */
-.code-expand-placeholder .code-expand-icon {
-    color: #999;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: color 0.2s ease;
-}
-.code-expand-placeholder .code-expand-icon:hover {
-    color: #fff;
-}
-
-/* Styles when code is expanded */
-.code-controls.controls-expanded {
-    display: flex; /* Become flex container when expanded */
-    justify-content: space-between; /* Enable space-between */
-    align-items: center; /* Align items vertically */
-    gap: 10px; /* Add gap back */
-}
-
-.code-controls.controls-expanded .toggle-code {
-    display: inline-flex; /* Change back to inline-flex */
-    justify-content: center; /* Re-apply flex centering */
-    align-items: center;
-    width: auto; /* Allow button to shrink */
-    flex-grow: 1; /* Take available space next to icon */
-}
-
-.code-controls.controls-expanded .code-expand-placeholder {
-    display: flex; /* Show the placeholder */
-}
-
-
-.toggle-code:hover {
-  background-color: rgba(255, 255, 255, 0.08);
-  color: #fff;
-  border-color: rgba(255, 255, 255, 0.4);
-}
-
-.toggle-code:active {
-    transform: none;
-    box-shadow: none;
-    background-color: rgba(255, 255, 255, 0.05);
-}
-
-
-/* Style for the gallery expand button (consolidated with nav buttons below) */
-/* .gallery-expand-button { ... } */
-
-/* Ensure the icon within the expand button is sized correctly */
-/* .gallery-expand-button i { ... } */
-
-/* Remove clickable viewport styles if they still exist */
-/* .gallery-viewport.clickable-expand { ... } */
-/* .gallery-viewport.clickable-expand::after { ... } */
-
-/* Ensure viewport doesn't have pointer cursor unless intended otherwise */
-.gallery-viewport {
-    position: relative; /* Keep for potential future use, but not for click */
-}
-
-
-/* Remove collapsed styles for gallery frame (already done) */
-.gallery-frame {
-    /* Ensure it's visible */
-    transition: none; /* Remove transitions related to collapsing */
-}
-
-
-/* Code Snippet - already handles collapse */
-.code-snippet {
-    padding: 8px 10px;
-    border-radius: 3px;
-    cursor: pointer;
-    font-size: 0.9rem; /* Icon size */
-    line-height: 1;
-    transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-/* Styles for .gallery-expand-button:hover, :active, and i are now consolidated above */
-
-/* Remove clickable viewport styles if they still exist */
-/* .gallery-viewport.clickable-expand { ... } */
-/* .gallery-viewport.clickable-expand::after { ... } */
-
-/* Ensure viewport doesn't have pointer cursor unless intended otherwise */
-.gallery-viewport {
-    position: relative; /* Keep for potential future use, but not for click */
-}
-
-
-/* Remove collapsed styles for gallery frame (already done) */
-.gallery-frame {
-    /* Ensure it's visible */
-    transition: none; /* Remove transitions related to collapsing */
-}
-
-
-/* Code Snippet - already handles collapse */
-.code-snippet {
-  max-height: 400px; /* Max height when expanded */
-  overflow: auto; /* Scrollbars if needed */
-  background-color: rgba(0, 0, 0, 0.25); /* Lighter code background */
-  border-radius: 3px;
-  transition: max-height 0.4s ease-out, padding 0.4s ease-out, opacity 0.4s ease-out, margin-bottom 0.4s ease-out, border-color 0.4s ease-out; /* Smoother transition */
-  opacity: 1;
-  padding: 15px;
-  border: 1px solid rgba(255, 255, 255, 0.1); /* Match wrapper border */
-  margin-bottom: 0;
-}
-
-.code-snippet.collapsed {
-  max-height: 0;
-  padding-top: 0;
-  padding-bottom: 0;
-  opacity: 0;
-  overflow: hidden; /* Hide content completely when collapsed */
-  border-color: transparent;
-  margin-bottom: -10px; /* Pull toggle button closer when collapsed */
-}
-
-.code-snippet pre {
-  margin: 0; /* Remove default pre margin */
-  white-space: pre-wrap; /* Wrap long lines */
-  word-wrap: break-word; /* Break words if necessary */
-}
-
-.code-snippet code {
-  font-family: 'SF Mono', Monaco, Consolas, 'Courier New', Courier, monospace; /* Monospace stack */
-  font-size: 0.9rem;
-  color: #c8c8c8; /* Match body text lightness */
-  display: block;
-}
-
-/* Project Links Styling */
-.project-links {
-  margin-top: 15px; /* Space above links within description */
-}
-
-.project-links a {
-  font-family: Akkurat, 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Ensure body font */
-  font-weight: 500; /* Slightly bolder links */
-  color: #9ecaff; /* Brighter link color */
-  text-decoration: none; /* Remove default underline */
-  transition: color 0.2s ease, border-bottom-color 0.2s ease;
-  border-bottom: 1px solid rgba(158, 202, 255, 0.4); /* Subtle border instead of underline */
-  padding-bottom: 1px;
-}
-
-.project-links a:hover {
-  color: #cce1ff; /* Lighter hover color */
-  border-bottom-color: rgba(204, 225, 255, 0.8); /* Brighter border on hover */
-}
-
-
-/* Modal Styles */
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.85); /* Darker overlay */
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    padding: 40px 20px; /* Padding around content */
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-}
-
-.modal.visible {
-    display: flex; /* Use flex to center content */
-    align-items: center;
-    justify-content: center;
-    opacity: 1;
-}
-
-.modal-content {
-    position: relative;
-    background-color: rgba(30, 30, 30, 0.95); /* Modal background */
-    padding: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    width: 90%;
-    max-width: 1200px; /* Max width for gallery/code */
-    max-height: 90vh; /* Limit height */
-    overflow-y: auto; /* Allow scrolling if content overflows */
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
-}
-
-.modal-close {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    background: none;
-    border: none;
-    color: #aaa;
-    font-size: 1.8rem;
-    line-height: 1;
-    cursor: pointer;
-    padding: 5px;
-    transition: color 0.2s ease;
-}
-
-.modal-close:hover {
-    color: #fff;
-    z-index: 1100; /* Ensure close button is above modal content */
-}
-
-/* Modal Specific Content Styles */
-.modal-gallery-content .gallery-viewport {
-    max-height: 70vh; /* Limit viewport height in modal */
-    background-color: #000; /* Black background for videos/images */
-}
-
-/* Adjust pan/zoom container height in modal */
-.modal-gallery-content .image-pan-zoom-container {
-    height: 70vh; /* Force height to allow letterboxing/pillarboxing */
-    min-height: 200px; /* Ensure a minimum size */
-    /* max-height: 70vh; /* This is now implicitly set by height */
-}
-
-/* Ensure images in the modal pan/zoom container scale naturally */
-.modal-gallery-content .image-pan-zoom-container img {
-    /* Styles for images specifically within the modal's pan/zoom container */
-}
-
-
-/* Target the nav bar specifically within the cloned frame inside the modal */
-.modal-gallery-content .gallery-frame .gallery-nav {
-    margin-top: 15px;
-    /* Explicitly ensure background bar is present in modal */
-    background-color: rgba(0, 0, 0, 0.2);
-    padding: 5px 8px;
-    border-radius: 4px;
-}
-
-.modal-code-content pre {
-    max-height: 75vh; /* Limit code height */
-    overflow: auto;
-}
-.modal-code-content code {
-    font-size: 0.95rem; /* Slightly larger code in modal */
-}
-
-/* Line Numbers Styling (for highlightjs-line-numbers.js plugin) */
-.hljs-ln { /* The table wrapper */
-    border-collapse: collapse;
-    border-spacing: 0;
-    width: 100%;
-}
-
-.hljs-ln td {
-    padding: 0; /* Reset padding */
-    vertical-align: top; /* Align lines to top */
-}
-
-.hljs-ln-numbers {
-    text-align: right;
-    color: #666; /* Dim color for line numbers */
-    padding-right: 10px; /* Space between numbers and code */
-    user-select: none; /* Prevent selecting line numbers */
-    border-right: 1px solid rgba(255, 255, 255, 0.1); /* Separator line */
-    width: 1%; /* Keep width minimal */
-    white-space: nowrap; /* Prevent numbers from wrapping */
-    font-size: 0.85em; /* Slightly smaller numbers */
-    /* Ensure numbers use the same monospace font */
-    font-family: 'SF Mono', Monaco, Consolas, 'Courier New', Courier, monospace;
-}
-
-.hljs-ln-code {
-    padding-left: 10px; /* Space after separator */
+a:active {
+    color: inherit;
 }
 
-/* Ensure pre retains its styling within the table */
-.hljs-ln pre {
+/* Paragraph styles */
+p, p.indented, p.grayText, p.lightGrayText {
+    padding: 0;
     margin: 0;
-    overflow: visible; /* Allow code to flow naturally */
-    white-space: pre-wrap; /* Keep wrapping */
-    word-wrap: break-word; /* Keep word breaking */
+    line-height: 20px;
 }
 
-/* Ensure code retains its styling */
-.hljs-ln code.hljs {
-    padding: 0 !important; /* Remove padding from code element itself, override hljs styles */
-    background: none !important; /* Remove background if any, override hljs styles */
-    display: block; /* Ensure it behaves as a block */
+p.indented, p.grayText, p.lightGrayText {
+    margin-left: 30px;
+}
+
+p.grayText {
+    color: #a8a8a8;
+    font-family: "tinos", serif; 
+    font-weight: 400;
+    font-style: oblique;
+    font-size: 17px;
+}
+
+p.lightGrayText {
+    color: #d0d0d0;
+    font-family: futura-pt, sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    font-size: 14px;
+}
+
+/* Title styles */
+.mainTitle, .subTitle, .subTitleAlt, .sectionTitle {
+    font-family: futura-pt, sans-serif;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+}
+
+.mainTitle {
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 44px;
+}
+
+.subTitle {
+    color: #a8a8a8;
+    font-weight: 300;
+    font-size: 25px;
+}
+
+.subTitleAlt {
+    color: #ffffff;
+    font-weight: 520;
+    font-size: 30px;
+}
+
+.sectionTitle {
+    color: #ffffff;
+    font-weight: 400;
+    font-size: 88px;
+}
+
+.grayText {
+    color: #a8a8a8;
+    font-family: futura-pt, sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 14px;
+}
+
+.smallWhiteText {
+    color: #ffffff;
+    font-family: garamond-premier-pro, serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 22px;
+}
+
+/* Body styles */
+body {
+    background-color: #222222;
+}
+
+.bodyTextPanel {
+    color: #eeeeee;
+    font-family: garamond-premier-pro, serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 28px;
+    letter-spacing: -0.5px; 
+    line-height: 1;
+}
+
+.bodyTextBlock {
+    text-align: left;
+    display: block;
+}
+
+.bodyTextIndent, .bodyTextDoubleIndent {
+    text-indent: 4%;
+}
+
+.bodyTextDoubleIndent {
+    text-indent: 8%;
+}
+
+/* Other styles */
+.centerText, .leftAlign, .rightAlign {
+    text-align: center;
+}
+
+.leftAlign {
+    position: absolute;
+    left: 0px;
+}
+
+.rightAlign {
+    right: 10px;
+}
+
+.gridWrapper {
+    display: grid;
+    grid-template-columns: repeat(100, 1fr);
+    gap: 10px;
+    grid-auto-rows: minmax(100px, auto);
+}
+
+.gridTitle {
+    grid-row: 1;
+    grid-column: 20/80;
+}
+
+.gridNavBar {
+    grid-row: 3/4;
+    grid-column: 7/10;
+}
+
+.gridBodyText {
+    grid-row: 2/8;
+    grid-column: 20/80;
 }
 
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  body {
-    padding: 15px; /* Reduce padding on smaller screens */
-    align-items: flex-start; /* Align content to top on mobile */
-  }
+.gallery-content {
+    display: none;
+    text-align: center; /* Center the content */
+}
 
-  .content-wrapper {
-    padding: 30px 20px; /* Adjust padding */
-    margin-top: 15px;
-  }
+.gallery-content.active {
+    display: block;
+}
 
-  /* Stack main content columns */
-  .main-content {
-    flex-direction: column;
-    gap: 0; /* Remove gap when stacked */
-  }
+.arrow {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-70%);
+    font-size: 2em;
+    color: #fff;
+    z-index: 1;
+}
 
-  header h1 {
-    font-size: 2.2rem;
-  }
+.arrow:hover {
+    transform: scale(1.5) translateY(-50%);
 
-  h2 {
-    font-size: 1.4rem; /* Adjust section heading size */
-  }
+}
 
-  section {
-      margin-bottom: 40px; /* Restore margin for stacked sections */
-  }
+.left-arrow {
+    left: 12%
+}
 
-  .project-item {
-    padding: 30px 0;
-  }
+.right-arrow {
+    right: 12%
+}
 
-  /* Stack project content columns */
-  .project-content-grid {
-      flex-direction: column;
-      gap: 25px; /* Adjust gap for stacked */
-  }
-
-  /* Removed .project-nav styles */
+.gallery {
+    position: relative; /* Ensure positioning context for arrows */
+}
 
 
-  /* Gallery styles are mostly fine */
-   .gallery-frame {
-       padding: 10px; /* Reduce frame padding */
-   }
-  .gallery-nav button {
-    padding: 6px 10px; /* Adjust padding */
-    font-size: 0.9rem;
-  }
+.gallery-caption {
+    text-align: center;
+    letter-spacing: -0.5px; 
+    margin-top: 10px;
 
-  .code-snippet {
-    max-height: 300px; /* Adjust max height */
-  }
+    color: #a8a8a8;
+    font-family: "tinos", serif; 
+    font-weight: 400;
+    font-style: oblique;
+    font-size: 17px;
+}
+
+
+#caption-text {
+    font-size: 18px;
+    margin: 0;
+}
+
+
+/* Collapsible Section Styles */
+.collapsible {
+    background-color: #333232;
+    color: rgb(204, 204, 204);
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    text-align: center;
+    outline: none;
+    font-family: "futura-pt";
+    letter-spacing: -0.5px;
+    font-size: 13px;
+    margin-top: 10px;
+
+    border-radius: 12px; /* Adjust the value for desired roundness */
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Optional: border for added effect */
+}
+
+
+.collapsible:hover {
+    background-color: rgba(38, 39, 43, 0.5);
+    color: white;
+    font-weight: 500;
+    letter-spacing: 0px;
+}
+
+.active {
+    background-color: rgba(38, 39, 43, 0.5); /* Semi-transparent background */
+    border-radius: 12px; /* Adjust the value for desired roundness */
+    backdrop-filter: blur(50px); /* Adjust the blur amount as needed */
+    -webkit-backdrop-filter: blur(10px); /* For Safari compatibility */
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Optional: border for added effect */
+}
+
+
+.content {
+    padding: 0;
+    display: none;
+    overflow: hidden;
+    background-color: none; /* or simply remove this line */
+    border-radius: 4px; /* Adjust the value for desired roundness */
+    color: black;
+    margin-bottom: 0;
+}
+
+
+pre {
+    background-color: #2d2d2d;
+    color: #f8f8f2;
+    padding: 10px;
+    border-radius: 5px;
+    font-family: "Fira Code", monospace;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+pre code {
+    white-space: pre;
+    overflow-x: auto;
 }

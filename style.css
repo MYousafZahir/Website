@@ -737,13 +737,18 @@ footer {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+  /* Hide TOC on mobile */
+  #toc {
+    display: none;
+  }
+
   body {
-    padding: 15px; /* Reduce padding on smaller screens */
+    padding: 20px 15px; /* Remove left padding, adjust top/bottom/right */
     align-items: flex-start; /* Align content to top on mobile */
   }
 
   .content-wrapper {
-    padding: 30px 20px; /* Adjust padding */
+    padding: 25px 15px; /* Further reduce padding */
     margin-top: 15px;
   }
 
@@ -754,11 +759,15 @@ footer {
   }
 
   header h1 {
-    font-size: 2.2rem;
+    font-size: 2.0rem; /* Slightly smaller header */
   }
 
   h2 {
     font-size: 1.4rem; /* Adjust section heading size */
+  }
+
+  .project-item h3 { /* Adjust project title size on mobile */
+      font-size: 1.2rem;
   }
 
   section {

@@ -8,29 +8,47 @@ document.addEventListener('DOMContentLoaded', () => {
     let openModal = () => {};
     let closeModal = () => {};
 
+    const rememberRawCode = (codeElement) => {
+        if (!codeElement) {
+            return;
+        }
+
+        if (!codeElement.dataset.rawCode) {
+            codeElement.dataset.rawCode = codeElement.textContent;
+        }
+    };
+
     const highlightBlock = (codeElement, { withLineNumbers = false } = {}) => {
         if (!codeElement || !window.hljs || typeof hljs.highlightElement !== 'function') {
             return;
         }
 
-        if (codeElement.dataset.highlighted === 'true') {
-            return;
-        }
+        rememberRawCode(codeElement);
+
+        const needsHighlight = !codeElement.classList.contains('hljs');
+        const hasLineNumbers = Boolean(codeElement.querySelector('table.hljs-ln'));
 
         try {
-            hljs.highlightElement(codeElement);
-            if (withLineNumbers && typeof hljs.lineNumbersBlock === 'function') {
+            if (needsHighlight) {
+                const rawCode = codeElement.dataset.rawCode;
+                if (rawCode && codeElement.textContent !== rawCode) {
+                    codeElement.textContent = rawCode;
+                }
+
+                hljs.highlightElement(codeElement);
+            }
+
+            if (withLineNumbers && typeof hljs.lineNumbersBlock === 'function' && !hasLineNumbers) {
                 hljs.lineNumbersBlock(codeElement);
             }
-            codeElement.dataset.highlighted = 'true';
         } catch (error) {
             console.error('Highlight.js failed to render code block.', error);
         }
     };
 
-    const primeInlineHighlighting = () => {
+    const highlightInlineSamples = () => {
         const inlineBlocks = document.querySelectorAll('.code-snippet pre code');
-        inlineBlocks.forEach(block => highlightBlock(block));
+        inlineBlocks.forEach(block => highlightBlock(block, { withLineNumbers: true }));
     };
 
     const bootHighlighting = (attempt = 0) => {
@@ -41,20 +59,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }
 
-            if (typeof hljs.highlightAll === 'function') {
-                hljs.highlightAll();
-                document.querySelectorAll('.code-snippet pre code').forEach(block => {
-                    block.dataset.highlighted = 'true';
-                });
-            } else {
-                primeInlineHighlighting();
-            }
+            highlightInlineSamples();
         } else if (attempt < 10) {
             window.setTimeout(() => bootHighlighting(attempt + 1), 120);
         } else {
             console.warn('Highlight.js not available for inline code rendering.');
         }
     };
+
+    document.querySelectorAll('.code-snippet pre code').forEach(block => rememberRawCode(block));
 
     bootHighlighting();
     window.addEventListener('load', () => bootHighlighting());
@@ -248,7 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // --- Explicitly highlight this block when expanded ---
                 const codeElement = codeSnippet.querySelector('pre code');
-                highlightBlock(codeElement);
+                highlightBlock(codeElement, { withLineNumbers: true });
                 // --- End explicit highlighting ---
 
             } else {
@@ -264,22 +277,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
         expandButton.addEventListener('click', () => {
             const preElement = codeSnippet.querySelector('pre');
-            if (!preElement) {
-                console.error('Original <pre> element not found to clone.');
+            const sourceCodeElement = preElement?.querySelector('code');
+            if (!preElement || !sourceCodeElement) {
+                console.error('Original code block not found for modal rendering.');
                 return;
             }
 
-            const preClone = preElement.cloneNode(true);
-            const cloneCodeElement = preClone.querySelector('code');
-            if (cloneCodeElement) {
-                delete cloneCodeElement.dataset.highlighted;
-                highlightBlock(cloneCodeElement, { withLineNumbers: true });
-            }
+            const rawCode = sourceCodeElement.dataset.rawCode || sourceCodeElement.textContent;
+            const modalPre = document.createElement('pre');
+            const modalCode = document.createElement('code');
+
+            modalCode.textContent = rawCode;
+            sourceCodeElement.classList.forEach(className => {
+                if (className.startsWith('language-')) {
+                    modalCode.classList.add(className);
+                }
+            });
+
+            modalCode.dataset.rawCode = rawCode;
+            modalPre.appendChild(modalCode);
+            highlightBlock(modalCode, { withLineNumbers: true });
 
             const modalCodeContainer = codeModal?.querySelector('.modal-code-content');
             if (modalCodeContainer && typeof openModal === 'function') {
                 modalCodeContainer.innerHTML = '';
-                modalCodeContainer.appendChild(preClone);
+                modalCodeContainer.appendChild(modalPre);
                 if (codeModal) {
                     openModal(codeModal);
                 }

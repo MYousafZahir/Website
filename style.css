@@ -683,6 +683,7 @@ a:focus {
   color: #050505;
 }
 
+
 .code-section {
   border: 1px solid var(--border-soft);
   background: var(--surface-1);
@@ -692,20 +693,18 @@ a:focus {
 }
 
 .code-controls {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0;
-  transition: gap 0.35s ease;
-}
-
-.code-controls.controls-expanded {
-  justify-content: flex-end;
-  gap: 0.75rem;
+  position: relative;
+  display: block;
+  height: 2.6rem;
+  width: min(100%, 320px);
+  margin: 0 auto;
 }
 
 .code-expand,
 .toggle-code {
+  position: absolute;
+  top: 0;
+  height: 100%;
   border: 1px solid var(--border);
   background: transparent;
   color: var(--text-secondary);
@@ -713,28 +712,25 @@ a:focus {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: transform 0.35s ease, opacity 0.35s ease, border-color 0.3s ease, color 0.3s ease, background-color 0.3s ease, width 0.35s ease, max-width 0.35s ease;
+  transition: left 0.35s ease, transform 0.35s ease, opacity 0.35s ease, border-color 0.3s ease, color 0.3s ease, background-color 0.3s ease;
 }
 
 .code-expand {
-  width: 0;
-  max-width: 0;
-  height: 2.4rem;
+  width: 2.6rem;
+  left: 50%;
+  transform: translateX(-50%) scale(0.6);
   font-size: 0.9rem;
   opacity: 0;
   pointer-events: none;
-  transform: translateX(0) scale(0.75);
-  border-color: transparent;
   padding: 0;
-  overflow: hidden;
+  border-color: transparent;
 }
 
 .code-controls.controls-expanded .code-expand {
-  width: 2.4rem;
-  max-width: 2.4rem;
+  left: 0;
+  transform: translateX(0) scale(1);
   opacity: 1;
   pointer-events: auto;
-  transform: translateX(0) scale(1);
   border-color: var(--border);
 }
 
@@ -746,17 +742,20 @@ a:focus {
 }
 
 .toggle-code {
-  padding: 0.35rem 0.9rem;
+  min-width: 7.25rem;
+  padding: 0 1.25rem;
   font-family: var(--mono);
   font-size: 0.75rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   gap: 0.35rem;
-  transform: translateX(0);
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .code-controls.controls-expanded .toggle-code {
-  transform: translateX(0.45rem);
+  left: 100%;
+  transform: translateX(-100%);
 }
 
 .toggle-code span {
@@ -784,10 +783,64 @@ a:focus {
   font-size: 0.8rem;
   line-height: 1.55;
   font-family: var(--mono);
+  font-feature-settings: "liga" 0, "clig" 0;
 }
 
 .code-snippet code {
   font-family: var(--mono);
+  font-feature-settings: "liga" 0, "clig" 0;
+}
+
+.modal-code-content pre,
+.modal-code-content code {
+  font-family: var(--mono);
+  font-feature-settings: "liga" 0, "clig" 0;
+}
+
+.hljs {
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: var(--mono);
+  font-feature-settings: "liga" 0, "clig" 0;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: rgba(139, 139, 149, 0.65);
+  font-style: italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-built_in,
+.hljs-type {
+  color: var(--accent-amber);
+}
+
+.hljs-function .hljs-title,
+.hljs-title.function_,
+.hljs-title.class_ {
+  color: var(--accent-green);
+}
+
+.hljs-string,
+.hljs-number,
+.hljs-symbol,
+.hljs-attr,
+.hljs-attribute {
+  color: #8fdcff;
+}
+
+.hljs-meta,
+.hljs-link,
+.hljs-regexp {
+  color: #ff9fd6;
+}
+
+.hljs-punctuation,
+.hljs-operator {
+  color: var(--text-primary);
 }
 
 .code-snippet:not(.collapsed) {

@@ -33,11 +33,22 @@ document.addEventListener('DOMContentLoaded', () => {
         inlineBlocks.forEach(block => highlightBlock(block));
     };
 
-    if (window.hljs && typeof hljs.highlightElement === 'function') {
-        primeInlineHighlighting();
-    } else {
-        console.warn('Highlight.js not available for inline code rendering.');
-    }
+    const bootHighlighting = (attempt = 0) => {
+        if (window.hljs && typeof hljs.highlightElement === 'function') {
+            if (typeof hljs.configure === 'function') {
+                hljs.configure({
+                    ignoreUnescapedHTML: true
+                });
+            }
+            primeInlineHighlighting();
+        } else if (attempt < 10) {
+            window.setTimeout(() => bootHighlighting(attempt + 1), 120);
+        } else {
+            console.warn('Highlight.js not available for inline code rendering.');
+        }
+    };
+
+    bootHighlighting();
 
     // --- Image Pan/Zoom Logic ---
     const setupPanZoom = (container) => {

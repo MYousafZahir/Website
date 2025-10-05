@@ -472,6 +472,33 @@ a:focus {
   color: var(--text-secondary);
 }
 
+.spread-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.85rem;
+}
+
+.spread-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  background: var(--surface-1);
+  border: 1px solid var(--border-soft);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.spread-links a:hover,
+.spread-links a:focus {
+  background: var(--accent-amber);
+  color: #050505;
+}
+
 .spread-sidebar {
   display: grid;
   gap: clamp(1.1rem, 2vw, 1.8rem);

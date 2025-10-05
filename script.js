@@ -8,6 +8,37 @@ document.addEventListener('DOMContentLoaded', () => {
     let openModal = () => {};
     let closeModal = () => {};
 
+    const highlightBlock = (codeElement, { withLineNumbers = false } = {}) => {
+        if (!codeElement || !window.hljs || typeof hljs.highlightElement !== 'function') {
+            return;
+        }
+
+        if (codeElement.dataset.highlighted === 'true') {
+            return;
+        }
+
+        try {
+            hljs.highlightElement(codeElement);
+            if (withLineNumbers && typeof hljs.lineNumbersBlock === 'function') {
+                hljs.lineNumbersBlock(codeElement);
+            }
+            codeElement.dataset.highlighted = 'true';
+        } catch (error) {
+            console.error('Highlight.js failed to render code block.', error);
+        }
+    };
+
+    const primeInlineHighlighting = () => {
+        const inlineBlocks = document.querySelectorAll('.code-snippet pre code');
+        inlineBlocks.forEach(block => highlightBlock(block));
+    };
+
+    if (window.hljs && typeof hljs.highlightElement === 'function') {
+        primeInlineHighlighting();
+    } else {
+        console.warn('Highlight.js not available for inline code rendering.');
+    }
+
     // --- Image Pan/Zoom Logic ---
     const setupPanZoom = (container) => {
         const img = container.querySelector('img');
@@ -176,9 +207,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const controls = section.querySelector('.code-controls');
         const toggleButton = controls?.querySelector('.toggle-code');
         const codeSnippet = section.querySelector('.code-snippet');
-        const expandPlaceholder = controls?.querySelector('.code-expand-placeholder'); // Get the placeholder
+        const expandButton = controls?.querySelector('.code-expand');
 
-        if (!controls || !toggleButton || !codeSnippet || !expandPlaceholder) {
+        if (!controls || !toggleButton || !codeSnippet || !expandButton) {
             // console.warn("Missing elements for code section:", section);
             return;
         }
@@ -191,28 +222,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 codeSnippet.classList.remove('collapsed');
                 controls.classList.add('controls-expanded'); // Add class to container
                 toggleButton.setAttribute('aria-expanded', 'true');
-                toggleButton.innerHTML = '<i class="fas fa-code"></i> Hide Code';
-                // Add expand icon to placeholder (CSS handles styling)
-                expandPlaceholder.innerHTML = '<i class="fas fa-expand code-expand-icon" aria-label="Expand Code" role="button"></i>';
+                toggleButton.innerHTML = '<i class="fas fa-code"></i><span>Hide Code</span>';
+                expandButton.setAttribute('aria-hidden', 'false');
+                expandButton.setAttribute('tabindex', '0');
 
                 // --- Explicitly highlight this block when expanded ---
                 const codeElement = codeSnippet.querySelector('pre code');
-                if (codeElement && window.hljs && typeof hljs.highlightElement === 'function') {
-                    // Check if it's already highlighted to avoid re-processing
-                    if (!codeElement.classList.contains('hljs')) {
-                        // Use setTimeout to ensure the element is rendered before highlighting
-                        setTimeout(() => {
-                            try {
-                                hljs.highlightElement(codeElement);
-                                // Line numbers are only added in the modal view now
-                            } catch (e) {
-                                console.error("Highlight.js inline highlighting failed:", e);
-                            }
-                        }, 0);
-                    }
-                } else {
-                    console.warn("Highlight.js or code element not found for inline highlighting.");
-                }
+                highlightBlock(codeElement);
                 // --- End explicit highlighting ---
 
             } else {
@@ -220,35 +236,35 @@ document.addEventListener('DOMContentLoaded', () => {
                 codeSnippet.classList.add('collapsed');
                 controls.classList.remove('controls-expanded'); // Remove class from container
                 toggleButton.setAttribute('aria-expanded', 'false');
-                toggleButton.innerHTML = '<i class="fas fa-code"></i> Show Code';
-                // Remove expand icon from placeholder
-                expandPlaceholder.innerHTML = '';
+                toggleButton.innerHTML = '<i class="fas fa-code"></i><span>Show Code</span>';
+                expandButton.setAttribute('aria-hidden', 'true');
+                expandButton.setAttribute('tabindex', '-1');
             }
         });
 
-        // Delegated listener for the expand icon click within the controls container
-        controls.addEventListener('click', (event) => {
-            // Check if the click target is the expand icon
-            if (event.target.classList.contains('code-expand-icon')) {
-                const preElement = codeSnippet.querySelector('pre');
-                if (preElement) {
-                    // Clone the entire <pre> element
-                    const preClone = preElement.cloneNode(true);
+        expandButton.addEventListener('click', () => {
+            const preElement = codeSnippet.querySelector('pre');
+            if (!preElement) {
+                console.error('Original <pre> element not found to clone.');
+                return;
+            }
 
-                    // Get the target container in the modal
-                    const modalCodeContainer = codeModal?.querySelector('.modal-code-content');
-                    if (modalCodeContainer && typeof openModal === 'function') {
-                        modalCodeContainer.innerHTML = '';
-                        modalCodeContainer.appendChild(preClone);
-                        if (codeModal) {
-                            openModal(codeModal);
-                        }
-                    } else {
-                        console.error("Modal code content container not found.");
-                    }
-                } else {
-                     console.error("Original <pre> element not found to clone.");
+            const preClone = preElement.cloneNode(true);
+            const cloneCodeElement = preClone.querySelector('code');
+            if (cloneCodeElement) {
+                delete cloneCodeElement.dataset.highlighted;
+                highlightBlock(cloneCodeElement, { withLineNumbers: true });
+            }
+
+            const modalCodeContainer = codeModal?.querySelector('.modal-code-content');
+            if (modalCodeContainer && typeof openModal === 'function') {
+                modalCodeContainer.innerHTML = '';
+                modalCodeContainer.appendChild(preClone);
+                if (codeModal) {
+                    openModal(codeModal);
                 }
+            } else {
+                console.error('Modal code content container not found.');
             }
         });
 
@@ -257,14 +273,15 @@ document.addEventListener('DOMContentLoaded', () => {
         if (codeSnippet.classList.contains('collapsed')) {
             controls.classList.remove('controls-expanded'); // Ensure class is removed initially
             toggleButton.setAttribute('aria-expanded', 'false');
-            toggleButton.innerHTML = '<i class="fas fa-code"></i> Show Code';
-            expandPlaceholder.innerHTML = ''; // Ensure placeholder is empty initially
+            toggleButton.innerHTML = '<i class="fas fa-code"></i><span>Show Code</span>';
+            expandButton.setAttribute('aria-hidden', 'true');
+            expandButton.setAttribute('tabindex', '-1');
         } else {
             controls.classList.add('controls-expanded'); // Ensure class is added initially
             toggleButton.setAttribute('aria-expanded', 'true');
-            toggleButton.innerHTML = '<i class="fas fa-code"></i> Hide Code';
-            // Add expand icon to placeholder initially if not collapsed (CSS handles styling)
-            expandPlaceholder.innerHTML = '<i class="fas fa-expand code-expand-icon" aria-label="Expand Code" role="button"></i>';
+            toggleButton.innerHTML = '<i class="fas fa-code"></i><span>Hide Code</span>';
+            expandButton.setAttribute('aria-hidden', 'false');
+            expandButton.setAttribute('tabindex', '0');
         }
     });
 

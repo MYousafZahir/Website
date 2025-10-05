@@ -693,36 +693,79 @@ a:focus {
 
 .code-controls {
   display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.code-expand-placeholder {
-  min-width: 1.5rem;
-  display: inline-flex;
   justify-content: center;
   align-items: center;
-  color: var(--text-muted);
+  gap: 0;
+  transition: gap 0.35s ease;
+}
+
+.code-controls.controls-expanded {
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.code-expand,
+.toggle-code {
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.35s ease, opacity 0.35s ease, border-color 0.3s ease, color 0.3s ease, background-color 0.3s ease, width 0.35s ease, max-width 0.35s ease;
+}
+
+.code-expand {
+  width: 0;
+  max-width: 0;
+  height: 2.4rem;
+  font-size: 0.9rem;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(0) scale(0.75);
+  border-color: transparent;
+  padding: 0;
+  overflow: hidden;
+}
+
+.code-controls.controls-expanded .code-expand {
+  width: 2.4rem;
+  max-width: 2.4rem;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0) scale(1);
+  border-color: var(--border);
+}
+
+.code-expand:hover,
+.code-expand:focus,
+.code-expand:focus-visible {
+  border-color: var(--accent-green);
+  color: var(--accent-green);
 }
 
 .toggle-code {
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--text-secondary);
-  padding: 0.35rem 0.85rem;
-  cursor: pointer;
+  padding: 0.35rem 0.9rem;
   font-family: var(--mono);
   font-size: 0.75rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  display: inline-flex;
-  align-items: center;
   gap: 0.35rem;
+  transform: translateX(0);
+}
+
+.code-controls.controls-expanded .toggle-code {
+  transform: translateX(0.45rem);
+}
+
+.toggle-code span {
+  display: inline-block;
 }
 
 .toggle-code:hover,
-.toggle-code:focus {
+.toggle-code:focus,
+.toggle-code:focus-visible {
   border-color: var(--accent-green);
   color: var(--accent-green);
 }
@@ -740,22 +783,30 @@ a:focus {
   padding: 0.75rem 0;
   font-size: 0.8rem;
   line-height: 1.55;
+  font-family: var(--mono);
+}
+
+.code-snippet code {
+  font-family: var(--mono);
 }
 
 .code-snippet:not(.collapsed) {
   max-height: 320px;
 }
 
-.code-section .controls-expanded .code-expand-placeholder {
-  color: var(--accent-green);
-}
-
-.code-expand-icon {
-  cursor: pointer;
-}
-
 .project-media-code .code-section {
   border: 1px solid var(--border-soft);
+}
+
+.hljs-ln-numbers {
+  text-align: right;
+  padding-right: 1rem;
+  opacity: 0.45;
+  user-select: none;
+}
+
+.hljs-ln-code {
+  padding-left: 1rem;
 }
 
 .modal {

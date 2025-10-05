@@ -13,16 +13,19 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        if (codeElement.dataset.highlighted === 'true') {
-            return;
-        }
+        const alreadyHighlighted = codeElement.dataset.highlighted === 'true';
+        const needsLineNumbers = withLineNumbers && codeElement.dataset.lineNumbersApplied !== 'true';
 
         try {
-            hljs.highlightElement(codeElement);
-            if (withLineNumbers && typeof hljs.lineNumbersBlock === 'function') {
-                hljs.lineNumbersBlock(codeElement);
+            if (!alreadyHighlighted) {
+                hljs.highlightElement(codeElement);
+                codeElement.dataset.highlighted = 'true';
             }
-            codeElement.dataset.highlighted = 'true';
+
+            if (needsLineNumbers && typeof hljs.lineNumbersBlock === 'function') {
+                hljs.lineNumbersBlock(codeElement);
+                codeElement.dataset.lineNumbersApplied = 'true';
+            }
         } catch (error) {
             console.error('Highlight.js failed to render code block.', error);
         }
@@ -248,7 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // --- Explicitly highlight this block when expanded ---
                 const codeElement = codeSnippet.querySelector('pre code');
-                highlightBlock(codeElement);
+                highlightBlock(codeElement, { withLineNumbers: true });
                 // --- End explicit highlighting ---
 
             } else {
@@ -273,6 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const cloneCodeElement = preClone.querySelector('code');
             if (cloneCodeElement) {
                 delete cloneCodeElement.dataset.highlighted;
+                delete cloneCodeElement.dataset.lineNumbersApplied;
                 highlightBlock(cloneCodeElement, { withLineNumbers: true });
             }
 

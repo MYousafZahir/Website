@@ -803,6 +803,12 @@ a:focus {
   font-feature-settings: "liga" 0, "clig" 0;
 }
 
+.modal-code-content pre {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
 .hljs {
   background: transparent;
   color: var(--text-secondary);

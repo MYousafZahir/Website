@@ -207,6 +207,199 @@ void UPlayerFunctionality::BeginPlay() {
     BIND_INPUT_KEY(R, Pressed, RetrieveAxe);
 
     ResetLerpValues();
+}
+
+void UPlayerFunctionality::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
+    Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+    // ---- Variables
+    float *CameraFOV = &amp;OwnerCamera-&gt;FieldOfView;
+    float *PlayerMaxSpeed = &amp;OwnerActor-&gt;GetCharacterMovement()-&gt;MaxWalkSpeed;
+    FVector CameraOffset = OwnerCamera-&gt;GetRelativeLocation();
+
+    // ---- Implementation
+    lerpAlpha += DeltaTime / lerpDuration;
+    lerpAlpha = FMath::Clamp(lerpAlpha, 0.f, 1.f);
+
+    // Run Camera
+    if (PlayerHelper-&gt;DistanceToTarget(&amp;desiredCameraFov, CameraFOV) &gt; 0.1f) {
+        *CameraFOV = FMath::Lerp(*CameraFOV, desiredCameraFov, lerpAlpha);
+    }
+
+    // Player Movement
+    if (PlayerHelper-&gt;DistanceToTarget(&amp;desiredMaxSpeed, PlayerMaxSpeed) &gt; 0.1f) {
+        *PlayerMaxSpeed = FMath::Lerp(*PlayerMaxSpeed, desiredMaxSpeed, lerpAlpha);
+    }
+
+    // Zoom Camera
+    if (PlayerHelper-&gt;DistanceToTarget(&amp;CameraOffset, &amp;desiredCameraOffset) &gt; 0.1f) {
+        const FVector NewCameraOffset = FMath::Lerp(CameraOffset, desiredCameraOffset, lerpAlpha);
+        OwnerCamera-&gt;SetRelativeLocation(NewCameraOffset);
+    }
+
+    // Zoom -- Player turn with camera
+    // Notice: the last else-if only executes when b_rotationJitter doesn&#x27;t change.
+    // It&#x27;s ugly but don&#x27;t change.
+    if (b_matchCamRotation) {
+        float ActorYaw = OwnerActor-&gt;GetActorRotation().Yaw;
+        float CameraYaw = OwnerCamera-&gt;GetComponentRotation().Yaw;
+
+        if (CameraYaw &lt; ActorYaw &amp;&amp; !b_rotationJitter) {
+            b_rotationJitter = true;
+
+        } else if (CameraYaw &gt; ActorYaw &amp;&amp; b_rotationJitter) {
+            b_rotationJitter = false;
+
+        } else if (FMath::Abs(ActorYaw - CameraYaw) &gt; 0.1f) {
+            float NewActorYaw = FMath::Lerp(ActorYaw, CameraYaw, lerpAlpha);
+
+            FRotator NewActorRotation = OwnerActor-&gt;GetActorRotation();
+            NewActorRotation.Yaw = NewActorYaw;
+            OwnerActor-&gt;SetActorRotation(NewActorRotation);
+        }
+    }
+
+    if (b_axeBeingRetrieved) {
+        float DistanceToActor = FMath::Abs(FVector::Dist(Axe-&gt;GetComponentLocation(), OwnerActor-&gt;GetActorLocation()));
+        float SplinePoint2 = FVector::Dist(AxePath-&gt;GetLocationAtSplinePoint(1, ESplineCoordinateSpace::World), AxePath-&gt;GetLocationAtSplinePoint(0, ESplineCoordinateSpace::World));
+
+        // plays catching animation
+        if (DistanceToActor &lt;= SplinePoint2 &amp;&amp; !Axe-&gt;GetAttachParent()) {
+            bCatchingAxe = true;
+        }
+
+        if (DistanceToActor &lt; 150.f) {
+            b_axeBeingRetrieved = false;
+
+            Axe-&gt;AttachToComponent(OwnerActor-&gt;GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket-&gt;SocketName);
+            Axe-&gt;SetRelativeTransform(heldAxeTransform);
+            bCatchingAxe = false;
+
+        } else {
+            Axe-&gt;AddLocalRotation(FRotator(10.f, 0.f, 0));
+        }
+
+    }
+
+    // controlling axe trail visibility
+    if (Axe-&gt;GetAttachParent() || (!Axe-&gt;IsSimulatingPhysics() &amp;&amp; !b_axeBeingRetrieved)) {
+        AxeSpinVFX-&gt;Deactivate();
+
+    } else {
+        AxeSpinVFX-&gt;Activate();
+
+    }
+
+    const FVector OwnerLocation = OwnerActor-&gt;GetActorLocation();
+    constexpr float PlayerHeight = 200.f;
+
+    // Axe is in hand
+    if (Axe-&gt;GetAttachParent()) {
+        Spin = 0.f;
+
+        FVector Start = OwnerCamera-&gt;GetComponentLocation();
+        FVector End = Start + OwnerCamera-&gt;GetForwardVector() * 6000.f;
+
+        FHitResult Hit;
+        FCollisionQueryParams CollisionParams;
+        CollisionParams.AddIgnoredActor(OwnerActor);
+
+        GetWorld()-&gt;LineTraceSingleByChannel(Hit, Start, End, ECC_WorldStatic, CollisionParams);
+
+        if (Hit.GetActor()) {
+            // raycast has been hit
+            FVector Point2Dir = OwnerCamera-&gt;GetForwardVector();
+            Point2Dir.Normalize();
+
+            FVector Point2Location = Hit.Location + (Point2Dir * 3000.f);
+            Point2Location.Z = Hit.Location.Z;
+
+            FVector Point3Location = Point2Location + (Point2Dir * 1800.f);
+            Point3Location.Z = 0.f;
+
+            AnchoredPoint1Pos = Hit.Location;
+            AnchoredPoint2Pos = Point2Location + FVector(0.f, 0.f, PlayerHeight);
+            AnchoredPoint3Pos = Point3Location;
+
+        } else {
+            // no raycast hit
+            AnchoredPoint1Pos = End;
+
+            AnchoredPoint3Pos = End;
+            AnchoredPoint3Pos.Z = 0.f;
+
+            AnchoredPoint2Pos = FMath::Lerp(AnchoredPoint1Pos, AnchoredPoint3Pos, 0.5f);
+        }
+
+    } else {
+        if (!Axe-&gt;IsSimulatingPhysics() &amp;&amp; !b_axeBeingRetrieved){
+            //  Axe is on ground
+            /// -- Adjusting the up direction, so that on axe retrieve the axe will go in direction of the catching hand.
+            FVector CharToAxe = (AnchoredPoint3Pos - OwnerLocation).GetSafeNormal();
+            UpDirection = FVector::DotProduct(OwnerActor-&gt;GetActorForwardVector(), CharToAxe);
+
+        } else {
+            // Axe in Air
+
+            if (bAxeMovingAway) {
+                // Axe is being thrown
+
+                /// -- Keep axe laterally tangential to spline.
+                float curDistanceAlongSpline = AxePath-&gt;GetDistanceAlongSplineAtLocation(Axe-&gt;GetComponentLocation(), ESplineCoordinateSpace::World);
+                FVector curTangent = AxePath-&gt;GetTangentAtDistanceAlongSpline(curDistanceAlongSpline, ESplineCoordinateSpace::World);
+                FRotator DesiredRotation = FRotationMatrix::MakeFromXZ(curTangent, FVector::UpVector).Rotator();
+
+                // -- Roll axe is it goes over its throw path.
+                float totalRollingDistance = AxePath-&gt;GetDistanceAlongSplineAtSplinePoint(1);
+                float startRollingDistance = totalRollingDistance * 0.1f;
+                float endRollingDistance = totalRollingDistance * 0.9f;
+
+                if (curDistanceAlongSpline &gt; startRollingDistance &amp;&amp; curDistanceAlongSpline &lt; endRollingDistance) {
+                    float distanceRatio = (curDistanceAlongSpline - startRollingDistance) / (endRollingDistance - startRollingDistance);
+                    float targetRoll = FMath::InterpEaseOut(110.0f, 470.0f, distanceRatio, 2.0f);
+
+                    SpeedMag = FMath::InterpEaseOut(4.f, 1.f, distanceRatio, 2.0f); // ramp down axe speed from 4x to 1x speed
+
+                    DesiredRotation.Roll = targetRoll;
+
+                } else {
+                    DesiredRotation.Add(0.f, 0.f, 110.f);
+                    SpeedMag = 1.0f;
+                }
+
+                Axe-&gt;SetWorldRotation(DesiredRotation);
+
+                /// -- Spin Axe as it goes (Frisbee)
+                Spin += 1000.f * DeltaTime;
+                Axe-&gt;AddLocalRotation(FRotator(Spin, 0.f, 0.f));
+
+            } else {
+                // Axe is being retrieved
+
+                /// -- Adjusted the positions of the middle points.
+                AnchoredPoint1Pos = FMath::Lerp(OwnerLocation, AnchoredPoint3Pos, 0.25);
+                AnchoredPoint1Pos.Z = PlayerHeight;
+
+                AnchoredPoint2Pos = FMath::Lerp(OwnerLocation, AnchoredPoint3Pos, 0.75);
+                AnchoredPoint2Pos.Z = PlayerHeight;
+
+                /// -- Adjusting the lateral offset.
+                FVector CharToAxe = (AnchoredPoint3Pos - OwnerLocation).GetSafeNormal();
+
+                CharToAxe = FVector::CrossProduct(FVector(0.f, 0.f, UpDirection), CharToAxe).GetSafeNormal();
+
+                FVector XOffSet = CharToAxe * 500.f;
+                AnchoredPoint1Pos += XOffSet;
+
+                AnchoredPoint2Pos += (XOffSet / 2);
+            }
+        }
+    }
+
+    AxePath-&gt;SetLocationAtSplinePoint(1, AnchoredPoint1Pos,ESplineCoordinateSpace::World, true);
+    AxePath-&gt;SetLocationAtSplinePoint(2, AnchoredPoint2Pos, ESplineCoordinateSpace::World, true);
+    AxePath-&gt;SetLocationAtSplinePoint(3, AnchoredPoint3Pos, ESplineCoordinateSpace::World, true);
+
 }</code></pre>
                                         </div>
                                     </div>
@@ -307,29 +500,88 @@ void UPlayerFunctionality::BeginPlay() {
                                         </div>
                                         <div class="code-snippet collapsed">
 <pre><code class="language-cpp">// SAMPLE C++ CODE
-void UData::TickComponent(float DeltaTime, ELevelTick TickType,
-                          FActorComponentTickFunction* ThisTickFunction) {
+// This is sample code from a animal/creature actor in a simulation made in Unreal Engine 5. Comments have been added to provide additional context regarding some objects.
+// This code was entirely written by me, without the help of AI. It was written under significant time constraints as it was a small piece of a final project I worked on, I have decided to leave
+// many parts of the code unchanged (except for the addition of comments), so that it is a more realisitic depiction of how I write code under tight time constraints. That having been said,
+// looking back I would quite a few changes, which I would be happy to discuss. 
+
+void UData::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
     Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-    FVector OwnerLocation = Owner->GetActorLocation();
-    FRotator OwnerRotation = Owner->GetActorRotation().Clamp();
+    FVector OwnerLocation = Owner-&gt;GetActorLocation();
+    FRotator OwnerRotation = Owner-&gt;GetActorRotation().Clamp();
 
+    // directionArr is a small array corresponding to the direction that character is facing, whereas memory is a 360 sized array corresponding to all the directions the creature can face.
     int arrOffSet = OwnerRotation.Yaw;
-    directionalArr = &memory[arrOffSet];
+    directionalArr = &amp;memory[arrOffSet];
 
-    if (lastHit > 0) {
-        lastHit -= DeltaTime;
-    }
+    // below code decays lastHit and energy variables over time.
+    if (lastHit &gt; 0) lastHit -= DeltaTime; // Added space after if
 
-    if (energy > 0) {
+    if (energy &gt; 0) {
         energy -= DeltaTime;
-        if (energy <= 0) {
-            ProcessHit(attr_health);
-        }
+        if (energy &lt;= 0) ProcessHit(attr_health);
     }
 
     UpdateHealth();
-    // ... additional sensing and behaviour code
+
+    // Raycast parameters
+    FCollisionQueryParams TraceParams;
+    TraceParams.AddIgnoredActor(Owner);
+    FHitResult HitResult;
+
+    // the creature shoots raycasts in a conal shape in the direction it is facing. Each i corresponds to a degree.
+    for (int32 i = 0; i &lt; directionalArrSize; i++) {
+        TArray Hits;
+        // this is used to know the direction of the raycast relative to the owner
+        FVector Direction = OwnerRotation.RotateVector(std::get&lt;1&gt;(directionTuple[i]));
+
+        // Perform the raycast
+        if (GetWorld()-&gt;LineTraceMultiByObjectType(Hits, OwnerLocation, OwnerLocation + Direction * 1000.0f, PawnsAndCorpses, TraceParams)) {
+            int sumOfHits = 0;
+            for (auto Hit : Hits) {
+                // check to see if a character was hit, if it was then we check cached information to see if we&#x27;ve computed owner creatures attraction to hit creature. If it&#x27;s the first time hitting the creature, then we compute
+                // attraction and store the value.
+                if (Hit.GetActor()-&gt;GetName().Mid(0, 12) == &quot;BP_Character&quot;) {
+                    // Attempt to get the UData component from the hit actor
+                    UData* HitDataComponent = Hit.GetActor()-&gt;FindComponentByClass&lt;UData&gt;();
+                    if (HitDataComponent) // Check if the component exists
+                    {
+                        // Check cache using the component&#x27;s ID
+                        if (!IDMap.Contains(HitDataComponent-&gt;ID)) {
+                            IDMap.Add(HitDataComponent-&gt;ID, CalcAttraction(Hit.GetActor()));
+                        }
+
+                        // Check the other actor&#x27;s cache as well
+                        if (!(HitDataComponent-&gt;IDMap.Contains(ID))) {
+                            HitDataComponent-&gt;IDMap.Add(ID, CalcAttraction(Owner));
+                        }
+                    }
+                }
+
+                sumOfHits += gameObjectToAffinity(Hit.GetActor());
+            }
+
+            // this assigns an attraction value to a direction that the creature can move. The creatue will move in the direction of the highest attraction value.
+            memory[(arrOffSet + i) % 360] = sumOfHits;
+
+            // update highest if necessary
+            if (sumOfHits &gt; highestHit) {
+                highestHit = sumOfHits;
+                highestHitI = (arrOffSet + i) % 360;
+            }
+
+            // if we are debugging, if we hit something draw the raycast red, otherwise green
+            if (seeDebugLines)DrawDebugLine(GetWorld(), OwnerLocation, OwnerLocation + Direction * 1000.0f, FColor::Red, false, 0.1f, 0, 1.0f);
+
+        } else {
+            if (seeDebugLines)DrawDebugLine(GetWorld(), OwnerLocation, OwnerLocation + Direction * 1000.0f, FColor::Green, false, 0.1f, 0, 1.0f);
+
+        }
+    }
+
+    DecayMemory();
+
 }</code></pre>
                                         </div>
                                     </div>
@@ -756,7 +1008,7 @@ private void FixedUpdate()
                         </div>
                         <div>
                             <dt>Collaboration</dt>
-                            <dd>Agile · Mentorship</dd>
+                            <dd>Agile</dd>
                         </div>
                     </dl>
                 </section>
@@ -804,6 +1056,9 @@ private void FixedUpdate()
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-pIF9vDOMkMt2rt7NmBGG99nmCaTKty+O+kO5OVwOB1p5MNDoAuCEi0aKBslZx2drXr/7EQo1leChX2NDSSSX5Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js" integrity="sha512-XtCbcs/SrnccRnVorQSvPCj3Xon5JzzolJpB8yxlUAlzxqaFxkLzvVbVvjAs0FVigBM3MNu611uQ8eyINq4w7w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/csharp.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js" integrity="sha512-axd5V66bnXpNVQzm1c7u1M614TVRXXtouyWCE+eMYl8ALK8ePJEs96Xtx7VVrPBc0UraCn63U1+ARFI3ofW+aA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="script.js"></script>
 </body>
 </html>

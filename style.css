@@ -693,14 +693,16 @@ a:focus {
 
 .code-controls {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
+  gap: 0.5rem;
 }
 
 .code-expand-placeholder {
   min-width: 1.5rem;
   display: inline-flex;
   justify-content: center;
+  align-items: center;
   color: var(--text-muted);
 }
 
@@ -708,12 +710,15 @@ a:focus {
   background: transparent;
   border: 1px solid var(--border);
   color: var(--text-secondary);
-  padding: 0.35rem 0.75rem;
+  padding: 0.35rem 0.85rem;
   cursor: pointer;
   font-family: var(--mono);
   font-size: 0.75rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
 }
 
 .toggle-code:hover,

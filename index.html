@@ -63,13 +63,13 @@
                         <li><a href="#intro">Welcome</a></li>
                         <li><a href="#contact">Contact</a></li>
                         <li><a href="#projects">Projects</a>
-                            <ul>
-                                <li><a href="#project-axe">Axe</a></li>
-                                <li><a href="#project-kingdom">Kingdom of Predators</a></li>
-                                <li><a href="#project-pathfinder">Pathfinder</a></li>
-                                <li><a href="#project-korescape">KorEscape</a></li>
-                                <li><a href="#project-untitled">Untitled Game</a></li>
-                                <li><a href="#project-fallball">Fallball</a></li>
+                            <ul class="project-nav-shortcuts">
+                                <li><button type="button" data-project-target="project-axe">Axe</button></li>
+                                <li><button type="button" data-project-target="project-kingdom">Kingdom of Predators</button></li>
+                                <li><button type="button" data-project-target="project-pathfinder">Pathfinder</button></li>
+                                <li><button type="button" data-project-target="project-korescape">KorEscape</button></li>
+                                <li><button type="button" data-project-target="project-untitled">Untitled Game</button></li>
+                                <li><button type="button" data-project-target="project-fallball">Fallball</button></li>
                             </ul>
                         </li>
                     </ul>
@@ -89,61 +89,98 @@
                     <p data-label="Synopsis">Welcome to my project dossier. Each entry links to recordings and references that pair with my formal resume.</p>
                 </section>
 
-                <section id="projects" class="panel data-sheet">
-                    <h2>Projects</h2>
-                    <div class="project-stack">
-                        <article class="project-item" id="project-axe">
-                            <header class="project-header">
-                                <div class="project-title">
+                                <section id="projects" class="panel data-sheet project-journal">
+                    <div class="project-toolbar">
+                        <div class="project-counter">
+                            <span class="micro-label">Now Viewing</span>
+                            <span class="project-counter-text">01 · Axe</span>
+                        </div>
+                        <div class="project-switcher">
+                            <button class="project-cycle prev" type="button" aria-label="Previous project"><i class="fas fa-arrow-left"></i></button>
+                            <div class="project-pagination" role="tablist" aria-label="Project pagination"></div>
+                            <button class="project-cycle next" type="button" aria-label="Next project"><i class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+                    <div class="project-deck">
+                        <article class="project-spread is-active" id="project-axe" data-project-name="Axe">
+                            <header class="spread-header">
+                                <div class="spread-heading">
+                                    <span class="micro-label">Flagship Build</span>
                                     <h3>Axe</h3>
-                                    <p class="project-subtitle">Unreal Engine 5.4 · C++ · Procedural VFX</p>
+                                    <p class="spread-subtitle">Unreal Engine 5.4 · C++ · Procedural VFX</p>
                                 </div>
-                                <dl class="project-meta">
+                                <dl class="spread-meta">
                                     <div>
                                         <dt>Role</dt>
                                         <dd>Gameplay Programming</dd>
                                     </div>
                                     <div>
-                                        <dt>Status</dt>
-                                        <dd class="accent-amber">Iterative build</dd>
-                                    </div>
-                                    <div>
                                         <dt>Team</dt>
                                         <dd>Solo</dd>
                                     </div>
+                                    <div>
+                                        <dt>Status</dt>
+                                        <dd class="accent-amber">Iterative build</dd>
+                                    </div>
                                 </dl>
                             </header>
-                            <div class="project-content-grid">
-                                <div class="project-description project-log">
-                                    <p data-label="Intent">Inspired by Kratos' Leviathan Axe from God of War, this build explores custom combat systems in UE5.</p>
-                                    <p data-label="V1">Initial implementation relied on physics impulses and collision triggers timed to animation.</p>
-                                    <p data-label="Current">The latest iteration trades chaos destruction for spline-driven returns, procedural meshes, and custom animation notifies.</p>
-                                    <p data-label="Learning">Tutorials informed engine capabilities, but final behaviour and polish were engineered in-house.</p>
+                            <div class="spread-grid">
+                                <div class="spread-copy">
+                                    <p class="spread-lead">An iterative UE5 combat lab that refines Leviathan-style throwing, recall timing, and procedural VFX into a tactile hero weapon.</p>
+                                    <ul class="spread-timeline">
+                                        <li>
+                                            <span class="timeline-label">Intent</span>
+                                            <p>Inspired by Kratos' Leviathan Axe from God of War, this build explores custom combat systems in UE5.</p>
+                                        </li>
+                                        <li>
+                                            <span class="timeline-label">V1</span>
+                                            <p>Initial implementation relied on physics impulses and collision triggers timed to animation.</p>
+                                        </li>
+                                        <li>
+                                            <span class="timeline-label">Current</span>
+                                            <p>The latest iteration trades chaos destruction for spline-driven returns, procedural meshes, and custom animation notifies.</p>
+                                        </li>
+                                        <li>
+                                            <span class="timeline-label">Learning</span>
+                                            <p>Tutorials informed engine capabilities, but final behaviour and polish were engineered in-house.</p>
+                                        </li>
+                                    </ul>
                                 </div>
-                                <div class="project-media-code">
-                                    <div class="gallery">
-                                        <h4 class="micro-label">Gallery</h4>
-                                        <div class="gallery-frame">
-                                            <div class="gallery-viewport">
-                                                <div class="gallery-items">
-                                                    <div class="gallery-item active video-container">
-                                                        <iframe src="https://www.youtube.com/embed/Kudjz7VEUmA" title="Axe Demo Current" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                                                    </div>
-                                                    <div class="gallery-item video-container">
-                                                        <iframe src="https://www.youtube.com/embed/NM09Ntrs7JQ" title="Axe Demo Initial" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                                                    </div>
-                                                    <div class="gallery-item">
-                                                        <div class="image-pan-zoom-container">
-                                                            <img src="Images/Axe_Blueprint.png" alt="Axe project blueprint screenshot" draggable="false">
+                                <aside class="spread-sidebar">
+                                    <div class="spread-media">
+                                        <div class="gallery">
+                                            <div class="gallery-frame">
+                                                <div class="gallery-viewport">
+                                                    <div class="gallery-items">
+                                                        <div class="gallery-item active video-container">
+                                                            <iframe src="https://www.youtube.com/embed/Kudjz7VEUmA" title="Axe Demo Current" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                                                        </div>
+                                                        <div class="gallery-item video-container">
+                                                            <iframe src="https://www.youtube.com/embed/NM09Ntrs7JQ" title="Axe Demo Initial" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                                                        </div>
+                                                        <div class="gallery-item">
+                                                            <div class="image-pan-zoom-container">
+                                                                <img src="Images/Axe_Blueprint.png" alt="Axe project blueprint screenshot" draggable="false">
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div class="gallery-nav">
+                                                    <button class="prev-media" aria-label="Previous Media"><i class="fas fa-chevron-left"></i></button>
+                                                    <button class="gallery-expand-button" aria-label="Expand Gallery"><i class="fas fa-expand"></i></button>
+                                                    <button class="next-media" aria-label="Next Media"><i class="fas fa-chevron-right"></i></button>
+                                                </div>
                                             </div>
-                                            <div class="gallery-nav">
-                                                <button class="prev-media" aria-label="Previous Media"><i class="fas fa-chevron-left"></i></button>
-                                                <button class="gallery-expand-button" aria-label="Expand Gallery"><i class="fas fa-expand"></i></button>
-                                                <button class="next-media" aria-label="Next Media"><i class="fas fa-chevron-right"></i></button>
-                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="spread-callouts">
+                                        <div class="callout">
+                                            <span class="callout-label">Discipline</span>
+                                            <span class="callout-value">Combat Systems · Procedural FX</span>
+                                        </div>
+                                        <div class="callout">
+                                            <span class="callout-label">Toolkit</span>
+                                            <span class="callout-value">UE5 · C++ · Niagara · Animation Notifies</span>
                                         </div>
                                     </div>
                                     <div class="code-section">
@@ -173,59 +210,86 @@ void UPlayerFunctionality::BeginPlay() {
 }</code></pre>
                                         </div>
                                     </div>
-                                </div>
+                                </aside>
                             </div>
                         </article>
 
-                        <article class="project-item" id="project-kingdom">
-                            <header class="project-header">
-                                <div class="project-title">
+                        <article class="project-spread" id="project-kingdom" data-project-name="Kingdom of Predators">
+                            <header class="spread-header">
+                                <div class="spread-heading">
+                                    <span class="micro-label">Showcase Slice</span>
                                     <h3>Kingdom of Predators</h3>
-                                    <p class="project-subtitle">Unity · Procedural Animation · Systems Design</p>
+                                    <p class="spread-subtitle">Unity · Procedural Animation · Systems Design</p>
                                 </div>
-                                <dl class="project-meta">
+                                <dl class="spread-meta">
                                     <div>
                                         <dt>Role</dt>
                                         <dd>Gameplay Programming</dd>
                                     </div>
                                     <div>
-                                        <dt>Status</dt>
-                                        <dd class="accent-green">Shipped vertical slice</dd>
-                                    </div>
-                                    <div>
                                         <dt>Team</dt>
                                         <dd>Collaborative</dd>
                                     </div>
+                                    <div>
+                                        <dt>Status</dt>
+                                        <dd class="accent-green">Shipped vertical slice</dd>
+                                    </div>
                                 </dl>
                             </header>
-                            <div class="project-content-grid">
-                                <div class="project-description project-log">
-                                    <p data-label="Intent">Responsive predator AI for a cooperative dungeon crawl demanded deterministic controls.</p>
-                                    <p data-label="Systems">Implemented modular state machines, animation layers, and navmesh extensions for bespoke enemy kits.</p>
-                                    <p data-label="Impact">Reduced iteration time by 45% with authorable behaviour graphs and debug overlays.</p>
-                                    <p data-label="Highlight">Final build demoed at the 2024 Calgary Game Showcase with seamless network sync.</p>
+                            <div class="spread-grid">
+                                <div class="spread-copy">
+                                    <p class="spread-lead">Cooperative dungeon crawler slice anchored by authored predator AI, deterministic combat loops, and layered animation systems.</p>
+                                    <ul class="spread-timeline">
+                                        <li>
+                                            <span class="timeline-label">Intent</span>
+                                            <p>Responsive predator AI for a cooperative dungeon crawl demanded deterministic controls.</p>
+                                        </li>
+                                        <li>
+                                            <span class="timeline-label">Systems</span>
+                                            <p>Implemented modular state machines, animation layers, and navmesh extensions for bespoke enemy kits.</p>
+                                        </li>
+                                        <li>
+                                            <span class="timeline-label">Impact</span>
+                                            <p>Reduced iteration time by 45% with authorable behaviour graphs and debug overlays.</p>
+                                        </li>
+                                        <li>
+                                            <span class="timeline-label">Highlight</span>
+                                            <p>Final build demoed at the 2024 Calgary Game Showcase with seamless network sync.</p>
+                                        </li>
+                                    </ul>
                                 </div>
-                                <div class="project-media-code">
-                                    <div class="gallery">
-                                        <h4 class="micro-label">Gallery</h4>
-                                        <div class="gallery-frame">
-                                            <div class="gallery-viewport">
-                                                <div class="gallery-items">
-                                                    <div class="gallery-item active video-container">
-                                                        <iframe src="https://www.youtube.com/embed/0uH7-bC6w6A" title="Kingdom of Predators Gameplay" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                                                    </div>
-                                                    <div class="gallery-item">
-                                                        <div class="image-pan-zoom-container">
-                                                            <img src="Images/Kingdom_Editor.png" alt="Kingdom of Predators editor screenshot" draggable="false">
+                                <aside class="spread-sidebar">
+                                    <div class="spread-media">
+                                        <div class="gallery">
+                                            <div class="gallery-frame">
+                                                <div class="gallery-viewport">
+                                                    <div class="gallery-items">
+                                                        <div class="gallery-item active video-container">
+                                                            <iframe src="https://www.youtube.com/embed/0uH7-bC6w6A" title="Kingdom of Predators Gameplay" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                                                        </div>
+                                                        <div class="gallery-item">
+                                                            <div class="image-pan-zoom-container">
+                                                                <img src="Images/Kingdom_Editor.png" alt="Kingdom of Predators editor screenshot" draggable="false">
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div class="gallery-nav">
+                                                    <button class="prev-media" aria-label="Previous Media"><i class="fas fa-chevron-left"></i></button>
+                                                    <button class="gallery-expand-button" aria-label="Expand Gallery"><i class="fas fa-expand"></i></button>
+                                                    <button class="next-media" aria-label="Next Media"><i class="fas fa-chevron-right"></i></button>
+                                                </div>
                                             </div>
-                                            <div class="gallery-nav">
-                                                <button class="prev-media" aria-label="Previous Media"><i class="fas fa-chevron-left"></i></button>
-                                                <button class="gallery-expand-button" aria-label="Expand Gallery"><i class="fas fa-expand"></i></button>
-                                                <button class="next-media" aria-label="Next Media"><i class="fas fa-chevron-right"></i></button>
-                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="spread-callouts">
+                                        <div class="callout">
+                                            <span class="callout-label">Deliverable</span>
+                                            <span class="callout-value">Authorable behaviour graphs · Debug overlays</span>
+                                        </div>
+                                        <div class="callout">
+                                            <span class="callout-label">Showcase</span>
+                                            <span class="callout-value">Calgary Game Showcase 2024</span>
                                         </div>
                                     </div>
                                     <div class="code-section">
@@ -248,54 +312,81 @@ public void RegisterPredator(PredatorController predator)
 }</code></pre>
                                         </div>
                                     </div>
-                                </div>
+                                </aside>
                             </div>
                         </article>
 
-                        <article class="project-item" id="project-pathfinder">
-                            <header class="project-header">
-                                <div class="project-title">
+                        <article class="project-spread" id="project-pathfinder" data-project-name="Pathfinder">
+                            <header class="spread-header">
+                                <div class="spread-heading">
+                                    <span class="micro-label">Simulation Study</span>
                                     <h3>Pathfinder</h3>
-                                    <p class="project-subtitle">C++ · A* · Simulation</p>
+                                    <p class="spread-subtitle">C++ · A* · Simulation</p>
                                 </div>
-                                <dl class="project-meta">
+                                <dl class="spread-meta">
                                     <div>
                                         <dt>Role</dt>
                                         <dd>Systems Programming</dd>
                                     </div>
                                     <div>
-                                        <dt>Status</dt>
-                                        <dd>Prototype</dd>
-                                    </div>
-                                    <div>
                                         <dt>Team</dt>
                                         <dd>Solo</dd>
                                     </div>
+                                    <div>
+                                        <dt>Status</dt>
+                                        <dd>Prototype</dd>
+                                    </div>
                                 </dl>
                             </header>
-                            <div class="project-content-grid">
-                                <div class="project-description project-log">
-                                    <p data-label="Goal">Generated navigation meshes and heuristics tuned for destructible arenas.</p>
-                                    <p data-label="Technique">Applied jump-point search and sector caching to keep traversal costs predictable.</p>
-                                    <p data-label="Outcome">Cut average solve times by 60% compared to naive grid A* at 256² resolution.</p>
-                                    <p data-label="Next">Integrating behaviour trees with terrain sampling for emergent squad tactics.</p>
+                            <div class="spread-grid">
+                                <div class="spread-copy">
+                                    <p class="spread-lead">Navigation research that keeps destructible arenas solvable by pairing tuned heuristics with aggressive caching.</p>
+                                    <ul class="spread-timeline">
+                                        <li>
+                                            <span class="timeline-label">Goal</span>
+                                            <p>Generated navigation meshes and heuristics tuned for destructible arenas.</p>
+                                        </li>
+                                        <li>
+                                            <span class="timeline-label">Technique</span>
+                                            <p>Applied jump-point search and sector caching to keep traversal costs predictable.</p>
+                                        </li>
+                                        <li>
+                                            <span class="timeline-label">Outcome</span>
+                                            <p>Cut average solve times by 60% compared to naive grid A* at 256² resolution.</p>
+                                        </li>
+                                        <li>
+                                            <span class="timeline-label">Next</span>
+                                            <p>Integrating behaviour trees with terrain sampling for emergent squad tactics.</p>
+                                        </li>
+                                    </ul>
                                 </div>
-                                <div class="project-media-code">
-                                    <div class="gallery">
-                                        <h4 class="micro-label">Gallery</h4>
-                                        <div class="gallery-frame">
-                                            <div class="gallery-viewport">
-                                                <div class="gallery-items">
-                                                    <div class="gallery-item active">
-                                                        <div class="image-pan-zoom-container">
-                                                            <img src="Images/Pathfinder.png" alt="Pathfinder grid overlay" draggable="false">
+                                <aside class="spread-sidebar">
+                                    <div class="spread-media">
+                                        <div class="gallery">
+                                            <div class="gallery-frame">
+                                                <div class="gallery-viewport">
+                                                    <div class="gallery-items">
+                                                        <div class="gallery-item active">
+                                                            <div class="image-pan-zoom-container">
+                                                                <img src="Images/Pathfinder.png" alt="Pathfinder grid overlay" draggable="false">
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div class="gallery-nav single">
+                                                    <button class="gallery-expand-button" aria-label="Expand Gallery"><i class="fas fa-expand"></i></button>
+                                                </div>
                                             </div>
-                                            <div class="gallery-nav single">
-                                                <button class="gallery-expand-button" aria-label="Expand Gallery"><i class="fas fa-expand"></i></button>
-                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="spread-callouts">
+                                        <div class="callout">
+                                            <span class="callout-label">Heuristics</span>
+                                            <span class="callout-value">Jump-Point Search · Sector Caching</span>
+                                        </div>
+                                        <div class="callout">
+                                            <span class="callout-label">Performance</span>
+                                            <span class="callout-value">60% faster solves at 256²</span>
                                         </div>
                                     </div>
                                     <div class="code-section">
@@ -305,7 +396,7 @@ public void RegisterPredator(PredatorController predator)
                                         </div>
                                         <div class="code-snippet collapsed">
 <pre><code class="language-cpp">// SAMPLE C++ CODE
-Path Pathfinder::Solve(const Node&amp; start, const Node&amp; goal) {
+Path Pathfinder::Solve(const Node& start, const Node& goal) {
     openSet.push(start);
     while (!openSet.empty()) {
         Node current = openSet.top();
@@ -315,9 +406,9 @@ Path Pathfinder::Solve(const Node&amp; start, const Node&amp; goal) {
             return ReconstructPath(cameFrom, current);
         }
 
-        for (const Node&amp; neighbor : GetNeighbors(current)) {
+        for (const Node& neighbor : GetNeighbors(current)) {
             float tentative = gScore[current] + Cost(current, neighbor);
-            if (tentative &lt; gScore[neighbor]) {
+            if (tentative < gScore[neighbor]) {
                 cameFrom[neighbor] = current;
                 gScore[neighbor] = tentative;
                 fScore[neighbor] = tentative + Heuristic(neighbor, goal);
@@ -329,59 +420,86 @@ Path Pathfinder::Solve(const Node&amp; start, const Node&amp; goal) {
 }</code></pre>
                                         </div>
                                     </div>
-                                </div>
+                                </aside>
                             </div>
                         </article>
 
-                        <article class="project-item" id="project-korescape">
-                            <header class="project-header">
-                                <div class="project-title">
+                        <article class="project-spread" id="project-korescape" data-project-name="KorEscape">
+                            <header class="spread-header">
+                                <div class="spread-heading">
+                                    <span class="micro-label">Puzzle Lab</span>
                                     <h3>KorEscape</h3>
-                                    <p class="project-subtitle">Unity · Puzzle Design · UX</p>
+                                    <p class="spread-subtitle">Unity · Puzzle Design · UX</p>
                                 </div>
-                                <dl class="project-meta">
+                                <dl class="spread-meta">
                                     <div>
                                         <dt>Role</dt>
                                         <dd>Gameplay &amp; UX</dd>
                                     </div>
                                     <div>
-                                        <dt>Status</dt>
-                                        <dd>Released demo</dd>
-                                    </div>
-                                    <div>
                                         <dt>Team</dt>
                                         <dd>3 Developers</dd>
                                     </div>
+                                    <div>
+                                        <dt>Status</dt>
+                                        <dd>Released demo</dd>
+                                    </div>
                                 </dl>
                             </header>
-                            <div class="project-content-grid">
-                                <div class="project-description project-log">
-                                    <p data-label="Focus">Rapid puzzle iteration with modular tile components and signal routing.</p>
-                                    <p data-label="Challenge">Balancing visual clarity with dense interaction prompts for split-screen play.</p>
-                                    <p data-label="Solution">Layered cues via shader-driven emissive channels and contextual audio.</p>
-                                    <p data-label="Support">Delivered tooling for designers to author puzzle states in under two minutes.</p>
+                            <div class="spread-grid">
+                                <div class="spread-copy">
+                                    <p class="spread-lead">Split-screen puzzle adventure tuned for modular tile logic, designer tooling, and signal-rich feedback.</p>
+                                    <ul class="spread-timeline">
+                                        <li>
+                                            <span class="timeline-label">Focus</span>
+                                            <p>Rapid puzzle iteration with modular tile components and signal routing.</p>
+                                        </li>
+                                        <li>
+                                            <span class="timeline-label">Challenge</span>
+                                            <p>Balancing visual clarity with dense interaction prompts for split-screen play.</p>
+                                        </li>
+                                        <li>
+                                            <span class="timeline-label">Solution</span>
+                                            <p>Layered cues via shader-driven emissive channels and contextual audio.</p>
+                                        </li>
+                                        <li>
+                                            <span class="timeline-label">Support</span>
+                                            <p>Delivered tooling for designers to author puzzle states in under two minutes.</p>
+                                        </li>
+                                    </ul>
                                 </div>
-                                <div class="project-media-code">
-                                    <div class="gallery">
-                                        <h4 class="micro-label">Gallery</h4>
-                                        <div class="gallery-frame">
-                                            <div class="gallery-viewport">
-                                                <div class="gallery-items">
-                                                    <div class="gallery-item active video-container">
-                                                        <iframe src="https://www.youtube.com/embed/Mlg8AjtKJXQ" title="KorEscape Gameplay" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                                                    </div>
-                                                    <div class="gallery-item">
-                                                        <div class="image-pan-zoom-container">
-                                                            <img src="Images/KorEscape.png" alt="KorEscape puzzle editor" draggable="false">
+                                <aside class="spread-sidebar">
+                                    <div class="spread-media">
+                                        <div class="gallery">
+                                            <div class="gallery-frame">
+                                                <div class="gallery-viewport">
+                                                    <div class="gallery-items">
+                                                        <div class="gallery-item active video-container">
+                                                            <iframe src="https://www.youtube.com/embed/Mlg8AjtKJXQ" title="KorEscape Gameplay" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                                                        </div>
+                                                        <div class="gallery-item">
+                                                            <div class="image-pan-zoom-container">
+                                                                <img src="Images/KorEscape.png" alt="KorEscape puzzle editor" draggable="false">
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div class="gallery-nav">
+                                                    <button class="prev-media" aria-label="Previous Media"><i class="fas fa-chevron-left"></i></button>
+                                                    <button class="gallery-expand-button" aria-label="Expand Gallery"><i class="fas fa-expand"></i></button>
+                                                    <button class="next-media" aria-label="Next Media"><i class="fas fa-chevron-right"></i></button>
+                                                </div>
                                             </div>
-                                            <div class="gallery-nav">
-                                                <button class="prev-media" aria-label="Previous Media"><i class="fas fa-chevron-left"></i></button>
-                                                <button class="gallery-expand-button" aria-label="Expand Gallery"><i class="fas fa-expand"></i></button>
-                                                <button class="next-media" aria-label="Next Media"><i class="fas fa-chevron-right"></i></button>
-                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="spread-callouts">
+                                        <div class="callout">
+                                            <span class="callout-label">Experience</span>
+                                            <span class="callout-value">Split-screen, co-operative puzzle loops</span>
+                                        </div>
+                                        <div class="callout">
+                                            <span class="callout-label">Tools</span>
+                                            <span class="callout-value">Designer state authoring in &lt;2 minutes</span>
                                         </div>
                                     </div>
                                     <div class="code-section">
@@ -402,54 +520,81 @@ public void PulseChannel(int index)
 }</code></pre>
                                         </div>
                                     </div>
-                                </div>
+                                </aside>
                             </div>
                         </article>
 
-                        <article class="project-item" id="project-untitled">
-                            <header class="project-header">
-                                <div class="project-title">
+                        <article class="project-spread" id="project-untitled" data-project-name="Untitled Game">
+                            <header class="spread-header">
+                                <div class="spread-heading">
+                                    <span class="micro-label">Narrative Prototype</span>
                                     <h3>Untitled Game</h3>
-                                    <p class="project-subtitle">UE5 · Narrative Systems</p>
+                                    <p class="spread-subtitle">UE5 · Narrative Systems</p>
                                 </div>
-                                <dl class="project-meta">
+                                <dl class="spread-meta">
                                     <div>
                                         <dt>Role</dt>
                                         <dd>Gameplay Engineering</dd>
                                     </div>
                                     <div>
-                                        <dt>Status</dt>
-                                        <dd>Concept</dd>
-                                    </div>
-                                    <div>
                                         <dt>Team</dt>
                                         <dd>Solo</dd>
                                     </div>
+                                    <div>
+                                        <dt>Status</dt>
+                                        <dd>Concept</dd>
+                                    </div>
                                 </dl>
                             </header>
-                            <div class="project-content-grid">
-                                <div class="project-description project-log">
-                                    <p data-label="Concept">Dialogue-driven action roguelite exploring branching quest logic.</p>
-                                    <p data-label="System">Narrative graph compiler authoring dynamic mission payloads.</p>
-                                    <p data-label="Current">Building UI harness to preview variable permutations in-flight.</p>
-                                    <p data-label="Need">Looking for narrative collaborator to refine branching cadence.</p>
+                            <div class="spread-grid">
+                                <div class="spread-copy">
+                                    <p class="spread-lead">Dialogue-driven roguelite concept built around a narrative graph compiler and responsive mission payloads.</p>
+                                    <ul class="spread-timeline">
+                                        <li>
+                                            <span class="timeline-label">Concept</span>
+                                            <p>Dialogue-driven action roguelite exploring branching quest logic.</p>
+                                        </li>
+                                        <li>
+                                            <span class="timeline-label">System</span>
+                                            <p>Narrative graph compiler authoring dynamic mission payloads.</p>
+                                        </li>
+                                        <li>
+                                            <span class="timeline-label">Current</span>
+                                            <p>Building UI harness to preview variable permutations in-flight.</p>
+                                        </li>
+                                        <li>
+                                            <span class="timeline-label">Need</span>
+                                            <p>Looking for narrative collaborator to refine branching cadence.</p>
+                                        </li>
+                                    </ul>
                                 </div>
-                                <div class="project-media-code">
-                                    <div class="gallery">
-                                        <h4 class="micro-label">Gallery</h4>
-                                        <div class="gallery-frame">
-                                            <div class="gallery-viewport">
-                                                <div class="gallery-items">
-                                                    <div class="gallery-item active">
-                                                        <div class="image-pan-zoom-container">
-                                                            <img src="Images/Untitled.png" alt="Narrative system wireframe" draggable="false">
+                                <aside class="spread-sidebar">
+                                    <div class="spread-media">
+                                        <div class="gallery">
+                                            <div class="gallery-frame">
+                                                <div class="gallery-viewport">
+                                                    <div class="gallery-items">
+                                                        <div class="gallery-item active">
+                                                            <div class="image-pan-zoom-container">
+                                                                <img src="Images/Untitled.png" alt="Narrative system wireframe" draggable="false">
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div class="gallery-nav single">
+                                                    <button class="gallery-expand-button" aria-label="Expand Gallery"><i class="fas fa-expand"></i></button>
+                                                </div>
                                             </div>
-                                            <div class="gallery-nav single">
-                                                <button class="gallery-expand-button" aria-label="Expand Gallery"><i class="fas fa-expand"></i></button>
-                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="spread-callouts">
+                                        <div class="callout">
+                                            <span class="callout-label">Tech Stack</span>
+                                            <span class="callout-value">UE5 · C++ · Blueprint UI harness</span>
+                                        </div>
+                                        <div class="callout">
+                                            <span class="callout-label">Collaboration</span>
+                                            <span class="callout-value">Seeking narrative design partner</span>
                                         </div>
                                     </div>
                                     <div class="code-section">
@@ -459,11 +604,11 @@ public void PulseChannel(int index)
                                         </div>
                                         <div class="code-snippet collapsed">
 <pre><code class="language-cpp">// SAMPLE C++ CODE
-void UMissionCompiler::EmitBranch(const FDialogueNode&amp; node)
+void UMissionCompiler::EmitBranch(const FDialogueNode& node)
 {
-    for (const auto&amp; option : node.Options)
+    for (const auto& option : node.Options)
     {
-        auto&amp; payload = Output.AddDefaulted_GetRef();
+        auto& payload = Output.AddDefaulted_GetRef();
         payload.Tag = option.Tag;
         payload.Requirements = option.Requirements;
         payload.Actions = option.Actions;
@@ -471,59 +616,86 @@ void UMissionCompiler::EmitBranch(const FDialogueNode&amp; node)
 }</code></pre>
                                         </div>
                                     </div>
-                                </div>
+                                </aside>
                             </div>
                         </article>
 
-                        <article class="project-item" id="project-fallball">
-                            <header class="project-header">
-                                <div class="project-title">
+                        <article class="project-spread" id="project-fallball" data-project-name="Fallball">
+                            <header class="spread-header">
+                                <div class="spread-heading">
+                                    <span class="micro-label">Networked Arena</span>
                                     <h3>Fallball</h3>
-                                    <p class="project-subtitle">Unity · Multiplayer · Netcode</p>
+                                    <p class="spread-subtitle">Unity · Multiplayer · Netcode</p>
                                 </div>
-                                <dl class="project-meta">
+                                <dl class="spread-meta">
                                     <div>
                                         <dt>Role</dt>
                                         <dd>Systems &amp; Networking</dd>
                                     </div>
                                     <div>
-                                        <dt>Status</dt>
-                                        <dd>Prototype</dd>
-                                    </div>
-                                    <div>
                                         <dt>Team</dt>
                                         <dd>Collaborative</dd>
                                     </div>
+                                    <div>
+                                        <dt>Status</dt>
+                                        <dd>Prototype</dd>
+                                    </div>
                                 </dl>
                             </header>
-                            <div class="project-content-grid">
-                                <div class="project-description project-log">
-                                    <p data-label="Objective">Party-scale multiplayer arena with physics-driven obstacles.</p>
-                                    <p data-label="Network">Client prediction and rewind validation built on NGO.</p>
-                                    <p data-label="Metrics">Peak latency budget held under 140ms during campus playtests.</p>
-                                    <p data-label="Next">Authoring modular obstacle toolkit with designer-friendly presets.</p>
+                            <div class="spread-grid">
+                                <div class="spread-copy">
+                                    <p class="spread-lead">Physics-driven party arena that leans on prediction, rewind, and authoritative validation to keep network play tight.</p>
+                                    <ul class="spread-timeline">
+                                        <li>
+                                            <span class="timeline-label">Objective</span>
+                                            <p>Party-scale multiplayer arena with physics-driven obstacles.</p>
+                                        </li>
+                                        <li>
+                                            <span class="timeline-label">Network</span>
+                                            <p>Client prediction and rewind validation built on NGO.</p>
+                                        </li>
+                                        <li>
+                                            <span class="timeline-label">Metrics</span>
+                                            <p>Peak latency budget held under 140ms during campus playtests.</p>
+                                        </li>
+                                        <li>
+                                            <span class="timeline-label">Next</span>
+                                            <p>Authoring modular obstacle toolkit with designer-friendly presets.</p>
+                                        </li>
+                                    </ul>
                                 </div>
-                                <div class="project-media-code">
-                                    <div class="gallery">
-                                        <h4 class="micro-label">Gallery</h4>
-                                        <div class="gallery-frame">
-                                            <div class="gallery-viewport">
-                                                <div class="gallery-items">
-                                                    <div class="gallery-item active video-container">
-                                                        <iframe src="https://www.youtube.com/embed/f3TN9enXxy0" title="Fallball Gameplay" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                                                    </div>
-                                                    <div class="gallery-item">
-                                                        <div class="image-pan-zoom-container">
-                                                            <img src="Images/Fallball.png" alt="Fallball network diagram" draggable="false">
+                                <aside class="spread-sidebar">
+                                    <div class="spread-media">
+                                        <div class="gallery">
+                                            <div class="gallery-frame">
+                                                <div class="gallery-viewport">
+                                                    <div class="gallery-items">
+                                                        <div class="gallery-item active video-container">
+                                                            <iframe src="https://www.youtube.com/embed/f3TN9enXxy0" title="Fallball Gameplay" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                                                        </div>
+                                                        <div class="gallery-item">
+                                                            <div class="image-pan-zoom-container">
+                                                                <img src="Images/Fallball.png" alt="Fallball network diagram" draggable="false">
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div class="gallery-nav">
+                                                    <button class="prev-media" aria-label="Previous Media"><i class="fas fa-chevron-left"></i></button>
+                                                    <button class="gallery-expand-button" aria-label="Expand Gallery"><i class="fas fa-expand"></i></button>
+                                                    <button class="next-media" aria-label="Next Media"><i class="fas fa-chevron-right"></i></button>
+                                                </div>
                                             </div>
-                                            <div class="gallery-nav">
-                                                <button class="prev-media" aria-label="Previous Media"><i class="fas fa-chevron-left"></i></button>
-                                                <button class="gallery-expand-button" aria-label="Expand Gallery"><i class="fas fa-expand"></i></button>
-                                                <button class="next-media" aria-label="Next Media"><i class="fas fa-chevron-right"></i></button>
-                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="spread-callouts">
+                                        <div class="callout">
+                                            <span class="callout-label">Latency Budget</span>
+                                            <span class="callout-value">&lt;140ms during campus playtests</span>
+                                        </div>
+                                        <div class="callout">
+                                            <span class="callout-label">Next Up</span>
+                                            <span class="callout-value">Modular obstacle authoring toolkit</span>
                                         </div>
                                     </div>
                                     <div class="code-section">
@@ -537,18 +709,19 @@ void UMissionCompiler::EmitBranch(const FDialogueNode&amp; node)
 private void SubmitInputServerRpc(PlayerInput input, ServerRpcParams rpcParams = default)
 {
     cachedInputs.Enqueue(input);
-    if (cachedInputs.Count &gt; historyLimit)
+    if (cachedInputs.Count > historyLimit)
     {
         cachedInputs.Dequeue();
     }
 }</code></pre>
                                         </div>
                                     </div>
-                                </div>
+                                </aside>
                             </div>
                         </article>
                     </div>
                 </section>
+
             </main>
 
             <aside class="column column-right">

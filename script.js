@@ -268,10 +268,110 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // --- Project Carousel Logic ---
+    const projectSection = document.querySelector('#projects');
+    const projectSpreads = projectSection ? Array.from(projectSection.querySelectorAll('.project-spread')) : [];
+
+    if (projectSection && projectSpreads.length) {
+        let activeProjectIndex = projectSpreads.findIndex(spread => spread.classList.contains('is-active'));
+        if (activeProjectIndex === -1) {
+            activeProjectIndex = 0;
+            projectSpreads[0].classList.add('is-active');
+        }
+
+        const paginationContainer = projectSection.querySelector('.project-pagination');
+        const prevButton = projectSection.querySelector('.project-cycle.prev');
+        const nextButton = projectSection.querySelector('.project-cycle.next');
+        const counterText = projectSection.querySelector('.project-counter-text');
+        const shortcutButtons = document.querySelectorAll('.project-nav-shortcuts button');
+        const paginationButtons = [];
+
+        const formatIndexLabel = (index) => `${String(index + 1).padStart(2, '0')} · ${projectSpreads[index].dataset.projectName || projectSpreads[index].id}`;
+
+        const updateCounter = (index) => {
+            if (counterText) {
+                counterText.textContent = formatIndexLabel(index);
+            }
+        };
+
+        const updateShortcutState = (index) => {
+            shortcutButtons.forEach(button => {
+                const isActive = button.dataset.projectTarget === projectSpreads[index].id;
+                button.classList.toggle('is-active', isActive);
+            });
+        };
+
+        const updatePaginationState = (index) => {
+            paginationButtons.forEach((button, i) => {
+                const isActive = i === index;
+                button.classList.toggle('is-active', isActive);
+                button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+            });
+        };
+
+        const showProject = (index) => {
+            if (index < 0 || index >= projectSpreads.length) {
+                return;
+            }
+
+            activeProjectIndex = index;
+
+            projectSpreads.forEach((spread, spreadIndex) => {
+                const isActive = spreadIndex === index;
+                spread.classList.toggle('is-active', isActive);
+                spread.setAttribute('aria-hidden', (!isActive).toString());
+            });
+
+            updatePaginationState(index);
+            updateShortcutState(index);
+            updateCounter(index);
+        };
+
+        const cycleProject = (delta) => {
+            const nextIndex = (activeProjectIndex + delta + projectSpreads.length) % projectSpreads.length;
+            showProject(nextIndex);
+        };
+
+        if (paginationContainer) {
+            paginationContainer.innerHTML = '';
+            projectSpreads.forEach((spread, index) => {
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.className = 'project-page-btn';
+                button.setAttribute('aria-label', `Show project ${spread.dataset.projectName || spread.id}`);
+                button.addEventListener('click', () => showProject(index));
+                paginationContainer.appendChild(button);
+                paginationButtons.push(button);
+            });
+        }
+
+        prevButton?.addEventListener('click', () => cycleProject(-1));
+        nextButton?.addEventListener('click', () => cycleProject(1));
+
+        shortcutButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetId = button.dataset.projectTarget;
+                if (!targetId) {
+                    return;
+                }
+                const targetIndex = projectSpreads.findIndex(spread => spread.id === targetId);
+                if (targetIndex >= 0) {
+                    showProject(targetIndex);
+                    projectSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        showProject(activeProjectIndex);
+    }
+
     // --- TOC Scroll Highlighting ---
     const tocLinks = document.querySelectorAll('#toc a[href^="#"]');
     const sections = [];
     tocLinks.forEach(link => {
+        if (link.dataset.projectTarget) {
+            return;
+        }
         const section = document.querySelector(link.getAttribute('href'));
         if (section) {
             sections.push({ link: link, section: section });

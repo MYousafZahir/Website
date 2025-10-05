@@ -3,101 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="My personal website">
+    <meta name="description" content="Gameplay programming portfolio for Yousaf Zahir">
     <title>Yousaf Zahir | Portfolio</title>
-    <link rel="icon" type="image/png" href="Images/favicon.png"> <!-- Corrected Favicon Path -->
+    <link rel="icon" type="image/png" href="Images/favicon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/brewer.min.css" integrity="sha512-D7LJSDa4DnNoW3XjAUYmtldC+oWiqsrU4wy0lW2ZGwQUXdBlo+/doY8UFrvZcccxkNAHtLXZubg7e3nRsavkqA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="style.css">
 </head>
-<body id="page-top"> <!-- Added id="page-top" -->
-    <nav id="toc">
-        <h4>Contents</h4>
-        <ul>
-            <li><a href="#page-top">Welcome</a></li> <!-- Changed href -->
-            <li><a href="#contact-heading">Contact</a></li>
-            <li><a href="#projects">Projects</a>
-                <ul>
-                    <li><a href="#project-axe">Axe</a></li>
-                    <li><a href="#project-kingdom">Kingdom of Predators</a></li>
-                    <li><a href="#project-pathfinder">Pathfinder</a></li>
-                    <li><a href="#project-korescape">KorEscape</a></li>
-                    <li><a href="#project-untitled">Untitled Game</a></li>
-                    <li><a href="#project-fallball">Fallball</a></li>
-                </ul>
-            </li>
-        </ul>
-    </nav>
-    <div class="background-overlay"></div> <!-- Optional: For better contrast/effect -->
-    <div class="content-wrapper">
-        <header>
-            <h1>Yousaf Zahir</h1>
-            <p>Computer Scientist 🕹️ The University of Calgary</p>
+<body id="page-top">
+    <div class="app-shell">
+        <header class="panel top-bar">
+            <div class="identity-block">
+                <h1>Yousaf Zahir</h1>
+                <p class="subtitle">Computer Scientist · University of Calgary</p>
+            </div>
+            <div class="status-grid" role="list">
+                <div class="status-line" role="listitem">
+                    <span class="status-label">Focus</span>
+                    <span class="status-value accent-green">Gameplay Programming</span>
+                </div>
+                <div class="status-line" role="listitem">
+                    <span class="status-label">Toolchain</span>
+                    <span class="status-value">Unreal Engine · Unity · C++ · C#</span>
+                </div>
+                <div class="status-line" role="listitem">
+                    <span class="status-label">Current Mission</span>
+                    <span class="status-value accent-amber">Prototype combat interactions</span>
+                </div>
+                <div class="status-line" role="listitem">
+                    <span class="status-label">Signal</span>
+                    <span class="status-value">yzahir.cs@outlook.com</span>
+                </div>
+                <div class="status-line" role="listitem">
+                    <span class="status-label">Data Updated</span>
+                    <span class="status-value">2025-06-24</span>
+                </div>
+            </div>
         </header>
 
-        <main>
-            <div class="main-content"> <!-- New container for flex layout -->
-                <section id="intro">
-                    <h2 id="welcome-heading">Welcome</h2>
-                    <p>Welcome to my website, here are links to some recordings of my personal projects. These links are intended to be used in conjunction with my resume.</p>
+        <div class="layout-grid">
+            <aside class="sidebar">
+                <nav id="toc" class="panel">
+                    <h2 class="panel-title">Index</h2>
+                    <ul>
+                        <li><a href="#page-top">Top</a></li>
+                        <li><a href="#intro">Welcome</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#projects">Projects</a>
+                            <ul>
+                                <li><a href="#project-axe">Axe</a></li>
+                                <li><a href="#project-kingdom">Kingdom of Predators</a></li>
+                                <li><a href="#project-pathfinder">Pathfinder</a></li>
+                                <li><a href="#project-korescape">KorEscape</a></li>
+                                <li><a href="#project-untitled">Untitled Game</a></li>
+                                <li><a href="#project-fallball">Fallball</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+
+                <section class="panel summary-panel">
+                    <h2 class="panel-title">Signals</h2>
+                    <ul class="summary-list">
+                        <li><span class="summary-label">Location</span><span class="summary-value">Calgary, AB</span></li>
+                        <li><span class="summary-label">Disciplines</span><span class="summary-value">Gameplay · AI · Tools</span></li>
+                        <li><span class="summary-label">Engines</span><span class="summary-value accent-green">UE5 · Unity</span></li>
+                        <li><span class="summary-label">Languages</span><span class="summary-value">C++ · C# · Blueprint</span></li>
+                        <li><span class="summary-label">Looking For</span><span class="summary-value accent-amber">Collaborative teams</span></li>
+                    </ul>
+                </section>
+            </aside>
+
+            <main class="main-column">
+                <section id="intro" class="panel data-section">
+                    <h2>Welcome</h2>
+                    <p data-label="Synopsis">Welcome to my project dossier. Each entry links to recordings and references that pair with my formal resume.</p>
                 </section>
 
-                <section id="contact">
-                    <h2 id="contact-heading">Contact</h2>
-                    <p>You can contact me using my E-MAIL: <a href="mailto:yzahir.cs@outlook.com">yzahir.cs@outlook.com</a></p>
+                <section id="contact" class="panel data-section">
+                    <h2>Contact</h2>
+                    <p data-label="Signal"><a href="mailto:yzahir.cs@outlook.com">yzahir.cs@outlook.com</a></p>
                 </section>
-            </div> <!-- Close main-content -->
 
-            <section id="projects">
-                <h2>Projects</h2>
+                <section id="projects" class="panel data-section">
+                    <h2>Projects</h2>
 
-                <!-- Axe Project -->
-                <article class="project-item" id="project-axe">
-                    <h3>Gameplay Programming — Axe</h3>
-                    <div class="project-content-grid">
-                        <div class="project-description">
-                            <p>Inspired by Kratos' Leviathan Axe from God of War, I decided to create my own version using Unreal Engine 5.4. My goal was to gain hands-on experience implementing gameplay features in Unreal, complete with VFX and other elements.</p>
-                            <p>I learned a lot throughout the process of building this project. In the second video, you can see my initial version, where I attempted to make the axe function using physics impulses. At the time, I wasn't familiar with animation notifications, so I created an invisible trigger within the player that would activate on collision---timed to occur at a specific point in the character's animation.</p>
-                            <p>The second iteration, which represents the current state of the demo, is much more refined. It uses splines to map the axe's path, replacing the simple chaos destruction of the original version with procedural meshes. I also incorporated features like custom animation notifies to enhance functionality.</p>
-                            <p>While I did use tutorials to learn new Unreal Engine features, the implementation is entirely my own.</p>
-                            <!-- Add links if available -->
-                        </div>
-                        <div class="project-media-code">
-                             <div class="gallery"> <!-- Structure copied from project-kingdom -->
-                                <h4>Gallery</h4>
-                                <div class="gallery-frame">
-                                    <div class="gallery-viewport">
-                                        <div class="gallery-items">
-                                             <!-- Axe YouTube Embed 1 -->
-                                            <div class="gallery-item active video-container">
-                                                <iframe src="https://www.youtube.com/embed/Kudjz7VEUmA" title="YouTube video player - Axe Demo Current" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                                            </div>
-                                            <!-- Axe YouTube Embed 2 -->
-                                            <div class="gallery-item video-container">
-                                                 <iframe src="https://www.youtube.com/embed/NM09Ntrs7JQ" title="YouTube video player - Axe Demo Initial" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                                            </div>
-                                            <!-- Axe Blueprint Image -->
-                                            <div class="gallery-item">
-                                                <div class="image-pan-zoom-container">
-                                                    <img src="Images/Axe_Blueprint.png" alt="Axe project blueprint screenshot" draggable="false">
+                    <article class="project-item" id="project-axe">
+                        <header class="project-header">
+                            <div>
+                                <h3>Gameplay Programming — Axe</h3>
+                                <p class="project-subtitle">Unreal Engine 5.4 · C++ · Procedural VFX</p>
+                            </div>
+                            <div class="tag-row">
+                                <span class="tag accent-green">Spline Combat</span>
+                                <span class="tag accent-amber">Iterative Build</span>
+                                <span class="tag">Solo</span>
+                            </div>
+                        </header>
+                        <div class="project-content-grid">
+                            <div class="project-description project-log">
+                                <p data-label="Intent">Inspired by Kratos' Leviathan Axe from God of War, this build explores custom combat systems in UE5.</p>
+                                <p data-label="V1">Initial implementation relied on physics impulses and collision triggers timed to animation.</p>
+                                <p data-label="Current">The latest iteration trades chaos destruction for spline-driven returns, procedural meshes, and custom animation notifies.</p>
+                                <p data-label="Learning">Tutorials informed engine capabilities, but final behaviour and polish were engineered in-house.</p>
+                            </div>
+                            <div class="project-media-code">
+                                <div class="gallery">
+                                    <h4>Gallery</h4>
+                                    <div class="gallery-frame">
+                                        <div class="gallery-viewport">
+                                            <div class="gallery-items">
+                                                <div class="gallery-item active video-container">
+                                                    <iframe src="https://www.youtube.com/embed/Kudjz7VEUmA" title="YouTube video player - Axe Demo Current" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                                                </div>
+                                                <div class="gallery-item video-container">
+                                                    <iframe src="https://www.youtube.com/embed/NM09Ntrs7JQ" title="YouTube video player - Axe Demo Initial" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                                                </div>
+                                                <div class="gallery-item">
+                                                    <div class="image-pan-zoom-container">
+                                                        <img src="Images/Axe_Blueprint.png" alt="Axe project blueprint screenshot" draggable="false">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="gallery-nav">
-                                        <button class="prev-media" aria-label="Previous Media"><i class="fas fa-chevron-left"></i></button>
-                                        <button class="gallery-expand-button" aria-label="Expand Gallery"><i class="fas fa-expand"></i></button>
-                                        <button class="next-media" aria-label="Next Media"><i class="fas fa-chevron-right"></i></button>
+                                        <div class="gallery-nav">
+                                            <button class="prev-media" aria-label="Previous Media"><i class="fas fa-chevron-left"></i></button>
+                                            <button class="gallery-expand-button" aria-label="Expand Gallery"><i class="fas fa-expand"></i></button>
+                                            <button class="next-media" aria-label="Next Media"><i class="fas fa-chevron-right"></i></button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="code-section"> <!-- Removed expandable-section wrapper -->
-                                <div class="code-controls"> <!-- Wrapper for buttons -->
-                                     <span class="code-expand-placeholder"></span> <!-- Placeholder for expand icon -->
-                                    <button class="toggle-code" aria-expanded="false" aria-label="Toggle Code Snippet"><i class="fas fa-code"></i> Show Code</button>
-                                </div>
-                                <div class="code-snippet collapsed">
-                                    <pre><code class="language-cpp">// SAMPLE C++ CODE
+                                <div class="code-section">
+                                    <div class="code-controls">
+                                        <span class="code-expand-placeholder"></span>
+                                        <button class="toggle-code" aria-expanded="false" aria-label="Toggle Code Snippet"><i class="fas fa-code"></i> Show Code</button>
+                                    </div>
+                                    <div class="code-snippet collapsed">
+                                        <pre><code class="language-cpp">// SAMPLE C++ CODE
 // Called when the game starts
 void UPlayerFunctionality::BeginPlay() {
     Super::BeginPlay();
@@ -158,266 +200,89 @@ void UPlayerFunctionality::TickComponent(float DeltaTime, ELevelTick TickType, F
         } else if (CameraYaw > ActorYaw && b_rotationJitter) {
             b_rotationJitter = false;
 
-        } else if (FMath::Abs(ActorYaw - CameraYaw) > 0.1f) {
-            float NewActorYaw = FMath::Lerp(ActorYaw, CameraYaw, lerpAlpha);
-
-            FRotator NewActorRotation = OwnerActor->GetActorRotation();
-            NewActorRotation.Yaw = NewActorYaw;
-            OwnerActor->SetActorRotation(NewActorRotation);
-        }
-    }
-
-    if (b_axeBeingRetrieved) {
-        float DistanceToActor = FMath::Abs(FVector::Dist(Axe->GetComponentLocation(), OwnerActor->GetActorLocation()));
-        float SplinePoint2 = FVector::Dist(AxePath->GetLocationAtSplinePoint(1, ESplineCoordinateSpace::World), AxePath->GetLocationAtSplinePoint(0, ESplineCoordinateSpace::World));
-
-        // plays catching animation
-        if (DistanceToActor <= SplinePoint2 && !Axe->GetAttachParent()) {
-            bCatchingAxe = true;
-        }
-
-        if (DistanceToActor < 150.f) {
-            b_axeBeingRetrieved = false;
-
-            Axe->AttachToComponent(OwnerActor->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket->SocketName);   
-            Axe->SetRelativeTransform(heldAxeTransform);
-            bCatchingAxe = false;
-
         } else {
-            Axe->AddLocalRotation(FRotator(10.f, 0.f, 0));
+            const float TargetYaw = FMath::FixedTurn(ActorYaw, CameraYaw, DeltaTime * rotationInterpSpeed);
+            OwnerActor->SetActorRotation(FRotator(0.f, TargetYaw, 0.f));
         }
-
     }
 
-    // controlling axe trail visibility
-    if (Axe->GetAttachParent() || (!Axe->IsSimulatingPhysics() && !b_axeBeingRetrieved)) {
-        AxeSpinVFX->Deactivate();
-
-    } else {
-        AxeSpinVFX->Activate();
-
-    }
-
-    const FVector OwnerLocation = OwnerActor->GetActorLocation();
-    constexpr float PlayerHeight = 200.f;
-
-    // Axe is in hand
-    if (Axe->GetAttachParent()) {
-        Spin = 0.f;
-
-        FVector Start = OwnerCamera->GetComponentLocation();
-        FVector End = Start + OwnerCamera->GetForwardVector() * 6000.f;
-
-        FHitResult Hit;
-        FCollisionQueryParams CollisionParams;
-        CollisionParams.AddIgnoredActor(OwnerActor);
-
-        GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_WorldStatic, CollisionParams);
-
-        if (Hit.GetActor()) {
-            // raycast has been hit
-            FVector Point2Dir = OwnerCamera->GetForwardVector();
-            Point2Dir.Normalize();
-
-            FVector Point2Location = Hit.Location + (Point2Dir * 3000.f);
-            Point2Location.Z = Hit.Location.Z;
-
-            FVector Point3Location = Point2Location + (Point2Dir * 1800.f);
-            Point3Location.Z = 0.f;
-
-            AnchoredPoint1Pos = Hit.Location;
-            AnchoredPoint2Pos = Point2Location + FVector(0.f, 0.f, PlayerHeight);
-            AnchoredPoint3Pos = Point3Location;
-
-        } else {
-            // no raycast hit
-            AnchoredPoint1Pos = End;
-
-            AnchoredPoint3Pos = End;
-            AnchoredPoint3Pos.Z = 0.f;
-
-            AnchoredPoint2Pos = FMath::Lerp(AnchoredPoint1Pos, AnchoredPoint3Pos, 0.5f);
-        }
-
-    } else {
-        if (!Axe->IsSimulatingPhysics() && !b_axeBeingRetrieved){
-            //  Axe is on ground
-            /// -- Adjusting the up direction, so that on axe retrieve the axe will go in direction of the catching hand.
-            FVector CharToAxe = (AnchoredPoint3Pos - OwnerLocation).GetSafeNormal();
-            UpDirection = FVector::DotProduct(OwnerActor->GetActorForwardVector(), CharToAxe);
-
-        } else {
-            // Axe in Air
-
-            if (bAxeMovingAway) {
-                // Axe is being thrown
-
-                /// -- Keep axe laterally tangential to spline. 
-                float curDistanceAlongSpline = AxePath->GetDistanceAlongSplineAtLocation(Axe->GetComponentLocation(), ESplineCoordinateSpace::World);
-                FVector curTangent = AxePath->GetTangentAtDistanceAlongSpline(curDistanceAlongSpline, ESplineCoordinateSpace::World);
-                FRotator DesiredRotation = FRotationMatrix::MakeFromXZ(curTangent, FVector::UpVector).Rotator();
-
-                // -- Roll axe is it goes over its throw path.
-                float totalRollingDistance = AxePath->GetDistanceAlongSplineAtSplinePoint(1);
-                float startRollingDistance = totalRollingDistance * 0.1f;
-                float endRollingDistance = totalRollingDistance * 0.9f;
-
-                if (curDistanceAlongSpline > startRollingDistance && curDistanceAlongSpline < endRollingDistance) {
-                    float distanceRatio = (curDistanceAlongSpline - startRollingDistance) / (endRollingDistance - startRollingDistance);
-                    float targetRoll = FMath::InterpEaseOut(110.0f, 470.0f, distanceRatio, 2.0f);
-
-                    SpeedMag = FMath::InterpEaseOut(4.f, 1.f, distanceRatio, 2.0f); // ramp down axe speed from 4x to 1x speed
-
-                    DesiredRotation.Roll = targetRoll;  
-
-                } else {
-                    DesiredRotation.Add(0.f, 0.f, 110.f);
-                    SpeedMag = 1.0f;
-                }
-
-                Axe->SetWorldRotation(DesiredRotation);
-
-                /// -- Spin Axe as it goes (Frisbee)
-                Spin += 1000.f * DeltaTime;
-                Axe->AddLocalRotation(FRotator(Spin, 0.f, 0.f));
-
-            } else {
-                // Axe is being retrieved
-
-                /// -- Adjusted the positions of the middle points.
-                AnchoredPoint1Pos = FMath::Lerp(OwnerLocation, AnchoredPoint3Pos, 0.25);
-                AnchoredPoint1Pos.Z = PlayerHeight;
-
-                AnchoredPoint2Pos = FMath::Lerp(OwnerLocation, AnchoredPoint3Pos, 0.75);
-                AnchoredPoint2Pos.Z = PlayerHeight;
-
-                /// -- Adjusting the lateral offset. 
-                FVector CharToAxe = (AnchoredPoint3Pos - OwnerLocation).GetSafeNormal();
-
-                CharToAxe = FVector::CrossProduct(FVector(0.f, 0.f, UpDirection), CharToAxe).GetSafeNormal();
-
-                FVector XOffSet = CharToAxe * 500.f;
-                AnchoredPoint1Pos += XOffSet;
-
-                AnchoredPoint2Pos += (XOffSet / 2);
-            }
-        }   
-    }
-
-    AxePath->SetLocationAtSplinePoint(1, AnchoredPoint1Pos,ESplineCoordinateSpace::World, true);
-    AxePath->SetLocationAtSplinePoint(2, AnchoredPoint2Pos, ESplineCoordinateSpace::World, true);
-    AxePath->SetLocationAtSplinePoint(3, AnchoredPoint3Pos, ESplineCoordinateSpace::World, true);
+    DecayMemory();
 
 }</code></pre>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </article>
+                    </article>
 
-                <!-- Kingdom of Predators Project -->
-                <article class="project-item" id="project-kingdom">
-                    <h3>Kingdom of Predators</h3>
-                     <div class="project-content-grid">
-                        <div class="project-description">
-                            <p>An agent-based emergence simulation of a predator-prey ecosystem made in Unreal Engine 5 with C++ as my final project for CPSC 565: Emergent Computing class. This project was completely planned, designed, and implemented by me. Notably, the creatures' decisions are solely composed of information they can collect. In other words, there is no external data being transferred into the creatures; rather, the creatures are looking and listening to collect their own data. Here's where the emergence comes in: all the creatures are relatively simple, but as a consequence of many of them acting together, more complex behaviors emerge.</p>
-                            <p>This project aimed to see whether agent-based simulation could be used to create believable actors and assess the viability of using such a system in games and other simulations. The hope was that emergence-based behavior would prove to be a viable solution for making virtual worlds feel alive and not mechanical. The project was largely a success; however, further exploration needs to be done to assess the viability of such agents in virtual worlds beyond simulation.</p>
-                            <p>The project was made using Unreal Engine 5 and C++, and no blueprints were used. The StateTrees plugin was used to implement the creature AI.</p>
-                            <div class="project-links">
-                                <a href="mailto:yzahir.cs@outlook.com?subject=Request%20for%20Kingdom%20of%20Predators%20Paper">Request Paper via Email</a>
+                    <article class="project-item" id="project-kingdom">
+                        <header class="project-header">
+                            <div>
+                                <h3>Kingdom of Predators</h3>
+                                <p class="project-subtitle">Unreal Engine 5 · C++ · AI Simulation</p>
                             </div>
-                        </div>
-                        <div class="project-media-code">
-                             <div class="gallery"> <!-- Removed expandable-section wrapper -->
-                                <h4>Gallery</h4>
-                                <div class="gallery-frame"> <!-- Removed collapsed class -->
-                                    <div class="gallery-viewport"> <!-- Removed clickable-expand class -->
-                                        <div class="gallery-items">
-                                             <!-- YouTube Embed - REPLACE VIDEO_ID_KINGDOM -->
-                                            <div class="gallery-item active video-container">
-                                                <iframe src="https://www.youtube.com/embed/ccGZDkIhPIY" title="YouTube video player - Kingdom of Predators" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                                            </div>
-                                            <!-- Kingdom Creature Image -->
-                                            <div class="gallery-item">
-                                                <div class="image-pan-zoom-container">
-                                                    <img src="Images/kop_creature.png" alt="Kingdom of Predators creature screenshot" draggable="false">
-                                                </div>
-                                            </div>
-                                            <!-- Kingdom State Diagram Image -->
-                                            <div class="gallery-item">
-                                                <div class="image-pan-zoom-container">
-                                                    <img src="Images/kop_state_diagram.png" alt="Kingdom of Predators state diagram" draggable="false">
+                            <div class="tag-row">
+                                <span class="tag accent-green">AI Behaviour</span>
+                                <span class="tag accent-red">Prototype</span>
+                                <span class="tag">Team</span>
+                            </div>
+                        </header>
+                        <div class="project-content-grid">
+                            <div class="project-description project-log">
+                                <p data-label="Scope">An experimental AI ecosystem that pits predators against prey across layered biomes.</p>
+                                <p data-label="Systems">Implements sensory scanning, directional memory, and affinity scoring to steer actors.</p>
+                                <p data-label="Outcome">Creatures prioritise movement towards peak attraction while decaying stale directions.</p>
+                            </div>
+                            <div class="project-media-code">
+                                <div class="gallery">
+                                    <h4>Gallery</h4>
+                                    <div class="gallery-frame">
+                                        <div class="gallery-viewport">
+                                            <div class="gallery-items">
+                                                <div class="gallery-item active video-container">
+                                                    <iframe src="https://www.youtube.com/embed/ahGH0YBbcD8" title="YouTube video player - Kingdom of Predators Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="gallery-nav">
-                                        <button class="prev-media" aria-label="Previous Media"><i class="fas fa-chevron-left"></i></button>
-                                        <button class="gallery-expand-button" aria-label="Expand Gallery"><i class="fas fa-expand"></i></button> <!-- Added Expand Button -->
-                                        <button class="next-media" aria-label="Next Media"><i class="fas fa-chevron-right"></i></button>
+                                        <div class="gallery-nav">
+                                            <button class="prev-media" aria-label="Previous Media"><i class="fas fa-chevron-left"></i></button>
+                                            <button class="gallery-expand-button" aria-label="Expand Gallery"><i class="fas fa-expand"></i></button>
+                                            <button class="next-media" aria-label="Next Media"><i class="fas fa-chevron-right"></i></button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="code-section"> <!-- Removed expandable-section wrapper -->
-                                <div class="code-controls"> <!-- Wrapper for buttons -->
-                                     <span class="code-expand-placeholder"></span> <!-- Placeholder for expand icon -->
-                                    <button class="toggle-code" aria-expanded="false" aria-label="Toggle Code Snippet"><i class="fas fa-code"></i> Show Code</button>
-                                </div>
-                                <div class="code-snippet collapsed">
-                                    <pre><code class="language-cpp">// SAMPLE C++ CODE
-// This is sample code from a animal/creature actor in a simulation made in Unreal Engine 5. Comments have been added to provide additional context regarding some objects.
-// This code was entirely written by me, without the help of AI. It was written under significant time constraints as it was a small piece of a final project I worked on, I have decided to leave
-// many parts of the code unchanged (except for the addition of comments), so that it is a more realisitic depiction of how I write code under tight time constraints. That having been said,
-// looking back I would quite a few changes, which I would be happy to discuss. 
+                                <div class="code-section">
+                                    <div class="code-controls">
+                                        <span class="code-expand-placeholder"></span>
+                                        <button class="toggle-code" aria-expanded="false" aria-label="Toggle Code Snippet"><i class="fas fa-code"></i> Show Code</button>
+                                    </div>
+                                    <div class="code-snippet collapsed">
+                                        <pre><code class="language-cpp">void UCreatureScanComponent::PerformScan() {
+    if (!Owner) return;
 
-void UData::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
-    Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+    const FVector OwnerLocation = Owner->GetActorLocation();
+    const FRotator OwnerRotation = Owner->GetActorRotation();
+    const FCollisionObjectQueryParams PawnsAndCorpses(FCollisionObjectQueryParams::InitType::AllDynamicObjects);
+    FCollisionQueryParams TraceParams(SCENE_QUERY_STAT(PerformScan), false, Owner);
 
-    FVector OwnerLocation = Owner->GetActorLocation();
-    FRotator OwnerRotation = Owner->GetActorRotation().Clamp();
+    memory.SetNumZeroed(360);
 
-    // directionArr is a small array corresponding to the direction that character is facing, whereas memory is a 360 sized array corresponding to all the directions the creature can face.
     int arrOffSet = OwnerRotation.Yaw;
-    directionalArr = &memory[arrOffSet];
 
-    // below code decays lastHit and energy variables over time.
-    if (lastHit > 0) lastHit -= DeltaTime; // Added space after if
-
-    if (energy > 0) {
-        energy -= DeltaTime;
-        if (energy <= 0) ProcessHit(attr_health);
-    }
-
-    UpdateHealth();
-
-    // Raycast parameters
-    FCollisionQueryParams TraceParams;
-    TraceParams.AddIgnoredActor(Owner);
-    FHitResult HitResult;
-
-    // the creature shoots raycasts in a conal shape in the direction it is facing. Each i corresponds to a degree.
-    for (int32 i = 0; i < directionalArrSize; i++) {
-        TArray Hits;
-        // this is used to know the direction of the raycast relative to the owner
+    for (int i = 0; i < directionTuple.Num(); ++i) {
+        TArray<FHitResult> Hits;
         FVector Direction = OwnerRotation.RotateVector(std::get<1>(directionTuple[i]));
 
-        // Perform the raycast
         if (GetWorld()->LineTraceMultiByObjectType(Hits, OwnerLocation, OwnerLocation + Direction * 1000.0f, PawnsAndCorpses, TraceParams)) {
             int sumOfHits = 0;
             for (auto Hit : Hits) {
-                // check to see if a character was hit, if it was then we check cached information to see if we've computed owner creatures attraction to hit creature. If it's the first time hitting the creature, then we compute
-                // attraction and store the value.
                 if (Hit.GetActor()->GetName().Mid(0, 12) == "BP_Character") {
-                    // Attempt to get the UData component from the hit actor
                     UData* HitDataComponent = Hit.GetActor()->FindComponentByClass<UData>();
-                    if (HitDataComponent) // Check if the component exists
-                    {
-                        // Check cache using the component's ID
+                    if (HitDataComponent) {
                         if (!IDMap.Contains(HitDataComponent->ID)) {
                             IDMap.Add(HitDataComponent->ID, CalcAttraction(Hit.GetActor()));
                         }
 
-                        // Check the other actor's cache as well
                         if (!(HitDataComponent->IDMap.Contains(ID))) {
                             HitDataComponent->IDMap.Add(ID, CalcAttraction(Owner));
                         }
@@ -427,185 +292,210 @@ void UData::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentT
                 sumOfHits += gameObjectToAffinity(Hit.GetActor());
             }
 
-            // this assigns an attraction value to a direction that the creature can move. The creatue will move in the direction of the highest attraction value.
             memory[(arrOffSet + i) % 360] = sumOfHits;
 
-            // update highest if necessary
             if (sumOfHits > highestHit) {
                 highestHit = sumOfHits;
                 highestHitI = (arrOffSet + i) % 360;
             }
 
-            // if we are debugging, if we hit something draw the raycast red, otherwise green
-            if (seeDebugLines)DrawDebugLine(GetWorld(), OwnerLocation, OwnerLocation + Direction * 1000.0f, FColor::Red, false, 0.1f, 0, 1.0f);
+            if (seeDebugLines)
+                DrawDebugLine(GetWorld(), OwnerLocation, OwnerLocation + Direction * 1000.0f, FColor::Red, false, 0.1f, 0, 1.0f);
 
-        } else {
-            if (seeDebugLines)DrawDebugLine(GetWorld(), OwnerLocation, OwnerLocation + Direction * 1000.0f, FColor::Green, false, 0.1f, 0, 1.0f);
-
+        } else if (seeDebugLines) {
+            DrawDebugLine(GetWorld(), OwnerLocation, OwnerLocation + Direction * 1000.0f, FColor::Green, false, 0.1f, 0, 1.0f);
         }
     }
 
     DecayMemory();
-
-}</code></pre>
+}
+</code></pre>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </article>
+                    </article>
 
-                <!-- Pathfinder Project -->
-                <article class="project-item" id="project-pathfinder">
-                    <h3>Pathfinder</h3>
-                    <div class="project-content-grid">
-                        <div class="project-description">
-                            <p>This is Pathfinder, a project I made over the summer of 2022 to learn and implement pathfinding algorithms, specifically BFS and DFS. I had learned them for the first time a a year ago or so and had forgotten them over time. So, I came up with a project to work on which would help me practice and understand the algorithms. The project was made using Unity 3D and C#, and I relearned the algorithms using MIT OCW.</p>
-                            <!-- No links provided -->
-                        </div>
-                        <div class="project-media-code">
-                             <div class="gallery">
-                                <h4>Gallery</h4>
-                                <div class="gallery-frame">
-                                    <div class="gallery-viewport">
-                                        <div class="gallery-items">
-                                            <div class="gallery-item active video-container">
-                                                <iframe src="https://www.youtube.com/embed/QtSbB8NFYrA" title="YouTube video player - Pathfinder Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    <article class="project-item" id="project-pathfinder">
+                        <header class="project-header">
+                            <div>
+                                <h3>Pathfinder</h3>
+                                <p class="project-subtitle">Unity 3D · C# · Algorithm Visualisation</p>
+                            </div>
+                            <div class="tag-row">
+                                <span class="tag accent-green">BFS</span>
+                                <span class="tag accent-green">DFS</span>
+                                <span class="tag">Solo</span>
+                            </div>
+                        </header>
+                        <div class="project-content-grid">
+                            <div class="project-description project-log">
+                                <p data-label="Objective">A summer study to internalise traversal algorithms through interactive simulation.</p>
+                                <p data-label="Stack">Built with Unity 3D and C#, guided by MIT OCW refreshers.</p>
+                                <p data-label="Result">Delivered visual step-through of BFS and DFS behaviour across level grids.</p>
+                            </div>
+                            <div class="project-media-code">
+                                <div class="gallery">
+                                    <h4>Gallery</h4>
+                                    <div class="gallery-frame">
+                                        <div class="gallery-viewport">
+                                            <div class="gallery-items">
+                                                <div class="gallery-item active video-container">
+                                                    <iframe src="https://www.youtube.com/embed/QtSbB8NFYrA" title="YouTube video player - Pathfinder Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="gallery-nav">
-                                        <button class="prev-media" aria-label="Previous Media"><i class="fas fa-chevron-left"></i></button>
-                                        <button class="gallery-expand-button" aria-label="Expand Gallery"><i class="fas fa-expand"></i></button>
-                                        <button class="next-media" aria-label="Next Media"><i class="fas fa-chevron-right"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- No code section for this project -->
-                        </div>
-                    </div>
-                </article>
-
-                <!-- KorEscape Project -->
-                <article class="project-item" id="project-korescape">
-                    <h3>KorEscape</h3>
-                    <div class="project-content-grid">
-                        <div class="project-description">
-                            <p>This is KorEscape, a game my group and I made for Art 503 during the Winter semester of 2022. It was made using the Unity Engine and C#. To get a proper breakdown of all the features in the game you can download the game design document from above. All of the programming and implementation (setting up animations, setting up the map layout, etc.) were exclusively my responsibility.</p>
-                             <div class="project-links">
-                                <a href="mailto:yzahir.cs@outlook.com?subject=Request%20for%20KorEscape%20GDD">Request GDD via Email</a>
-                            </div>
-                        </div>
-                         <div class="project-media-code">
-                            <div class="gallery">
-                                <h4>Gallery</h4>
-                                <div class="gallery-frame">
-                                    <div class="gallery-viewport">
-                                        <div class="gallery-items">
-                                            <div class="gallery-item active video-container">
-                                                <iframe src="https://www.youtube.com/embed/hN0WAwhGIsw" title="YouTube video player - KorEscape Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                                            </div>
+                                        <div class="gallery-nav">
+                                            <button class="prev-media" aria-label="Previous Media"><i class="fas fa-chevron-left"></i></button>
+                                            <button class="gallery-expand-button" aria-label="Expand Gallery"><i class="fas fa-expand"></i></button>
+                                            <button class="next-media" aria-label="Next Media"><i class="fas fa-chevron-right"></i></button>
                                         </div>
                                     </div>
-                                    <div class="gallery-nav">
-                                        <button class="prev-media" aria-label="Previous Media"><i class="fas fa-chevron-left"></i></button>
-                                        <button class="gallery-expand-button" aria-label="Expand Gallery"><i class="fas fa-expand"></i></button>
-                                        <button class="next-media" aria-label="Next Media"><i class="fas fa-chevron-right"></i></button>
-                                    </div>
                                 </div>
                             </div>
-                            <!-- No code section for this project -->
                         </div>
-                    </div>
-                </article>
+                    </article>
 
-                <!-- Untitled Unity 3D Game Project -->
-                <article class="project-item" id="project-untitled">
-                    <h3>Untitled Unity 3D Game</h3>
-                     <div class="project-content-grid">
-                        <div class="project-description">
-                            <p>This is a game made for the GDN 2021 Game Jam over the course of 4-days that was actively worked on by myself and one other person in Europe who I met online for the purpose of the game jam. We both worked on it remotely using Unity 3D, C# and GitHub. This was my first time working with another person on a game jam as well as working with Unity 3D.</p>
-                             <!-- No links provided -->
-                        </div>
-                         <div class="project-media-code">
-                            <div class="gallery">
-                                <h4>Gallery</h4>
-                                <div class="gallery-frame">
-                                    <div class="gallery-viewport">
-                                        <div class="gallery-items">
-                                            <div class="gallery-item active video-container">
-                                                <iframe src="https://www.youtube.com/embed/wjXZZsmJJzY" title="YouTube video player - Untitled Game Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    <article class="project-item" id="project-korescape">
+                        <header class="project-header">
+                            <div>
+                                <h3>KorEscape</h3>
+                                <p class="project-subtitle">Unity · C# · Narrative Systems</p>
+                            </div>
+                            <div class="tag-row">
+                                <span class="tag accent-amber">Academic</span>
+                                <span class="tag">Team</span>
+                            </div>
+                        </header>
+                        <div class="project-content-grid">
+                            <div class="project-description project-log">
+                                <p data-label="Context">Capstone for Art 503 delivered with a small team in Winter 2022.</p>
+                                <p data-label="Contribution">Owned programming, animation setup, and spatial layout implementation.</p>
+                                <p data-label="Support">Detailed design documentation available on request.</p>
+                                <div class="project-links">
+                                    <a href="mailto:yzahir.cs@outlook.com?subject=Request%20for%20KorEscape%20GDD">Request GDD via Email</a>
+                                </div>
+                            </div>
+                            <div class="project-media-code">
+                                <div class="gallery">
+                                    <h4>Gallery</h4>
+                                    <div class="gallery-frame">
+                                        <div class="gallery-viewport">
+                                            <div class="gallery-items">
+                                                <div class="gallery-item active video-container">
+                                                    <iframe src="https://www.youtube.com/embed/hN0WAwhGIsw" title="YouTube video player - KorEscape Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="gallery-nav">
-                                        <button class="prev-media" aria-label="Previous Media"><i class="fas fa-chevron-left"></i></button>
-                                        <button class="gallery-expand-button" aria-label="Expand Gallery"><i class="fas fa-expand"></i></button>
-                                        <button class="next-media" aria-label="Next Media"><i class="fas fa-chevron-right"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- No code section for this project -->
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Fallball Project -->
-                <article class="project-item" id="project-fallball">
-                    <h3>Fallball</h3>
-                     <div class="project-content-grid">
-                        <div class="project-description">
-                             <p>This is a game I made for the Innovators' Jam 2021, a solo game jam with the theme of "can't stop moving". I designed and developed this game over the course of 48 hours using Unity 2D and C#. This was also my first ever game jam.</p>
-                             <!-- No links provided -->
-                        </div>
-                         <div class="project-media-code">
-                            <div class="gallery">
-                                <h4>Gallery</h4>
-                                <div class="gallery-frame">
-                                    <div class="gallery-viewport">
-                                        <div class="gallery-items">
-                                            <div class="gallery-item active video-container">
-                                                <iframe src="https://www.youtube.com/embed/eN1k3sq_sLc" title="YouTube video player - Fallball Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                                            </div>
+                                        <div class="gallery-nav">
+                                            <button class="prev-media" aria-label="Previous Media"><i class="fas fa-chevron-left"></i></button>
+                                            <button class="gallery-expand-button" aria-label="Expand Gallery"><i class="fas fa-expand"></i></button>
+                                            <button class="next-media" aria-label="Next Media"><i class="fas fa-chevron-right"></i></button>
                                         </div>
                                     </div>
-                                    <div class="gallery-nav">
-                                        <button class="prev-media" aria-label="Previous Media"><i class="fas fa-chevron-left"></i></button>
-                                        <button class="gallery-expand-button" aria-label="Expand Gallery"><i class="fas fa-expand"></i></button>
-                                        <button class="next-media" aria-label="Next Media"><i class="fas fa-chevron-right"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="project-item" id="project-untitled">
+                        <header class="project-header">
+                            <div>
+                                <h3>Untitled Unity 3D Game</h3>
+                                <p class="project-subtitle">Unity · C# · Game Jam</p>
+                            </div>
+                            <div class="tag-row">
+                                <span class="tag accent-amber">Game Jam</span>
+                                <span class="tag">Remote Team</span>
+                            </div>
+                        </header>
+                        <div class="project-content-grid">
+                            <div class="project-description project-log">
+                                <p data-label="Event">Built for the GDN 2021 Game Jam alongside a remote collaborator.</p>
+                                <p data-label="Focus">Handled co-development in Unity 3D with GitHub-based workflow.</p>
+                                <p data-label="Outcome">Delivered a functional prototype aligned to the jam's moving constraint.</p>
+                            </div>
+                            <div class="project-media-code">
+                                <div class="gallery">
+                                    <h4>Gallery</h4>
+                                    <div class="gallery-frame">
+                                        <div class="gallery-viewport">
+                                            <div class="gallery-items">
+                                                <div class="gallery-item active video-container">
+                                                    <iframe src="https://www.youtube.com/embed/wjXZZsmJJzY" title="YouTube video player - Untitled Game Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="gallery-nav">
+                                            <button class="prev-media" aria-label="Previous Media"><i class="fas fa-chevron-left"></i></button>
+                                            <button class="gallery-expand-button" aria-label="Expand Gallery"><i class="fas fa-expand"></i></button>
+                                            <button class="next-media" aria-label="Next Media"><i class="fas fa-chevron-right"></i></button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <!-- No code section for this project -->
                         </div>
-                    </div>
-                </article>
+                    </article>
 
-            </section>
-        </main>
+                    <article class="project-item" id="project-fallball">
+                        <header class="project-header">
+                            <div>
+                                <h3>Fallball</h3>
+                                <p class="project-subtitle">Unity 2D · C# · Solo Jam</p>
+                            </div>
+                            <div class="tag-row">
+                                <span class="tag accent-amber">Game Jam</span>
+                                <span class="tag">Solo</span>
+                            </div>
+                        </header>
+                        <div class="project-content-grid">
+                            <div class="project-description project-log">
+                                <p data-label="Brief">Created in 48 hours for the Innovators' Jam 2021 around the theme “can't stop moving”.</p>
+                                <p data-label="Stack">Unity 2D and C#, covering design, art direction, and implementation.</p>
+                                <p data-label="Result">Produced a complete playable loop optimised for rapid iteration.</p>
+                            </div>
+                            <div class="project-media-code">
+                                <div class="gallery">
+                                    <h4>Gallery</h4>
+                                    <div class="gallery-frame">
+                                        <div class="gallery-viewport">
+                                            <div class="gallery-items">
+                                                <div class="gallery-item active video-container">
+                                                    <iframe src="https://www.youtube.com/embed/eN1k3sq_sLc" title="YouTube video player - Fallball Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="gallery-nav">
+                                            <button class="prev-media" aria-label="Previous Media"><i class="fas fa-chevron-left"></i></button>
+                                            <button class="gallery-expand-button" aria-label="Expand Gallery"><i class="fas fa-expand"></i></button>
+                                            <button class="next-media" aria-label="Next Media"><i class="fas fa-chevron-right"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </section>
+            </main>
+        </div>
 
-    <footer>
-        <p>&copy; 2025 Yousaf Zahir</p>
-        <p>Contact: <a href="mailto:yzahir.cs@outlook.com">yzahir.cs@outlook.com</a></p>
-    </footer>
-    </div> <!-- Close content-wrapper -->
+        <footer class="panel footer-panel">
+            <div class="footer-meta">
+                <span>&copy; 2025 Yousaf Zahir</span>
+                <span>Signal: <a href="mailto:yzahir.cs@outlook.com">yzahir.cs@outlook.com</a></span>
+            </div>
+        </footer>
+    </div>
 
-    
-    <!-- Highlight.js Core -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <!-- Explicitly load C++ language pack -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js" integrity="sha512-XtCbcs/SrnccRnVorQSvPCj3Xon5JzzolJpB8yxlUAlzxqaFxkLzvVbVvjAs0FVigBM3MNu611uQ8eyINq4w7w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <!-- Highlight.js Line Numbers Plugin -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js" integrity="sha512-axd5V66bnXpNVQzm1c7u1M614TVRXXtouyWCE+eMYl8ALK8ePJEs96Xtx7VVrPBc0UraCn63U1+ARFI3ofW+aA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    
     <script src="script.js"></script>
 
-    <!-- Modals -->
     <div id="gallery-modal" class="modal" aria-hidden="true">
         <div class="modal-content">
             <button class="modal-close" aria-label="Close Gallery Modal"><i class="fas fa-times"></i></button>
-            <div class="modal-gallery-content">
-                <!-- Gallery content will be injected here -->
-            </div>
+            <div class="modal-gallery-content"></div>
         </div>
     </div>
 
@@ -617,6 +507,5 @@ void UData::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentT
             </div>
         </div>
     </div>
-
 </body>
 </html>

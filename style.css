@@ -1,802 +1,622 @@
-/* Basic Reset & Swiss Design Font */
+:root {
+  --bg: #050608;
+  --panel-bg: #0c1218;
+  --panel-border: rgba(40, 80, 90, 0.6);
+  --panel-border-subtle: rgba(40, 80, 90, 0.35);
+  --text-primary: #d3e4ea;
+  --text-secondary: #7fa1ad;
+  --accent-green: #31d8a4;
+  --accent-amber: #d7a94b;
+  --accent-red: #f06a6a;
+  --grid-line: rgba(26, 48, 60, 0.6);
+  --whitespace-unit: 16px;
+  --mono: "IBM Plex Mono", "Fira Code", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+
 *, *::before, *::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 html {
-    scroll-behavior: smooth; /* Enable smooth scrolling */
+  font-size: 16px;
+  scroll-behavior: smooth;
 }
 
 body {
-  /* Ensure Akkurat font is loaded. Using standard sans-serif fallbacks. */
-  font-family: Akkurat, 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-weight: 400;
-  line-height: 1.7;
-  color: #e0e0e0; /* Brighter default text */
-  /* High Contrast Background */
-  background-color: #0a0a0a; /* Very dark base */
-  background-image: none; /* Ensure no background image */
-  background-size: 100% 100%;
-  background-position: center;
-  background-attachment: fixed;
   min-height: 100vh;
-  display: flex; /* Needed for centering wrapper */
+  background: radial-gradient(circle at top, rgba(19, 30, 40, 0.25), transparent 55%), var(--bg);
+  color: var(--text-primary);
+  font-family: var(--mono);
+  letter-spacing: 0.02em;
+  display: flex;
   justify-content: center;
-  align-items: flex-start; /* Align wrapper to top */
-  padding: 40px 20px 40px 220px; /* Add left padding for TOC */
-  position: relative; /* For TOC positioning context if needed */
+  padding: 2rem;
 }
 
-.background-overlay {
-  /* Styles for overlay if needed */
+.app-shell {
+  width: min(1200px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
-/* Table of Contents */
-#toc {
-    position: fixed; /* Keep it visible */
-    left: 20px;
-    top: 40px;
-    width: 180px; /* Width of the TOC */
-    height: calc(100vh - 80px); /* Adjust height based on body padding */
-    overflow-y: auto; /* Allow scrolling within TOC if needed */
-    padding: 15px;
-    font-family: Akkurat, 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-size: 0.9rem;
-    z-index: 500;
+.panel {
+  background-color: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  padding: 1.25rem 1.5rem;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+  position: relative;
 }
 
-#toc h4 {
-    font-family: Futura, 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-weight: 600;
-    color: #a0a0a0; /* Muted heading */
-    font-size: 1rem;
-    margin-bottom: 15px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+.panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(255, 255, 255, 0.02);
+  pointer-events: none;
+}
+
+.top-bar {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 2rem;
+  align-items: start;
+  border-bottom: 1px solid var(--panel-border-subtle);
+}
+
+.identity-block h1 {
+  font-size: 2.4rem;
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--accent-green);
+}
+
+.identity-block .subtitle {
+  color: var(--text-secondary);
+  margin-top: 0.35rem;
+  font-size: 0.95rem;
+}
+
+.status-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.75rem 1.5rem;
+}
+
+.status-line {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--panel-border-subtle);
+  padding-bottom: 0.35rem;
+}
+
+.status-label {
+  text-transform: uppercase;
+  font-size: 0.68rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.14em;
+}
+
+.status-value {
+  font-size: 0.82rem;
+  color: var(--text-primary);
+}
+
+.accent-green { color: var(--accent-green); }
+.accent-amber { color: var(--accent-amber); }
+.accent-red { color: var(--accent-red); }
+
+.layout-grid {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 1.5rem;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.panel-title {
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
 }
 
 #toc ul {
-    list-style: none;
-    padding-left: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.4rem;
 }
 
-#toc ul ul {
-    padding-left: 15px; /* Indent sub-items */
-    margin-top: 5px;
-}
-
-#toc li {
-    margin-bottom: 8px;
+#toc li > ul {
+  margin-top: 0.2rem;
+  margin-left: 1rem;
+  border-left: 1px solid var(--panel-border-subtle);
+  padding-left: 0.8rem;
+  gap: 0.25rem;
 }
 
 #toc a {
-    color: #888888; /* Muted link color */
-    text-decoration: none;
-    transition: color 0.2s ease;
-    display: block; /* Make link clickable area larger */
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.82rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: color 0.2s ease;
+}
+
+#toc a::before {
+  content: "•";
+  color: var(--grid-line);
+  font-size: 0.65rem;
 }
 
 #toc a:hover,
-#toc a:focus {
-    color: #cccccc; /* Brighter on hover/focus */
-}
-
-/* Style for the primary active TOC link (brightest) */
+#toc a:focus,
 #toc a.toc-active-primary {
-    color: #ffffff; /* White color */
-    font-weight: 600; /* Bold */
+  color: var(--accent-green);
 }
 
-/* Style for secondary active TOC links (dimmer) */
 #toc a.toc-active-secondary {
-    color: #b0b0b0; /* Grey color */
-    /* Optionally use opacity: color: #ffffff; opacity: 0.6; */
-    font-weight: 400; /* Normal weight */
+  color: var(--accent-amber);
 }
 
-
-/* Frosted Glass Container */
-.content-wrapper {
-  position: relative; /* Needed for z-index stacking */
-  z-index: 1;
-  width: 100%;
-  max-width: 950px; /* Slightly wider */
-  /* High Contrast Container */
-  background-color: rgba(18, 18, 18, 0.85); /* Darker, more opaque */
-  backdrop-filter: blur(8px) saturate(100%); /* Less blur/saturation */
-  -webkit-backdrop-filter: blur(8px) saturate(100%);
-  border-radius: 6px; /* Sharper radius */
-  border: 1px solid rgba(255, 255, 255, 0.15); /* Slightly more visible border */
-  padding: 50px 60px;
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6); /* Stronger shadow */
-  overflow: hidden; /* Ensure content respects border radius */
-  /* Removed inner shadow for cleaner look */
+.summary-list {
+  list-style: none;
+  display: grid;
+  gap: 0.55rem;
 }
 
-
-/* Swiss Design Inspired Layout & Typography */
-header {
-  text-align: left;
-  margin-bottom: 60px; /* Even more space below header */
-  padding-bottom: 15px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15); /* Even subtler border */
+.summary-list li {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  border-bottom: 1px solid var(--panel-border-subtle);
+  padding-bottom: 0.35rem;
 }
 
-header h1, h2, h3 {
-    /* Ensure Futura font is loaded. Using standard sans-serif fallbacks. */
-    font-family: Futura, 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    color: #ffffff; /* White headings for high contrast */
+.summary-label {
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  letter-spacing: 0.12em;
+  font-size: 0.7rem;
 }
 
-header h1 {
-    font-size: 3.2rem; /* Slightly larger */
-    font-weight: 700; /* Bold Futura */
-    letter-spacing: -1.5px; /* Tighter spacing */
+.summary-value {
+  color: var(--text-primary);
 }
 
-main {
-  /* Main content area */
+.main-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
-.main-content {
-  display: flex; /* Use flex for columns */
-  gap: 60px; /* Space between columns */
-  margin-bottom: 60px;
-}
-
-section, header { /* Add scroll margin to sections and header */
-  scroll-margin-top: 20px; /* Adjust as needed */
-}
-
-section {
-  flex: 1;
-  min-width: 0;
-  margin-bottom: 0;
-}
-
-h2 { /* Section titles like About Me, Contact, Projects */
-  font-size: 1.6rem;
-  font-weight: 600; /* Bold Futura */
-  margin-bottom: 20px; /* More space below */
-  border-bottom: none;
-  padding-bottom: 5px;
-  letter-spacing: 0.2px;
+.data-section h2 {
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-secondary);
+  margin-bottom: 0.9rem;
 }
 
 p {
-    font-family: Akkurat, 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Ensure body font */
-    font-weight: 400; /* Ensure normal weight */
-    font-size: 1rem; /* Standard body size */
-    line-height: 1.7;
-    color: #c8c8c8; /* Lighter grey body text */
-    max-width: 70ch; /* Adjust line length */
-}
-
-footer {
-  text-align: left;
-  margin-top: 40px;
-  padding-top: 15px;
-  border-top: 1px solid rgba(255, 255, 255, 0.2); /* Lighter separator */
+  color: var(--text-primary);
   font-size: 0.9rem;
-  color: #bbbbbb; /* Light text */
+  line-height: 1.5;
 }
 
-
-/* Projects Section Styling */
-#projects {
-  margin-top: 50px; /* Space above the projects section */
-  width: 100%;
+p[data-label] {
+  position: relative;
+  padding-left: 7.5rem;
+  margin-bottom: 0.6rem;
 }
 
-
-/* Cleaner Project Item Styling */
-.project-item {
-  background-color: transparent;
-  border: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 0;
-  padding: 40px 0;
-  margin-bottom: 0;
-  scroll-margin-top: 60px; /* Increase offset for project items */
-  box-shadow: none;
+p[data-label]::before {
+  content: attr(data-label);
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 0.65rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
 }
-/* Add top border to the first project item as well */
-#projects > .project-item:first-of-type {
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+p[data-label] a {
+  color: var(--accent-green);
+  text-decoration: none;
+}
+
+p[data-label] a:hover {
+  color: var(--accent-amber);
+}
+
+.project-item + .project-item {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--panel-border-subtle);
+}
+
+.project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.project-header h3 {
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--accent-green);
+}
+
+.project-subtitle {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  margin-top: 0.35rem;
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.tag {
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--panel-border-subtle);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.tag.accent-green {
+  border-color: var(--accent-green);
+  color: var(--accent-green);
+}
+
+.tag.accent-amber {
+  border-color: var(--accent-amber);
+  color: var(--accent-amber);
+}
+
+.tag.accent-red {
+  border-color: var(--accent-red);
+  color: var(--accent-red);
 }
 
 .project-content-grid {
-    display: flex;
-    gap: 40px; /* Space between description and media/code */
-    margin-top: 15px; /* Space below title */
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) minmax(260px, 1fr);
+  gap: 1.5rem;
 }
 
-.project-description {
-    flex: 1; /* Takes up available space */
-    min-width: 0;
+.project-log p:last-child {
+  margin-bottom: 0;
 }
 
-.project-media-code {
-    flex: 1; /* Takes up available space */
-    min-width: 0;
-    /* Contains gallery and code section */
+.project-links {
+  margin-top: 0.8rem;
 }
 
-
-.project-item h3 { /* Project Titles */
-  font-size: 1.4rem;
-  font-weight: 700; /* Bold Futura */
-  color: #ffffff;
-  margin-bottom: 15px; /* More space below title */
-  border-bottom: none;
-  padding-bottom: 5px;
-  letter-spacing: -0.5px;
-}
-
-.project-item p {
-  font-family: Akkurat, 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Ensure body font */
-  font-weight: 400; /* Ensure normal weight */
-  font-size: 1rem; /* Standard body size */
-  color: #c8c8c8; /* Lighter grey body text */
-  margin-bottom: 25px;
-}
-
-/* Gallery Styling */
-.gallery {
-  position: relative; /* Needed for positioning nav buttons */
-}
-
-.gallery h4 { /* "Gallery" label */
-  font-family: Futura, 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Header font */
-  font-weight: 500;
-  color: #d0d0d0; /* Slightly brighter label */
-  margin-bottom: 12px;
+.project-links a {
+  color: var(--accent-amber);
+  font-size: 0.78rem;
   text-transform: uppercase;
-  font-size: 0.85rem; /* Slightly larger label */
-  letter-spacing: 1.5px; /* More spacing */
+  letter-spacing: 0.15em;
+  text-decoration: none;
+}
+
+.project-links a:hover {
+  color: var(--accent-green);
+}
+
+.gallery h4 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--text-secondary);
+  margin-bottom: 0.6rem;
 }
 
 .gallery-frame {
-    border: 1px solid rgba(255, 255, 255, 0.15); /* Frame border */
-    padding: 15px 15px 10px 15px; /* Adjust padding: Top, R/L, Bottom */
-    border-radius: 6px; /* Frame radius */
-    background-color: rgba(255, 255, 255, 0.03); /* Subtle frame background */
+  border: 1px solid var(--panel-border-subtle);
+  background: rgba(6, 10, 14, 0.8);
+  padding: 0.75rem;
 }
 
 .gallery-viewport {
   position: relative;
   overflow: hidden;
-  border-radius: 4px;
-  background-color: rgba(0, 0, 0, 0.2);
-  min-height: 200px;
-  border: none;
+  border: 1px solid var(--panel-border-subtle);
+  background: #020406;
+  min-height: 220px;
 }
 
 .gallery-items {
-  display: flex; /* Use flex to manage items (though only one is visible) */
+  display: flex;
 }
 
 .gallery-item {
-  display: none; /* Hide all items by default */
-  width: 100%; /* Ensure item takes full width */
-  height: auto;
-  vertical-align: middle; /* Align media nicely */
-  flex-shrink: 0;
+  display: none;
+  width: 100%;
 }
 
 .gallery-item.active {
   display: block;
 }
 
-/* Container for pan/zoom functionality */
-.image-pan-zoom-container {
-    width: 100%;
-    height: 250px; /* Default height for inline gallery images */
-    overflow: hidden;
-    position: relative; /* Needed for absolute positioning if required, and for cursor */
-    cursor: grab; /* Indicate interactivity */
-    background-color: #000; /* Background if image doesn't cover */
-    border-radius: 4px; /* Match viewport radius */
-    position: relative; /* Ensure positioning context for pseudo-elements */
-}
-
-/* Add a zoom indicator icon on hover */
-.image-pan-zoom-container::after {
-    content: '\f00e'; /* Font Awesome zoom-in icon */
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 1.2rem;
-    color: rgba(255, 255, 255, 0.7);
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 5px 8px;
-    border-radius: 3px;
-    opacity: 0;
-    transition: opacity 0.2s ease-in-out;
-    pointer-events: none; /* Don't let the icon interfere with clicks */
-    z-index: 10; /* Ensure it's above the image */
-}
-
-.image-pan-zoom-container:hover::after {
-    opacity: 1; /* Show icon on hover */
-}
-
-
-.image-pan-zoom-container.panning {
-    cursor: grabbing; /* Cursor while panning */
-}
-
-/* Style for images within the pan/zoom container */
-.image-pan-zoom-container img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: contain; /* Start contained, zoom will scale it */
-    transform-origin: 0 0; /* Set transform origin for scaling/panning */
-    transition: transform 0.1s ease-out; /* Smooth transition for zoom */
-    user-select: none; /* Prevent text selection */
-    -webkit-user-drag: none; /* Prevent default drag */
-}
-
-
-/* Responsive Video Container */
 .video-container {
-    position: relative;
-    padding-bottom: 56.25%; /* 16:9 aspect ratio */
-    height: 0;
-    overflow: hidden;
-    max-width: 100%;
-    background: #000; /* Black background for loading */
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
 }
 
 .video-container iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: 0; /* Remove iframe border */
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.image-pan-zoom-container {
+  width: 100%;
+  height: 240px;
+  overflow: hidden;
+  cursor: grab;
+  background: #010203;
+}
+
+.image-pan-zoom-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  user-select: none;
 }
 
 .gallery-nav {
   display: flex;
-  justify-content: center; /* Center buttons below */
-  align-items: center; /* Vertically align buttons */
-  gap: 8px; /* Slightly smaller gap */
-  background-color: rgba(0, 0, 0, 0.2); /* Darker background */
-  padding: 5px 8px; /* Adjust padding to contain buttons nicely */
-  margin-top: 10px; /* Add space between viewport and nav background */
-  border-radius: 4px; /* Optional: slightly round the nav background */
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  background: rgba(8, 12, 16, 0.8);
+  border: 1px solid var(--panel-border-subtle);
+  padding: 0.3rem 0.4rem;
 }
 
-/* Minimalist Gallery Nav Buttons (Consolidated) */
 .gallery-nav button,
 .gallery-expand-button {
-  background-color: rgba(255, 255, 255, 0.05);
-  border: none;
-  color: #a0a0a0;
-  padding: 8px 10px; /* Adjust padding for icons */
-  border-radius: 3px;
+  flex: 1 1 auto;
+  background: transparent;
+  border: 1px solid var(--panel-border-subtle);
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 0.35rem 0.5rem;
   cursor: pointer;
-  font-size: 0.9rem; /* Icon size */
-  line-height: 1;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition: border-color 0.2s ease, color 0.2s ease;
 }
 
 .gallery-nav button:hover,
 .gallery-expand-button:hover {
-  background-color: rgba(255, 255, 255, 0.1); /* Subtle hover */
-  color: #fff; /* Brighten text */
+  border-color: var(--accent-green);
+  color: var(--accent-green);
 }
 
-.gallery-nav button:active,
-.gallery-expand-button:active {
-    transform: none; /* Remove transform */
-    background-color: rgba(255, 255, 255, 0.03); /* Darker active */
+.code-section {
+  margin-top: 1.25rem;
+  border: 1px solid var(--panel-border-subtle);
+  background: rgba(5, 9, 12, 0.8);
+  padding: 0.85rem;
 }
 
-/* Expandable Section Styling - Removed */
-
-
-/* Code Controls Wrapper */
 .code-controls {
-    margin-bottom: 10px;
-    min-height: 34px; /* Ensure consistent height */
-    /* Container for button and placeholder */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.6rem;
 }
 
-/* Code Toggle Button Styling - Default: Full Width Bar */
-.toggle-code {
-  display: block; /* Make it a block element */
-  width: 100%; /* Default to full width */
-  gap: 8px; /* Space between icon and text */
-  background-color: rgba(0, 0, 0, 0.2); /* Keep darker background */
-  border: none; /* Explicitly remove border */
-  color: #b0b0b0; /* Muted text color */
-  padding: 8px 15px; /* Keep padding */
-  border-radius: 4px; /* Keep rounded corners */
-  cursor: pointer;
-  font-size: 0.9rem;
-  line-height: 1;
-  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-  font-family: Akkurat, 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-weight: 500; /* Medium weight */
-  box-shadow: none;
-  text-align: center; /* Ensure text is centered if flex centering fails */
-}
-
-/* Icon within the toggle button */
-.toggle-code i {
-    font-size: 0.9rem;
-    line-height: 1;
-}
-
-/* Style for the expand icon placeholder - Hidden by default */
 .code-expand-placeholder {
-    display: none; /* Hidden by default */
-    display: flex; /* Keep flex for alignment */
-    align-items: center;
-    min-width: 20px; /* Ensure it takes some space */
-}
-
-/* Style for the expand icon itself */
-.code-expand-placeholder .code-expand-icon {
-    color: #999;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: color 0.2s ease;
-}
-.code-expand-placeholder .code-expand-icon:hover {
-    color: #fff;
-}
-
-/* Styles when code is expanded */
-.code-controls.controls-expanded {
-    display: flex; /* Become flex container when expanded */
-    justify-content: space-between; /* Enable space-between */
-    align-items: center; /* Align items vertically */
-    gap: 10px; /* Add gap back */
-}
-
-.code-controls.controls-expanded .toggle-code {
-    display: inline-flex; /* Change back to inline-flex */
-    justify-content: center; /* Re-apply flex centering */
-    align-items: center;
-    width: auto; /* Allow button to shrink */
-    flex-grow: 1; /* Take available space next to icon */
+  display: none;
+  align-items: center;
+  color: var(--text-secondary);
 }
 
 .code-controls.controls-expanded .code-expand-placeholder {
-    display: flex; /* Show the placeholder */
+  display: flex;
 }
 
+.toggle-code {
+  flex: 1 1 auto;
+  background: transparent;
+  border: 1px solid var(--panel-border-subtle);
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.4rem 0.6rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
 
 .toggle-code:hover {
-  background-color: rgba(255, 255, 255, 0.08);
-  color: #fff;
-  border-color: rgba(255, 255, 255, 0.4);
+  border-color: var(--accent-amber);
+  color: var(--accent-amber);
 }
 
-.toggle-code:active {
-    transform: none;
-    box-shadow: none;
-    background-color: rgba(255, 255, 255, 0.05);
-}
-
-
-/* Style for the gallery expand button (consolidated with nav buttons below) */
-/* .gallery-expand-button { ... } */
-
-/* Ensure the icon within the expand button is sized correctly */
-/* .gallery-expand-button i { ... } */
-
-/* Remove clickable viewport styles if they still exist */
-/* .gallery-viewport.clickable-expand { ... } */
-/* .gallery-viewport.clickable-expand::after { ... } */
-
-/* Ensure viewport doesn't have pointer cursor unless intended otherwise */
-.gallery-viewport {
-    position: relative; /* Keep for potential future use, but not for click */
-}
-
-
-/* Remove collapsed styles for gallery frame (already done) */
-.gallery-frame {
-    /* Ensure it's visible */
-    transition: none; /* Remove transitions related to collapsing */
-}
-
-
-/* Code Snippet - already handles collapse */
 .code-snippet {
-    padding: 8px 10px;
-    border-radius: 3px;
-    cursor: pointer;
-    font-size: 0.9rem; /* Icon size */
-    line-height: 1;
-    transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-/* Styles for .gallery-expand-button:hover, :active, and i are now consolidated above */
-
-/* Remove clickable viewport styles if they still exist */
-/* .gallery-viewport.clickable-expand { ... } */
-/* .gallery-viewport.clickable-expand::after { ... } */
-
-/* Ensure viewport doesn't have pointer cursor unless intended otherwise */
-.gallery-viewport {
-    position: relative; /* Keep for potential future use, but not for click */
-}
-
-
-/* Remove collapsed styles for gallery frame (already done) */
-.gallery-frame {
-    /* Ensure it's visible */
-    transition: none; /* Remove transitions related to collapsing */
-}
-
-
-/* Code Snippet - already handles collapse */
-.code-snippet {
-  max-height: 400px; /* Max height when expanded */
-  overflow: auto; /* Scrollbars if needed */
-  background-color: rgba(0, 0, 0, 0.25); /* Lighter code background */
-  border-radius: 3px;
-  transition: max-height 0.4s ease-out, padding 0.4s ease-out, opacity 0.4s ease-out, margin-bottom 0.4s ease-out, border-color 0.4s ease-out; /* Smoother transition */
-  opacity: 1;
-  padding: 15px;
-  border: 1px solid rgba(255, 255, 255, 0.1); /* Match wrapper border */
-  margin-bottom: 0;
+  max-height: 360px;
+  overflow: hidden;
+  border: 1px solid var(--panel-border-subtle);
+  padding: 0.75rem;
+  background: #05070a;
 }
 
 .code-snippet.collapsed {
   max-height: 0;
-  padding-top: 0;
-  padding-bottom: 0;
-  opacity: 0;
-  overflow: hidden; /* Hide content completely when collapsed */
-  border-color: transparent;
-  margin-bottom: -10px; /* Pull toggle button closer when collapsed */
+  padding: 0;
+  border-width: 0;
+  overflow: hidden;
 }
 
-.code-snippet pre {
-  margin: 0; /* Remove default pre margin */
-  white-space: pre-wrap; /* Wrap long lines */
-  word-wrap: break-word; /* Break words if necessary */
+pre {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--text-primary);
+  line-height: 1.5;
 }
 
-.code-snippet code {
-  font-family: 'SF Mono', Monaco, Consolas, 'Courier New', Courier, monospace; /* Monospace stack */
-  font-size: 0.9rem;
-  color: #c8c8c8; /* Match body text lightness */
-  display: block;
+code {
+  font-family: var(--mono);
 }
 
-/* Project Links Styling */
-.project-links {
-  margin-top: 15px; /* Space above links within description */
+.footer-panel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.project-links a {
-  font-family: Akkurat, 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Ensure body font */
-  font-weight: 500; /* Slightly bolder links */
-  color: #9ecaff; /* Brighter link color */
-  text-decoration: none; /* Remove default underline */
-  transition: color 0.2s ease, border-bottom-color 0.2s ease;
-  border-bottom: 1px solid rgba(158, 202, 255, 0.4); /* Subtle border instead of underline */
-  padding-bottom: 1px;
+.footer-meta {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
 }
 
-.project-links a:hover {
-  color: #cce1ff; /* Lighter hover color */
-  border-bottom-color: rgba(204, 225, 255, 0.8); /* Brighter border on hover */
+.footer-meta a {
+  color: var(--accent-green);
+  text-decoration: none;
 }
 
+.footer-meta a:hover {
+  color: var(--accent-amber);
+}
 
-/* Modal Styles */
 .modal {
-    display: none; /* Hidden by default */
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.85); /* Darker overlay */
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    padding: 40px 20px; /* Padding around content */
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 8, 12, 0.85);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  z-index: 999;
 }
 
-.modal.visible {
-    display: flex; /* Use flex to center content */
-    align-items: center;
-    justify-content: center;
-    opacity: 1;
+.modal[aria-hidden="false"] {
+  display: flex;
 }
 
 .modal-content {
-    position: relative;
-    background-color: rgba(30, 30, 30, 0.95); /* Modal background */
-    padding: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    width: 90%;
-    max-width: 1200px; /* Max width for gallery/code */
-    max-height: 90vh; /* Limit height */
-    overflow-y: auto; /* Allow scrolling if content overflows */
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  padding: 1rem;
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow: auto;
+  position: relative;
 }
 
 .modal-close {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    background: none;
-    border: none;
-    color: #aaa;
-    font-size: 1.8rem;
-    line-height: 1;
-    cursor: pointer;
-    padding: 5px;
-    transition: color 0.2s ease;
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: transparent;
+  border: 1px solid var(--panel-border-subtle);
+  color: var(--text-secondary);
+  padding: 0.25rem 0.35rem;
+  cursor: pointer;
 }
 
 .modal-close:hover {
-    color: #fff;
-    z-index: 1100; /* Ensure close button is above modal content */
+  border-color: var(--accent-red);
+  color: var(--accent-red);
 }
 
-/* Modal Specific Content Styles */
-.modal-gallery-content .gallery-viewport {
-    max-height: 70vh; /* Limit viewport height in modal */
-    background-color: #000; /* Black background for videos/images */
+.modal-gallery-content .gallery-frame,
+.modal-gallery-content .gallery-nav {
+  margin-top: 1rem;
 }
 
-/* Adjust pan/zoom container height in modal */
-.modal-gallery-content .image-pan-zoom-container {
-    height: 70vh; /* Force height to allow letterboxing/pillarboxing */
-    min-height: 200px; /* Ensure a minimum size */
-    /* max-height: 70vh; /* This is now implicitly set by height */
+@media (max-width: 1080px) {
+  .layout-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .sidebar {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  #toc,
+  .summary-panel {
+    flex: 1 1 260px;
+  }
 }
 
-/* Ensure images in the modal pan/zoom container scale naturally */
-.modal-gallery-content .image-pan-zoom-container img {
-    /* Styles for images specifically within the modal's pan/zoom container */
-}
-
-
-/* Target the nav bar specifically within the cloned frame inside the modal */
-.modal-gallery-content .gallery-frame .gallery-nav {
-    margin-top: 15px;
-    /* Explicitly ensure background bar is present in modal */
-    background-color: rgba(0, 0, 0, 0.2);
-    padding: 5px 8px;
-    border-radius: 4px;
-}
-
-.modal-code-content pre {
-    max-height: 75vh; /* Limit code height */
-    overflow: auto;
-}
-.modal-code-content code {
-    font-size: 0.95rem; /* Slightly larger code in modal */
-}
-
-/* Line Numbers Styling (for highlightjs-line-numbers.js plugin) */
-.hljs-ln { /* The table wrapper */
-    border-collapse: collapse;
-    border-spacing: 0;
-    width: 100%;
-}
-
-.hljs-ln td {
-    padding: 0; /* Reset padding */
-    vertical-align: top; /* Align lines to top */
-}
-
-.hljs-ln-numbers {
-    text-align: right;
-    color: #666; /* Dim color for line numbers */
-    padding-right: 10px; /* Space between numbers and code */
-    user-select: none; /* Prevent selecting line numbers */
-    border-right: 1px solid rgba(255, 255, 255, 0.1); /* Separator line */
-    width: 1%; /* Keep width minimal */
-    white-space: nowrap; /* Prevent numbers from wrapping */
-    font-size: 0.85em; /* Slightly smaller numbers */
-    /* Ensure numbers use the same monospace font */
-    font-family: 'SF Mono', Monaco, Consolas, 'Courier New', Courier, monospace;
-}
-
-.hljs-ln-code {
-    padding-left: 10px; /* Space after separator */
-}
-
-/* Ensure pre retains its styling within the table */
-.hljs-ln pre {
-    margin: 0;
-    overflow: visible; /* Allow code to flow naturally */
-    white-space: pre-wrap; /* Keep wrapping */
-    word-wrap: break-word; /* Keep word breaking */
-}
-
-/* Ensure code retains its styling */
-.hljs-ln code.hljs {
-    padding: 0 !important; /* Remove padding from code element itself, override hljs styles */
-    background: none !important; /* Remove background if any, override hljs styles */
-    display: block; /* Ensure it behaves as a block */
-}
-
-
-/* Responsive adjustments */
 @media (max-width: 768px) {
-  /* Hide TOC on mobile */
-  #toc {
-    display: none;
-  }
-
   body {
-    padding: 20px 15px; /* Remove left padding, adjust top/bottom/right */
-    align-items: flex-start; /* Align content to top on mobile */
+    padding: 1rem;
   }
 
-  .content-wrapper {
-    padding: 25px 15px; /* Further reduce padding */
-    margin-top: 15px;
+  .top-bar {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 
-  /* Stack main content columns */
-  .main-content {
+  .status-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
+  .layout-grid {
+    gap: 1rem;
+  }
+
+  .sidebar {
+    gap: 1rem;
+  }
+
+  .project-header {
     flex-direction: column;
-    gap: 0; /* Remove gap when stacked */
+    align-items: flex-start;
   }
 
-  header h1 {
-    font-size: 2.0rem; /* Slightly smaller header */
-  }
-
-  h2 {
-    font-size: 1.4rem; /* Adjust section heading size */
-  }
-
-  .project-item h3 { /* Adjust project title size on mobile */
-      font-size: 1.2rem;
-  }
-
-  section {
-      margin-bottom: 40px; /* Restore margin for stacked sections */
-  }
-
-  .project-item {
-    padding: 30px 0;
-  }
-
-  /* Stack project content columns */
   .project-content-grid {
-      flex-direction: column;
-      gap: 25px; /* Adjust gap for stacked */
+    grid-template-columns: 1fr;
   }
 
-  /* Removed .project-nav styles */
-
-
-  /* Gallery styles are mostly fine */
-   .gallery-frame {
-       padding: 10px; /* Reduce frame padding */
-   }
-  .gallery-nav button {
-    padding: 6px 10px; /* Adjust padding */
-    font-size: 0.9rem;
+  p[data-label] {
+    padding-left: 0;
   }
 
-  .code-snippet {
-    max-height: 300px; /* Adjust max height */
+  p[data-label]::before {
+    position: static;
+    display: block;
+    margin-bottom: 0.35rem;
+  }
+}
+
+@media (max-width: 540px) {
+  .sidebar {
+    flex-direction: column;
   }
 }

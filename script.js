@@ -8,56 +8,249 @@ document.addEventListener('DOMContentLoaded', () => {
     let openModal = () => {};
     let closeModal = () => {};
 
-    const highlightBlock = (codeElement, { withLineNumbers = false } = {}) => {
-        if (!codeElement || !window.hljs || typeof hljs.highlightElement !== 'function') {
-            return;
-        }
+    const keywordSet = new Set([
+        'alignas', 'alignof', 'asm', 'auto', 'bool', 'break', 'case', 'catch', 'class', 'const', 'constexpr', 'constinit',
+        'consteval', 'continue', 'decltype', 'default', 'delete', 'do', 'else', 'enum', 'explicit', 'export', 'extern',
+        'for', 'friend', 'goto', 'if', 'inline', 'mutable', 'namespace', 'new', 'noexcept', 'operator', 'override',
+        'private', 'protected', 'public', 'register', 'reinterpret_cast', 'requires', 'return', 'sizeof', 'static',
+        'static_assert', 'static_cast', 'struct', 'switch', 'template', 'this', 'thread_local', 'throw', 'try', 'typedef',
+        'typeid', 'typename', 'union', 'using', 'virtual', 'volatile', 'while',
+        'abstract', 'async', 'await', 'base', 'checked', 'delegate', 'event', 'finally', 'fixed', 'foreach', 'in', 'interface',
+        'internal', 'lock', 'out', 'override', 'params', 'readonly', 'ref', 'sealed', 'stackalloc', 'unsafe', 'var', 'when'
+    ]);
 
-        if (codeElement.dataset.highlighted === 'true') {
-            return;
-        }
+    const typeSet = new Set([
+        'int', 'int32', 'int64', 'uint8', 'uint16', 'uint32', 'float', 'double', 'long', 'short', 'char', 'wchar_t', 'void',
+        'size_t', 'bool', 'FVector', 'FRotator', 'FQuat', 'FTransform', 'FMatrix', 'FColor', 'FLinearColor', 'FString', 'FName',
+        'FText', 'FHitResult', 'FInputActionValue', 'TArray', 'TMap', 'TSet', 'UObject', 'AActor', 'APawn', 'ACharacter',
+        'UActorComponent', 'USceneComponent', 'UStaticMeshComponent', 'USkeletalMeshComponent', 'UCameraComponent',
+        'UAnimInstance', 'UInputComponent', 'UMaterialInstance', 'UMaterialInterface', 'UPROPERTY', 'UFUNCTION',
+        'BlueprintReadWrite', 'BlueprintReadOnly', 'EditAnywhere', 'EditDefaultsOnly', 'VisibleAnywhere'
+    ]);
 
-        try {
-            hljs.highlightElement(codeElement);
-            if (withLineNumbers && typeof hljs.lineNumbersBlock === 'function') {
-                hljs.lineNumbersBlock(codeElement);
+    const literalSet = new Set(['true', 'false', 'nullptr', 'NULL', 'null']);
+
+    const builtinSet = new Set(['Super', 'this', 'AddDynamic', 'BindAction', 'BindAxis', 'FMath', 'FPlatformTime', 'UE_LOG']);
+
+    const escapeHtml = (value = '') => value
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+
+    const wrapToken = (value, className) => `<span class="token ${className}">${escapeHtml(value)}</span>`;
+
+    const highlightPlainSegment = (segment) => {
+        let output = '';
+        let index = 0;
+
+        while (index < segment.length) {
+            const remainder = segment.slice(index);
+
+            const whitespaceMatch = remainder.match(/^\s+/);
+            if (whitespaceMatch) {
+                output += escapeHtml(whitespaceMatch[0]);
+                index += whitespaceMatch[0].length;
+                continue;
             }
-            codeElement.dataset.highlighted = 'true';
-        } catch (error) {
-            console.error('Highlight.js failed to render code block.', error);
+
+            if (remainder[0] === '#') {
+                // Handled elsewhere but keep fallback
+                output += wrapToken('#', 'directive');
+                index += 1;
+                continue;
+            }
+
+            const numberMatch = remainder.match(/^(?:0x[0-9a-fA-F]+|\d+(?:\.\d+)?f?)/);
+            if (numberMatch) {
+                const [token] = numberMatch;
+                output += wrapToken(token, 'number');
+                index += token.length;
+                continue;
+            }
+
+            const identifierMatch = remainder.match(/^[A-Za-z_][A-Za-z0-9_]*/);
+            if (identifierMatch) {
+                const [identifier] = identifierMatch;
+                let tokenClass = '';
+
+                if (keywordSet.has(identifier)) {
+                    tokenClass = 'keyword';
+                } else if (typeSet.has(identifier)) {
+                    tokenClass = 'type';
+                } else if (literalSet.has(identifier)) {
+                    tokenClass = 'literal';
+                } else if (builtinSet.has(identifier)) {
+                    tokenClass = 'builtin';
+                } else {
+                    const lookahead = remainder.slice(identifier.length).match(/^\s*/)?.[0] ?? '';
+                    const nextChar = remainder[identifier.length + lookahead.length];
+                    if (nextChar === '(') {
+                        tokenClass = 'function';
+                    }
+                }
+
+                if (tokenClass) {
+                    output += wrapToken(identifier, tokenClass);
+                } else {
+                    output += escapeHtml(identifier);
+                }
+
+                index += identifier.length;
+                continue;
+            }
+
+            if (remainder.startsWith('::') || remainder.startsWith('->') || remainder.startsWith('<=') ||
+                remainder.startsWith('>=') || remainder.startsWith('==') || remainder.startsWith('!=') ||
+                remainder.startsWith('&&') || remainder.startsWith('||')) {
+                output += escapeHtml(remainder.slice(0, 2));
+                index += 2;
+                continue;
+            }
+
+            output += escapeHtml(remainder[0]);
+            index += 1;
         }
+
+        return output;
+    };
+
+    const processLine = (line, inBlockComment) => {
+        let html = '';
+        let index = 0;
+        let blockOpen = inBlockComment;
+
+        while (index < line.length) {
+            if (blockOpen) {
+                const endIndex = line.indexOf('*/', index);
+                if (endIndex === -1) {
+                    html += wrapToken(line.slice(index), 'comment');
+                    return { html, inBlockComment: true };
+                }
+
+                html += wrapToken(line.slice(index, endIndex + 2), 'comment');
+                index = endIndex + 2;
+                blockOpen = false;
+                continue;
+            }
+
+            if (line.startsWith('//', index)) {
+                html += wrapToken(line.slice(index), 'comment');
+                return { html, inBlockComment: false };
+            }
+
+            if (line.startsWith('/*', index)) {
+                const endIndex = line.indexOf('*/', index + 2);
+                if (endIndex === -1) {
+                    html += wrapToken(line.slice(index), 'comment');
+                    return { html, inBlockComment: true };
+                }
+
+                html += wrapToken(line.slice(index, endIndex + 2), 'comment');
+                index = endIndex + 2;
+                continue;
+            }
+
+            const currentChar = line[index];
+
+            if (currentChar === '"' || currentChar === "'") {
+                const quote = currentChar;
+                let cursor = index + 1;
+                let escaped = false;
+
+                while (cursor < line.length) {
+                    const char = line[cursor];
+                    if (!escaped && char === '\\') {
+                        escaped = true;
+                        cursor += 1;
+                        continue;
+                    }
+
+                    if (!escaped && char === quote) {
+                        cursor += 1;
+                        break;
+                    }
+
+                    escaped = false;
+                    cursor += 1;
+                }
+
+                html += wrapToken(line.slice(index, cursor), 'string');
+                index = cursor;
+                continue;
+            }
+
+            if (currentChar === '#') {
+                let cursor = index + 1;
+                while (cursor < line.length && /[A-Za-z_]/.test(line[cursor])) {
+                    cursor += 1;
+                }
+
+                html += wrapToken(line.slice(index, cursor), 'directive');
+                index = cursor;
+                continue;
+            }
+
+            const remainder = line.slice(index);
+            const nextSpecial = remainder.search(/["'\/#]/);
+            const segmentEnd = nextSpecial === -1 ? line.length : index + nextSpecial;
+            const segment = line.slice(index, segmentEnd);
+
+            html += highlightPlainSegment(segment);
+            index = segmentEnd;
+        }
+
+        return { html, inBlockComment: blockOpen };
+    };
+
+    const renderHighlightedCode = (rawCode = '', { showLineNumbers = true } = {}) => {
+        const lines = rawCode.replace(/\r\n?/g, '\n').split('\n');
+        let inBlockComment = false;
+
+        const renderedLines = lines.map((line, lineIndex) => {
+            const { html, inBlockComment: stillOpen } = processLine(line, inBlockComment);
+            inBlockComment = stillOpen;
+            const safeHtml = html.length ? html : '&nbsp;';
+
+            if (showLineNumbers) {
+                return `<span class="code-line"><span class="line-number">${lineIndex + 1}</span><span class="line-content">${safeHtml}</span></span>`;
+            }
+
+            return `<span class="code-line"><span class="line-content">${safeHtml}</span></span>`;
+        });
+
+        return renderedLines.join('');
+    };
+
+    const highlightBlock = (codeElement, { withLineNumbers = true } = {}) => {
+        if (!codeElement) {
+            return;
+        }
+
+        const rawCode = codeElement.dataset.rawCode || codeElement.textContent || '';
+        codeElement.dataset.rawCode = rawCode;
+
+        if (codeElement.dataset.highlighted === 'true' && codeElement.dataset.renderLines === (withLineNumbers ? 'true' : 'false')) {
+            return;
+        }
+
+        const highlighted = renderHighlightedCode(rawCode, { showLineNumbers: withLineNumbers });
+        codeElement.innerHTML = highlighted;
+        codeElement.dataset.highlighted = 'true';
+        codeElement.dataset.renderLines = withLineNumbers ? 'true' : 'false';
+        codeElement.classList.toggle('has-line-numbers', withLineNumbers);
     };
 
     const primeInlineHighlighting = () => {
         const inlineBlocks = document.querySelectorAll('.code-snippet pre code');
-        inlineBlocks.forEach(block => highlightBlock(block));
+        inlineBlocks.forEach(block => {
+            delete block.dataset.highlighted;
+            highlightBlock(block, { withLineNumbers: true });
+        });
     };
 
-    const bootHighlighting = (attempt = 0) => {
-        if (window.hljs && typeof hljs.highlightElement === 'function') {
-            if (typeof hljs.configure === 'function') {
-                hljs.configure({
-                    ignoreUnescapedHTML: true
-                });
-            }
-
-            if (typeof hljs.highlightAll === 'function') {
-                hljs.highlightAll();
-                document.querySelectorAll('.code-snippet pre code').forEach(block => {
-                    block.dataset.highlighted = 'true';
-                });
-            } else {
-                primeInlineHighlighting();
-            }
-        } else if (attempt < 10) {
-            window.setTimeout(() => bootHighlighting(attempt + 1), 120);
-        } else {
-            console.warn('Highlight.js not available for inline code rendering.');
-        }
-    };
-
-    bootHighlighting();
-    window.addEventListener('load', () => bootHighlighting());
+    primeInlineHighlighting();
 
     // --- Image Pan/Zoom Logic ---
     const setupPanZoom = (container) => {
@@ -601,22 +794,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (modalElement === codeModal) {
                 const modalCodeElement = modalElement.querySelector('.modal-code-content pre code');
-                if (modalCodeElement && window.hljs && typeof hljs.highlightElement === 'function') {
+                if (modalCodeElement) {
                     setTimeout(() => {
-                        try {
-                            modalCodeElement.classList.remove('hljs');
-                            hljs.highlightElement(modalCodeElement);
-                            if (typeof hljs.lineNumbersBlock === 'function') {
-                                hljs.lineNumbersBlock(modalCodeElement.parentElement);
-                            }
-                        } catch (e) {
-                            console.error("Highlight.js modal highlighting failed:", e);
-                        }
+                        delete modalCodeElement.dataset.highlighted;
+                        highlightBlock(modalCodeElement, { withLineNumbers: true });
                     }, 0);
-                } else if (!modalCodeElement) {
-                    console.warn("Could not find modal 'code' element inside '.modal-code-content pre'.");
                 } else {
-                    console.warn("Highlight.js (hljs) or highlightElement function not available for modal highlighting.");
+                    console.warn("Could not find modal 'code' element inside '.modal-code-content pre'.");
                 }
             }
         };
@@ -705,13 +889,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // No initial highlightAll needed if highlighting on demand
-    // if (window.hljs) {
-    //     hljs.highlightAll();
-    // } else {
-    //     console.warn("Highlight.js (hljs) not found. Syntax highlighting may not work.");
-    // }
-
-    // Removed initial hljs.highlightAll() call. Highlighting is now done on demand
     // when code snippets are expanded or opened in the modal.
 
 });

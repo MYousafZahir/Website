@@ -1,6 +1,229 @@
 document.addEventListener('DOMContentLoaded', () => {
     console.log("Personal website script loaded.");
 
+    const setupWebGLBackdrop = () => {
+        const canvas = document.getElementById('webgl-backdrop');
+        if (!canvas) {
+            return;
+        }
+
+        const gl = canvas.getContext('webgl', { antialias: true, premultipliedAlpha: false });
+        if (!gl) {
+            console.warn('WebGL unavailable, removing backdrop canvas.');
+            canvas.remove();
+            return;
+        }
+
+        let width = 0;
+        let height = 0;
+        const resize = () => {
+            const ratio = window.devicePixelRatio || 1;
+            const displayWidth = canvas.clientWidth;
+            const displayHeight = canvas.clientHeight;
+            const desiredWidth = Math.round(displayWidth * ratio);
+            const desiredHeight = Math.round(displayHeight * ratio);
+
+            if (canvas.width !== desiredWidth || canvas.height !== desiredHeight) {
+                canvas.width = desiredWidth;
+                canvas.height = desiredHeight;
+            }
+
+            if (width !== desiredWidth || height !== desiredHeight) {
+                width = desiredWidth;
+                height = desiredHeight;
+                gl.viewport(0, 0, width, height);
+            }
+        };
+
+        const createShader = (type, source) => {
+            const shader = gl.createShader(type);
+            if (!shader) return null;
+            gl.shaderSource(shader, source);
+            gl.compileShader(shader);
+            if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                console.error('Shader compile error:', gl.getShaderInfoLog(shader));
+                gl.deleteShader(shader);
+                return null;
+            }
+            return shader;
+        };
+
+        const createProgram = (vsSource, fsSource) => {
+            const vertexShader = createShader(gl.VERTEX_SHADER, vsSource);
+            const fragmentShader = createShader(gl.FRAGMENT_SHADER, fsSource);
+            if (!vertexShader || !fragmentShader) {
+                return null;
+            }
+            const program = gl.createProgram();
+            if (!program) return null;
+            gl.attachShader(program, vertexShader);
+            gl.attachShader(program, fragmentShader);
+            gl.linkProgram(program);
+            if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+                console.error('Program link error:', gl.getProgramInfoLog(program));
+                gl.deleteProgram(program);
+                return null;
+            }
+            return program;
+        };
+
+        const pointProgram = createProgram(
+            `attribute vec2 aPosition;\n` +
+            `attribute float aStrength;\n` +
+            `uniform float uScale;\n` +
+            `varying float vStrength;\n` +
+            `void main() {\n` +
+            `  vStrength = aStrength;\n` +
+            `  gl_Position = vec4(aPosition, 0.0, 1.0);\n` +
+            `  gl_PointSize = 2.0 + (aStrength * uScale);\n` +
+            `}`,
+            `precision mediump float;\n` +
+            `varying float vStrength;\n` +
+            `void main() {\n` +
+            `  vec2 coord = gl_PointCoord - 0.5;\n` +
+            `  float dist = length(coord);\n` +
+            `  float alpha = smoothstep(0.5, 0.0, dist) * (0.25 + vStrength * 0.55);\n` +
+            `  vec3 base = vec3(0.72, 0.75, 0.78);\n` +
+            `  vec3 accent = vec3(0.35, 1.0, 0.72);\n` +
+            `  vec3 color = mix(base, accent, 0.12 + vStrength * 0.25);\n` +
+            `  gl_FragColor = vec4(color, alpha);\n` +
+            `}`
+        );
+
+        const lineProgram = createProgram(
+            `attribute vec2 aPosition;\n` +
+            `attribute float aStrength;\n` +
+            `varying float vStrength;\n` +
+            `void main() {\n` +
+            `  vStrength = aStrength;\n` +
+            `  gl_Position = vec4(aPosition, 0.0, 1.0);\n` +
+            `}`,
+            `precision mediump float;\n` +
+            `varying float vStrength;\n` +
+            `void main() {\n` +
+            `  float alpha = 0.05 + vStrength * 0.2;\n` +
+            `  vec3 color = mix(vec3(0.25, 0.27, 0.32), vec3(0.45, 0.49, 0.55), vStrength);\n` +
+            `  gl_FragColor = vec4(color, alpha);\n` +
+            `}`
+        );
+
+        if (!pointProgram || !lineProgram) {
+            console.warn('Failed to initialize WebGL programs.');
+            canvas.remove();
+            return;
+        }
+
+        const pointLocations = {
+            position: gl.getAttribLocation(pointProgram, 'aPosition'),
+            strength: gl.getAttribLocation(pointProgram, 'aStrength'),
+            scale: gl.getUniformLocation(pointProgram, 'uScale'),
+        };
+
+        const lineLocations = {
+            position: gl.getAttribLocation(lineProgram, 'aPosition'),
+            strength: gl.getAttribLocation(lineProgram, 'aStrength'),
+        };
+
+        const nodeCount = 96;
+        const nodes = Array.from({ length: nodeCount }, () => ({
+            angle: Math.random() * Math.PI * 2,
+            radius: 0.25 + Math.random() * 0.65,
+            speed: 0.35 + Math.random() * 0.6,
+            jitter: Math.random() * 6.283,
+            strength: 0.35 + Math.random() * 0.5,
+        }));
+
+        const edges = [];
+        for (let i = 0; i < nodeCount; i++) {
+            const hops = 1 + Math.floor(Math.random() * 4);
+            const target = (i + hops) % nodeCount;
+            edges.push([i, target]);
+            if (Math.random() > 0.7) {
+                const extra = (i + Math.floor(Math.random() * nodeCount)) % nodeCount;
+                edges.push([i, extra]);
+            }
+        }
+
+        const pointBuffer = gl.createBuffer();
+        const lineBuffer = gl.createBuffer();
+        const pointData = new Float32Array(nodeCount * 3);
+        const lineData = new Float32Array(edges.length * 6);
+        const positions = new Float32Array(nodeCount * 2);
+
+        gl.enable(gl.BLEND);
+        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+        const draw = (time) => {
+            resize();
+            gl.clearColor(0, 0, 0, 0);
+            gl.clear(gl.COLOR_BUFFER_BIT);
+
+            const t = time * 0.0002;
+
+            for (let i = 0; i < nodeCount; i++) {
+                const node = nodes[i];
+                const swing = Math.sin(time * 0.0003 + node.jitter) * 0.04;
+                const radius = node.radius + swing;
+                const angle = node.angle + t * node.speed;
+                const x = Math.cos(angle) * radius;
+                const y = Math.sin(angle) * radius * 0.9;
+                positions[i * 2] = x;
+                positions[i * 2 + 1] = y;
+                pointData[i * 3] = x;
+                pointData[i * 3 + 1] = y;
+                pointData[i * 3 + 2] = node.strength;
+            }
+
+            for (let i = 0; i < edges.length; i++) {
+                const [aIndex, bIndex] = edges[i];
+                const ax = positions[aIndex * 2];
+                const ay = positions[aIndex * 2 + 1];
+                const bx = positions[bIndex * 2];
+                const by = positions[bIndex * 2 + 1];
+                const strength = (nodes[aIndex].strength + nodes[bIndex].strength) * 0.5;
+                lineData[i * 6] = ax;
+                lineData[i * 6 + 1] = ay;
+                lineData[i * 6 + 2] = strength;
+                lineData[i * 6 + 3] = bx;
+                lineData[i * 6 + 4] = by;
+                lineData[i * 6 + 5] = strength;
+            }
+
+            gl.useProgram(lineProgram);
+            gl.bindBuffer(gl.ARRAY_BUFFER, lineBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, lineData, gl.DYNAMIC_DRAW);
+            gl.enableVertexAttribArray(lineLocations.position);
+            gl.vertexAttribPointer(lineLocations.position, 2, gl.FLOAT, false, 12, 0);
+            gl.enableVertexAttribArray(lineLocations.strength);
+            gl.vertexAttribPointer(lineLocations.strength, 1, gl.FLOAT, false, 12, 8);
+            gl.drawArrays(gl.LINES, 0, edges.length * 2);
+
+            gl.useProgram(pointProgram);
+            gl.bindBuffer(gl.ARRAY_BUFFER, pointBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, pointData, gl.DYNAMIC_DRAW);
+            gl.enableVertexAttribArray(pointLocations.position);
+            gl.vertexAttribPointer(pointLocations.position, 2, gl.FLOAT, false, 12, 0);
+            gl.enableVertexAttribArray(pointLocations.strength);
+            gl.vertexAttribPointer(pointLocations.strength, 1, gl.FLOAT, false, 12, 8);
+            const scale = Math.max(4.5, (window.devicePixelRatio || 1) * 4.5);
+            gl.uniform1f(pointLocations.scale, scale);
+            gl.drawArrays(gl.POINTS, 0, nodeCount);
+
+            requestAnimationFrame(draw);
+        };
+
+        resize();
+        requestAnimationFrame(draw);
+        window.addEventListener('resize', resize);
+    };
+
+    setupWebGLBackdrop();
+
+    const galleryModal = document.getElementById('gallery-modal');
+    const codeModal = document.getElementById('code-modal');
+    let openModal = () => {};
+    let closeModal = () => {};
+
     // --- Image Pan/Zoom Logic ---
     const setupPanZoom = (container) => {
         const img = container.querySelector('img');
@@ -229,14 +452,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     const preClone = preElement.cloneNode(true);
 
                     // Get the target container in the modal
-                    const modalCodeContainer = codeModal.querySelector('.modal-code-content');
-                    if (modalCodeContainer) {
-                         // Clear previous content and append the clone
-                         modalCodeContainer.innerHTML = '';
-                         modalCodeContainer.appendChild(preClone);
-
-                         // Now open the modal (highlighting happens inside openModal)
-                         openModal(codeModal);
+                    const modalCodeContainer = codeModal?.querySelector('.modal-code-content');
+                    if (modalCodeContainer && typeof openModal === 'function') {
+                        modalCodeContainer.innerHTML = '';
+                        modalCodeContainer.appendChild(preClone);
+                        if (codeModal) {
+                            openModal(codeModal);
+                        }
                     } else {
                         console.error("Modal code content container not found.");
                     }
@@ -444,99 +666,90 @@ document.addEventListener('DOMContentLoaded', () => {
             initializeGallery(gallery.querySelector('.gallery-frame')); // Pass the frame
         }
     });
-
-
     // --- Modal Logic ---
-    const galleryModal = document.getElementById('gallery-modal');
-    const codeModal = document.getElementById('code-modal');
-    const modalCloseButtons = document.querySelectorAll('.modal-close');
-    const modalGalleryContent = galleryModal.querySelector('.modal-gallery-content');
-    const modalCodeContent = codeModal.querySelector('.modal-code-content pre code');
+    if (!galleryModal || !codeModal) {
+        console.warn('Modal containers missing; gallery/code expansion disabled.');
+    } else {
+        const modalCloseButtons = document.querySelectorAll('.modal-close');
+        const modalGalleryContent = galleryModal.querySelector('.modal-gallery-content');
 
-    // Function to open a modal
-    function openModal(modalElement) {
-        modalElement.classList.add('visible');
-        modalElement.setAttribute('aria-hidden', 'false');
-        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        openModal = (modalElement) => {
+            modalElement.classList.add('visible');
+            modalElement.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
 
-        // Re-highlight if it's the code modal. Content is now cloned before opening.
-        if (modalElement === codeModal) {
-            // Find the <code> element *within the newly added content*
-            const modalCodeElement = modalElement.querySelector('.modal-code-content pre code');
-            if (modalCodeElement && window.hljs && typeof hljs.highlightElement === 'function') {
-                // Highlight the cloned element after the modal is visible
-                console.log("Attempting to highlight modal code:", modalCodeElement);
-                // Use setTimeout to ensure rendering before highlighting
-                setTimeout(() => {
-                    try {
-                        // Force re-highlight by removing hljs class first, if present
-                        modalCodeElement.classList.remove('hljs');
-                        hljs.highlightElement(modalCodeElement);
-                        // Add line numbers after highlighting
-                        hljs.lineNumbersBlock(modalCodeElement.parentElement); // Target the <pre>
-                        console.log("Highlight.js modal highlighting & line numbers executed.");
-                    } catch (e) {
-                        console.error("Highlight.js modal highlighting or line numbers failed:", e);
-                    }
-                }, 0); // Delay of 0ms defers execution
-            } else if (!modalCodeElement) {
-                 console.warn("Could not find modal 'code' element inside '.modal-code-content pre' to highlight.");
-            } else {
-                 console.warn("Highlight.js (hljs) or highlightElement function not available for modal highlighting.");
+            if (modalElement === codeModal) {
+                const modalCodeElement = modalElement.querySelector('.modal-code-content pre code');
+                if (modalCodeElement && window.hljs && typeof hljs.highlightElement === 'function') {
+                    setTimeout(() => {
+                        try {
+                            modalCodeElement.classList.remove('hljs');
+                            hljs.highlightElement(modalCodeElement);
+                            if (typeof hljs.lineNumbersBlock === 'function') {
+                                hljs.lineNumbersBlock(modalCodeElement.parentElement);
+                            }
+                        } catch (e) {
+                            console.error("Highlight.js modal highlighting failed:", e);
+                        }
+                    }, 0);
+                } else if (!modalCodeElement) {
+                    console.warn("Could not find modal 'code' element inside '.modal-code-content pre'.");
+                } else {
+                    console.warn("Highlight.js (hljs) or highlightElement function not available for modal highlighting.");
+                }
             }
-        }
-    }
+        };
 
-    // Function to close a modal
-    function closeModal(modalElement) {
-        modalElement.classList.remove('visible');
-        modalElement.setAttribute('aria-hidden', 'true');
-        document.body.style.overflow = ''; // Restore background scrolling
+        closeModal = (modalElement) => {
+            modalElement.classList.remove('visible');
+            modalElement.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
 
-        // Clear modal content and reset states
-        if (modalElement === galleryModal) {
-            // Reset pan/zoom on all images within the modal before clearing
-            const panZoomContainers = modalGalleryContent.querySelectorAll('.image-pan-zoom-container');
-            panZoomContainers.forEach(container => {
-                resetPanZoom(container);
+            if (modalElement === galleryModal && modalGalleryContent) {
+                const panZoomContainers = modalGalleryContent.querySelectorAll('.image-pan-zoom-container');
+                panZoomContainers.forEach(container => {
+                    resetPanZoom(container);
+                });
+                modalGalleryContent.innerHTML = '';
+            }
+
+            if (modalElement === codeModal) {
+                const modalCodeContainer = modalElement.querySelector('.modal-code-content');
+                if (modalCodeContainer) {
+                    modalCodeContainer.innerHTML = '<pre><code class="language-cpp"><!-- Code content will be injected here --></code></pre>';
+                }
+            }
+        };
+
+        modalCloseButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const modal = button.closest('.modal');
+                if (modal) {
+                    closeModal(modal);
+                }
             });
-            modalGalleryContent.innerHTML = ''; // Clear content
-        }
-        if (modalElement === codeModal) {
-            // Find the container and clear its innerHTML
-            const modalCodeContainer = modalElement.querySelector('.modal-code-content');
-            if (modalCodeContainer) {
-                modalCodeContainer.innerHTML = '<pre><code class="language-cpp"><!-- Code content will be injected here --></code></pre>'; // Reset to placeholder
-            }
-        }
-    }
-
-    // Close button listeners
-    modalCloseButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            closeModal(button.closest('.modal'));
         });
-    });
 
-    // Close modal if clicking outside the content area
-    galleryModal.addEventListener('click', (event) => {
-        if (event.target === galleryModal) { // Check if click is on the backdrop
-            closeModal(galleryModal);
-        }
-    });
-    codeModal.addEventListener('click', (event) => {
-        if (event.target === codeModal) { // Check if click is on the backdrop
-            closeModal(codeModal);
-        }
-    });
+        galleryModal.addEventListener('click', (event) => {
+            if (event.target === galleryModal) {
+                closeModal(galleryModal);
+            }
+        });
 
-    // Click Listener for Gallery Expand Buttons
-    const galleryExpandButtons = document.querySelectorAll('.gallery-expand-button');
-    galleryExpandButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const galleryFrame = button.closest('.gallery-frame'); // Find frame relative to button
-            if (galleryFrame) {
-                // --- Find the active index in the *original* gallery ---
+        codeModal.addEventListener('click', (event) => {
+            if (event.target === codeModal) {
+                closeModal(codeModal);
+            }
+        });
+
+        const galleryExpandButtons = document.querySelectorAll('.gallery-expand-button');
+        galleryExpandButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const galleryFrame = button.closest('.gallery-frame');
+                if (!galleryFrame || !modalGalleryContent) {
+                    return;
+                }
+
                 const originalItems = galleryFrame.querySelectorAll('.gallery-item');
                 let activeIndex = 0;
                 originalItems.forEach((item, index) => {
@@ -544,43 +757,31 @@ document.addEventListener('DOMContentLoaded', () => {
                         activeIndex = index;
                     }
                 });
-                // --- End find active index ---
 
-                // Clone the entire gallery frame for the modal
                 const frameClone = galleryFrame.cloneNode(true);
-
-                // Find and remove the expand button from the *clone* to avoid duplication in modal
                 const clonedExpandButton = frameClone.querySelector('.gallery-expand-button');
-                 if (clonedExpandButton) {
-                    // Remove the expand button from the modal clone as it's redundant here
+                if (clonedExpandButton) {
                     clonedExpandButton.remove();
-                 }
+                }
 
-                modalGalleryContent.innerHTML = ''; // Clear previous content
-                modalGalleryContent.appendChild(frameClone); // Add the cloned frame
+                modalGalleryContent.innerHTML = '';
+                modalGalleryContent.appendChild(frameClone);
 
-                // Initialize gallery logic specifically for the cloned frame inside the modal,
-                // starting at the index that was active in the original gallery.
                 initializeGallery(frameClone, activeIndex);
 
                 openModal(galleryModal);
+            });
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                const visibleModal = document.querySelector('.modal.visible');
+                if (visibleModal) {
+                    closeModal(visibleModal);
+                }
             }
         });
-    });
-
-
-    // Expand Code Button Listeners (Removed - functionality integrated into toggle button)
-    // const expandCodeButtons = document.querySelectorAll('.expand-code'); ...
-
-    // Close modal with Escape key
-     document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape') {
-            const visibleModal = document.querySelector('.modal.visible');
-            if (visibleModal) {
-                closeModal(visibleModal);
-            }
-        }
-    });
+    }
 
     // No initial highlightAll needed if highlighting on demand
     // if (window.hljs) {

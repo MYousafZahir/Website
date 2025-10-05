@@ -6,6 +6,9 @@
     <meta name="description" content="Gameplay programming portfolio for Yousaf Zahir">
     <title>Yousaf Zahir | Portfolio</title>
     <link rel="icon" type="image/png" href="Images/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/railscasts.min.css" integrity="sha512-Wv7Rp/wkkBq3XpMyk4RM4iU2RDl57PSp9jRpM8rDd9IoQ5QDZ68yYbZxV2d+Ok6Qd9MuFRc02tAF+P4mxv3hpQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="style.css">
@@ -242,8 +245,8 @@ void UPlayerFunctionality::TickComponent(float DeltaTime, ELevelTick TickType, F
     }
 
     // Zoom -- Player turn with camera
-    // Notice: the last else-if only executes when b_rotationJitter doesn&#x27;t change.
-    // It&#x27;s ugly but don&#x27;t change.
+    // Notice: the last else-if only executes when b_rotationJitter doesn't change.
+    // It's ugly but don't change.
     if (b_matchCamRotation) {
         float ActorYaw = OwnerActor-&gt;GetActorRotation().Yaw;
         float CameraYaw = OwnerCamera-&gt;GetComponentRotation().Yaw;
@@ -275,7 +278,7 @@ void UPlayerFunctionality::TickComponent(float DeltaTime, ELevelTick TickType, F
         if (DistanceToActor &lt; 150.f) {
             b_axeBeingRetrieved = false;
 
-            Axe-&gt;AttachToComponent(OwnerActor-&gt;GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket-&gt;SocketName);
+            Axe-&gt;AttachToComponent(OwnerActor-&gt;GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket-&gt;SocketName);   
             Axe-&gt;SetRelativeTransform(heldAxeTransform);
             bCatchingAxe = false;
 
@@ -303,6 +306,7 @@ void UPlayerFunctionality::TickComponent(float DeltaTime, ELevelTick TickType, F
 
         FVector Start = OwnerCamera-&gt;GetComponentLocation();
         FVector End = Start + OwnerCamera-&gt;GetForwardVector() * 6000.f;
+
 
         FHitResult Hit;
         FCollisionQueryParams CollisionParams;
@@ -348,7 +352,7 @@ void UPlayerFunctionality::TickComponent(float DeltaTime, ELevelTick TickType, F
             if (bAxeMovingAway) {
                 // Axe is being thrown
 
-                /// -- Keep axe laterally tangential to spline.
+                /// -- Keep axe laterally tangential to spline. 
                 float curDistanceAlongSpline = AxePath-&gt;GetDistanceAlongSplineAtLocation(Axe-&gt;GetComponentLocation(), ESplineCoordinateSpace::World);
                 FVector curTangent = AxePath-&gt;GetTangentAtDistanceAlongSpline(curDistanceAlongSpline, ESplineCoordinateSpace::World);
                 FRotator DesiredRotation = FRotationMatrix::MakeFromXZ(curTangent, FVector::UpVector).Rotator();
@@ -364,7 +368,7 @@ void UPlayerFunctionality::TickComponent(float DeltaTime, ELevelTick TickType, F
 
                     SpeedMag = FMath::InterpEaseOut(4.f, 1.f, distanceRatio, 2.0f); // ramp down axe speed from 4x to 1x speed
 
-                    DesiredRotation.Roll = targetRoll;
+                    DesiredRotation.Roll = targetRoll;  
 
                 } else {
                     DesiredRotation.Add(0.f, 0.f, 110.f);
@@ -387,7 +391,7 @@ void UPlayerFunctionality::TickComponent(float DeltaTime, ELevelTick TickType, F
                 AnchoredPoint2Pos = FMath::Lerp(OwnerLocation, AnchoredPoint3Pos, 0.75);
                 AnchoredPoint2Pos.Z = PlayerHeight;
 
-                /// -- Adjusting the lateral offset.
+                /// -- Adjusting the lateral offset. 
                 FVector CharToAxe = (AnchoredPoint3Pos - OwnerLocation).GetSafeNormal();
 
                 CharToAxe = FVector::CrossProduct(FVector(0.f, 0.f, UpDirection), CharToAxe).GetSafeNormal();
@@ -397,7 +401,7 @@ void UPlayerFunctionality::TickComponent(float DeltaTime, ELevelTick TickType, F
 
                 AnchoredPoint2Pos += (XOffSet / 2);
             }
-        }
+        }   
     }
 
     AxePath-&gt;SetLocationAtSplinePoint(1, AnchoredPoint1Pos,ESplineCoordinateSpace::World, true);
@@ -548,19 +552,19 @@ void UData::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentT
         if (GetWorld()-&gt;LineTraceMultiByObjectType(Hits, OwnerLocation, OwnerLocation + Direction * 1000.0f, PawnsAndCorpses, TraceParams)) {
             int sumOfHits = 0;
             for (auto Hit : Hits) {
-                // check to see if a character was hit, if it was then we check cached information to see if we&#x27;ve computed owner creatures attraction to hit creature. If it&#x27;s the first time hitting the creature, then we compute
+                // check to see if a character was hit, if it was then we check cached information to see if we've computed owner creatures attraction to hit creature. If it's the first time hitting the creature, then we compute
                 // attraction and store the value.
-                if (Hit.GetActor()-&gt;GetName().Mid(0, 12) == &quot;BP_Character&quot;) {
+                if (Hit.GetActor()-&gt;GetName().Mid(0, 12) == "BP_Character") {
                     // Attempt to get the UData component from the hit actor
                     UData* HitDataComponent = Hit.GetActor()-&gt;FindComponentByClass&lt;UData&gt;();
                     if (HitDataComponent) // Check if the component exists
                     {
-                        // Check cache using the component&#x27;s ID
+                        // Check cache using the component's ID
                         if (!IDMap.Contains(HitDataComponent-&gt;ID)) {
                             IDMap.Add(HitDataComponent-&gt;ID, CalcAttraction(Hit.GetActor()));
                         }
 
-                        // Check the other actor&#x27;s cache as well
+                        // Check the other actor's cache as well
                         if (!(HitDataComponent-&gt;IDMap.Contains(ID))) {
                             HitDataComponent-&gt;IDMap.Add(ID, CalcAttraction(Owner));
                         }

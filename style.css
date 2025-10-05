@@ -11,7 +11,7 @@
   --accent-green: #40ff9b;
   --accent-amber: #ffd369;
   --accent-red: #ff6f6f;
-  --mono: "IBM Plex Mono", "Fira Code", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  --mono: "Fira Code", "IBM Plex Mono", "Source Code Pro", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
   --sans: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
 }
 
@@ -782,18 +782,24 @@ a:focus {
   padding: 0.75rem 0;
   font-size: 0.8rem;
   line-height: 1.55;
-  font-family: var(--mono);
+  font-family: var(--mono) !important;
+  letter-spacing: 0;
+  font-variant-ligatures: none;
   font-feature-settings: "liga" 0, "clig" 0;
 }
 
 .code-snippet code {
-  font-family: var(--mono);
+  font-family: var(--mono) !important;
+  letter-spacing: 0;
+  font-variant-ligatures: none;
   font-feature-settings: "liga" 0, "clig" 0;
 }
 
 .modal-code-content pre,
 .modal-code-content code {
-  font-family: var(--mono);
+  font-family: var(--mono) !important;
+  letter-spacing: 0;
+  font-variant-ligatures: none;
   font-feature-settings: "liga" 0, "clig" 0;
 }
 

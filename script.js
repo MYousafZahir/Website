@@ -40,7 +40,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     ignoreUnescapedHTML: true
                 });
             }
-            primeInlineHighlighting();
+
+            if (typeof hljs.highlightAll === 'function') {
+                hljs.highlightAll();
+                document.querySelectorAll('.code-snippet pre code').forEach(block => {
+                    block.dataset.highlighted = 'true';
+                });
+            } else {
+                primeInlineHighlighting();
+            }
         } else if (attempt < 10) {
             window.setTimeout(() => bootHighlighting(attempt + 1), 120);
         } else {
@@ -49,6 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     bootHighlighting();
+    window.addEventListener('load', () => bootHighlighting());
 
     // --- Image Pan/Zoom Logic ---
     const setupPanZoom = (container) => {

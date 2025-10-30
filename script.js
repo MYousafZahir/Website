@@ -1,64 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     console.log("Personal website script loaded.");
 
-    // Interactive module wiring
-
-    const galleryModal = document.getElementById('gallery-modal');
-    const codeModal = document.getElementById('code-modal');
-    let openModal = () => {};
-    let closeModal = () => {};
-
-    const highlightBlock = (codeElement, { withLineNumbers = false } = {}) => {
-        if (!codeElement || !window.hljs || typeof hljs.highlightElement !== 'function') {
-            return;
-        }
-
-        if (codeElement.dataset.highlighted === 'true') {
-            return;
-        }
-
-        try {
-            hljs.highlightElement(codeElement);
-            if (withLineNumbers && typeof hljs.lineNumbersBlock === 'function') {
-                hljs.lineNumbersBlock(codeElement);
-            }
-            codeElement.dataset.highlighted = 'true';
-        } catch (error) {
-            console.error('Highlight.js failed to render code block.', error);
-        }
-    };
-
-    const primeInlineHighlighting = () => {
-        const inlineBlocks = document.querySelectorAll('.code-snippet pre code');
-        inlineBlocks.forEach(block => highlightBlock(block));
-    };
-
-    const bootHighlighting = (attempt = 0) => {
-        if (window.hljs && typeof hljs.highlightElement === 'function') {
-            if (typeof hljs.configure === 'function') {
-                hljs.configure({
-                    ignoreUnescapedHTML: true
-                });
-            }
-
-            if (typeof hljs.highlightAll === 'function') {
-                hljs.highlightAll();
-                document.querySelectorAll('.code-snippet pre code').forEach(block => {
-                    block.dataset.highlighted = 'true';
-                });
-            } else {
-                primeInlineHighlighting();
-            }
-        } else if (attempt < 10) {
-            window.setTimeout(() => bootHighlighting(attempt + 1), 120);
-        } else {
-            console.warn('Highlight.js not available for inline code rendering.');
-        }
-    };
-
-    bootHighlighting();
-    window.addEventListener('load', () => bootHighlighting());
-
     // --- Image Pan/Zoom Logic ---
     const setupPanZoom = (container) => {
         const img = container.querySelector('img');
@@ -227,9 +169,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const controls = section.querySelector('.code-controls');
         const toggleButton = controls?.querySelector('.toggle-code');
         const codeSnippet = section.querySelector('.code-snippet');
-        const expandButton = controls?.querySelector('.code-expand');
+        const expandPlaceholder = controls?.querySelector('.code-expand-placeholder'); // Get the placeholder
 
-        if (!controls || !toggleButton || !codeSnippet || !expandButton) {
+        if (!controls || !toggleButton || !codeSnippet || !expandPlaceholder) {
             // console.warn("Missing elements for code section:", section);
             return;
         }
@@ -242,13 +184,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 codeSnippet.classList.remove('collapsed');
                 controls.classList.add('controls-expanded'); // Add class to container
                 toggleButton.setAttribute('aria-expanded', 'true');
-                toggleButton.innerHTML = '<i class="fas fa-code"></i><span>Hide Code</span>';
-                expandButton.setAttribute('aria-hidden', 'false');
-                expandButton.setAttribute('tabindex', '0');
+                toggleButton.innerHTML = '<i class="fas fa-code"></i> Hide Code';
+                // Add expand icon to placeholder (CSS handles styling)
+                expandPlaceholder.innerHTML = '<i class="fas fa-expand code-expand-icon" aria-label="Expand Code" role="button"></i>';
 
                 // --- Explicitly highlight this block when expanded ---
                 const codeElement = codeSnippet.querySelector('pre code');
-                highlightBlock(codeElement);
+                if (codeElement && window.hljs && typeof hljs.highlightElement === 'function') {
+                    // Check if it's already highlighted to avoid re-processing
+                    if (!codeElement.classList.contains('hljs')) {
+                        // Use setTimeout to ensure the element is rendered before highlighting
+                        setTimeout(() => {
+                            try {
+                                hljs.highlightElement(codeElement);
+                                // Line numbers are only added in the modal view now
+                            } catch (e) {
+                                console.error("Highlight.js inline highlighting failed:", e);
+                            }
+                        }, 0);
+                    }
+                } else {
+                    console.warn("Highlight.js or code element not found for inline highlighting.");
+                }
                 // --- End explicit highlighting ---
 
             } else {
@@ -256,35 +213,36 @@ document.addEventListener('DOMContentLoaded', () => {
                 codeSnippet.classList.add('collapsed');
                 controls.classList.remove('controls-expanded'); // Remove class from container
                 toggleButton.setAttribute('aria-expanded', 'false');
-                toggleButton.innerHTML = '<i class="fas fa-code"></i><span>Show Code</span>';
-                expandButton.setAttribute('aria-hidden', 'true');
-                expandButton.setAttribute('tabindex', '-1');
+                toggleButton.innerHTML = '<i class="fas fa-code"></i> Show Code';
+                // Remove expand icon from placeholder
+                expandPlaceholder.innerHTML = '';
             }
         });
 
-        expandButton.addEventListener('click', () => {
-            const preElement = codeSnippet.querySelector('pre');
-            if (!preElement) {
-                console.error('Original <pre> element not found to clone.');
-                return;
-            }
+        // Delegated listener for the expand icon click within the controls container
+        controls.addEventListener('click', (event) => {
+            // Check if the click target is the expand icon
+            if (event.target.classList.contains('code-expand-icon')) {
+                const preElement = codeSnippet.querySelector('pre');
+                if (preElement) {
+                    // Clone the entire <pre> element
+                    const preClone = preElement.cloneNode(true);
 
-            const preClone = preElement.cloneNode(true);
-            const cloneCodeElement = preClone.querySelector('code');
-            if (cloneCodeElement) {
-                delete cloneCodeElement.dataset.highlighted;
-                highlightBlock(cloneCodeElement, { withLineNumbers: true });
-            }
+                    // Get the target container in the modal
+                    const modalCodeContainer = codeModal.querySelector('.modal-code-content');
+                    if (modalCodeContainer) {
+                         // Clear previous content and append the clone
+                         modalCodeContainer.innerHTML = '';
+                         modalCodeContainer.appendChild(preClone);
 
-            const modalCodeContainer = codeModal?.querySelector('.modal-code-content');
-            if (modalCodeContainer && typeof openModal === 'function') {
-                modalCodeContainer.innerHTML = '';
-                modalCodeContainer.appendChild(preClone);
-                if (codeModal) {
-                    openModal(codeModal);
+                         // Now open the modal (highlighting happens inside openModal)
+                         openModal(codeModal);
+                    } else {
+                        console.error("Modal code content container not found.");
+                    }
+                } else {
+                     console.error("Original <pre> element not found to clone.");
                 }
-            } else {
-                console.error('Modal code content container not found.');
             }
         });
 
@@ -293,122 +251,21 @@ document.addEventListener('DOMContentLoaded', () => {
         if (codeSnippet.classList.contains('collapsed')) {
             controls.classList.remove('controls-expanded'); // Ensure class is removed initially
             toggleButton.setAttribute('aria-expanded', 'false');
-            toggleButton.innerHTML = '<i class="fas fa-code"></i><span>Show Code</span>';
-            expandButton.setAttribute('aria-hidden', 'true');
-            expandButton.setAttribute('tabindex', '-1');
+            toggleButton.innerHTML = '<i class="fas fa-code"></i> Show Code';
+            expandPlaceholder.innerHTML = ''; // Ensure placeholder is empty initially
         } else {
             controls.classList.add('controls-expanded'); // Ensure class is added initially
             toggleButton.setAttribute('aria-expanded', 'true');
-            toggleButton.innerHTML = '<i class="fas fa-code"></i><span>Hide Code</span>';
-            expandButton.setAttribute('aria-hidden', 'false');
-            expandButton.setAttribute('tabindex', '0');
+            toggleButton.innerHTML = '<i class="fas fa-code"></i> Hide Code';
+            // Add expand icon to placeholder initially if not collapsed (CSS handles styling)
+            expandPlaceholder.innerHTML = '<i class="fas fa-expand code-expand-icon" aria-label="Expand Code" role="button"></i>';
         }
     });
-
-    // --- Project Carousel Logic ---
-    const projectSection = document.querySelector('#projects');
-    const projectSpreads = projectSection ? Array.from(projectSection.querySelectorAll('.project-spread')) : [];
-
-    if (projectSection && projectSpreads.length) {
-        let activeProjectIndex = projectSpreads.findIndex(spread => spread.classList.contains('is-active'));
-        if (activeProjectIndex === -1) {
-            activeProjectIndex = 0;
-            projectSpreads[0].classList.add('is-active');
-        }
-
-        const paginationContainer = projectSection.querySelector('.project-pagination');
-        const prevButton = projectSection.querySelector('.project-cycle.prev');
-        const nextButton = projectSection.querySelector('.project-cycle.next');
-        const counterText = projectSection.querySelector('.project-counter-text');
-        const shortcutButtons = document.querySelectorAll('.project-nav-shortcuts button');
-        const paginationButtons = [];
-
-        const formatIndexLabel = (index) => `${String(index + 1).padStart(2, '0')} · ${projectSpreads[index].dataset.projectName || projectSpreads[index].id}`;
-
-        const updateCounter = (index) => {
-            if (counterText) {
-                counterText.textContent = formatIndexLabel(index);
-            }
-        };
-
-        const updateShortcutState = (index) => {
-            shortcutButtons.forEach(button => {
-                const isActive = button.dataset.projectTarget === projectSpreads[index].id;
-                button.classList.toggle('is-active', isActive);
-            });
-        };
-
-        const updatePaginationState = (index) => {
-            paginationButtons.forEach((button, i) => {
-                const isActive = i === index;
-                button.classList.toggle('is-active', isActive);
-                button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
-            });
-        };
-
-        const showProject = (index) => {
-            if (index < 0 || index >= projectSpreads.length) {
-                return;
-            }
-
-            activeProjectIndex = index;
-
-            projectSpreads.forEach((spread, spreadIndex) => {
-                const isActive = spreadIndex === index;
-                spread.classList.toggle('is-active', isActive);
-                spread.setAttribute('aria-hidden', (!isActive).toString());
-            });
-
-            updatePaginationState(index);
-            updateShortcutState(index);
-            updateCounter(index);
-        };
-
-        const cycleProject = (delta) => {
-            const nextIndex = (activeProjectIndex + delta + projectSpreads.length) % projectSpreads.length;
-            showProject(nextIndex);
-        };
-
-        if (paginationContainer) {
-            paginationContainer.innerHTML = '';
-            projectSpreads.forEach((spread, index) => {
-                const button = document.createElement('button');
-                button.type = 'button';
-                button.className = 'project-page-btn';
-                button.setAttribute('aria-label', `Show project ${spread.dataset.projectName || spread.id}`);
-                button.addEventListener('click', () => showProject(index));
-                paginationContainer.appendChild(button);
-                paginationButtons.push(button);
-            });
-        }
-
-        prevButton?.addEventListener('click', () => cycleProject(-1));
-        nextButton?.addEventListener('click', () => cycleProject(1));
-
-        shortcutButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const targetId = button.dataset.projectTarget;
-                if (!targetId) {
-                    return;
-                }
-                const targetIndex = projectSpreads.findIndex(spread => spread.id === targetId);
-                if (targetIndex >= 0) {
-                    showProject(targetIndex);
-                    projectSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
-
-        showProject(activeProjectIndex);
-    }
 
     // --- TOC Scroll Highlighting ---
     const tocLinks = document.querySelectorAll('#toc a[href^="#"]');
     const sections = [];
     tocLinks.forEach(link => {
-        if (link.dataset.projectTarget) {
-            return;
-        }
         const section = document.querySelector(link.getAttribute('href'));
         if (section) {
             sections.push({ link: link, section: section });
@@ -587,90 +444,99 @@ document.addEventListener('DOMContentLoaded', () => {
             initializeGallery(gallery.querySelector('.gallery-frame')); // Pass the frame
         }
     });
+
+
     // --- Modal Logic ---
-    if (!galleryModal || !codeModal) {
-        console.warn('Modal containers missing; gallery/code expansion disabled.');
-    } else {
-        const modalCloseButtons = document.querySelectorAll('.modal-close');
-        const modalGalleryContent = galleryModal.querySelector('.modal-gallery-content');
+    const galleryModal = document.getElementById('gallery-modal');
+    const codeModal = document.getElementById('code-modal');
+    const modalCloseButtons = document.querySelectorAll('.modal-close');
+    const modalGalleryContent = galleryModal.querySelector('.modal-gallery-content');
+    const modalCodeContent = codeModal.querySelector('.modal-code-content pre code');
 
-        openModal = (modalElement) => {
-            modalElement.classList.add('visible');
-            modalElement.setAttribute('aria-hidden', 'false');
-            document.body.style.overflow = 'hidden';
+    // Function to open a modal
+    function openModal(modalElement) {
+        modalElement.classList.add('visible');
+        modalElement.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
 
-            if (modalElement === codeModal) {
-                const modalCodeElement = modalElement.querySelector('.modal-code-content pre code');
-                if (modalCodeElement && window.hljs && typeof hljs.highlightElement === 'function') {
-                    setTimeout(() => {
-                        try {
-                            modalCodeElement.classList.remove('hljs');
-                            hljs.highlightElement(modalCodeElement);
-                            if (typeof hljs.lineNumbersBlock === 'function') {
-                                hljs.lineNumbersBlock(modalCodeElement.parentElement);
-                            }
-                        } catch (e) {
-                            console.error("Highlight.js modal highlighting failed:", e);
-                        }
-                    }, 0);
-                } else if (!modalCodeElement) {
-                    console.warn("Could not find modal 'code' element inside '.modal-code-content pre'.");
-                } else {
-                    console.warn("Highlight.js (hljs) or highlightElement function not available for modal highlighting.");
-                }
+        // Re-highlight if it's the code modal. Content is now cloned before opening.
+        if (modalElement === codeModal) {
+            // Find the <code> element *within the newly added content*
+            const modalCodeElement = modalElement.querySelector('.modal-code-content pre code');
+            if (modalCodeElement && window.hljs && typeof hljs.highlightElement === 'function') {
+                // Highlight the cloned element after the modal is visible
+                console.log("Attempting to highlight modal code:", modalCodeElement);
+                // Use setTimeout to ensure rendering before highlighting
+                setTimeout(() => {
+                    try {
+                        // Force re-highlight by removing hljs class first, if present
+                        modalCodeElement.classList.remove('hljs');
+                        hljs.highlightElement(modalCodeElement);
+                        // Add line numbers after highlighting
+                        hljs.lineNumbersBlock(modalCodeElement.parentElement); // Target the <pre>
+                        console.log("Highlight.js modal highlighting & line numbers executed.");
+                    } catch (e) {
+                        console.error("Highlight.js modal highlighting or line numbers failed:", e);
+                    }
+                }, 0); // Delay of 0ms defers execution
+            } else if (!modalCodeElement) {
+                 console.warn("Could not find modal 'code' element inside '.modal-code-content pre' to highlight.");
+            } else {
+                 console.warn("Highlight.js (hljs) or highlightElement function not available for modal highlighting.");
             }
-        };
+        }
+    }
 
-        closeModal = (modalElement) => {
-            modalElement.classList.remove('visible');
-            modalElement.setAttribute('aria-hidden', 'true');
-            document.body.style.overflow = '';
+    // Function to close a modal
+    function closeModal(modalElement) {
+        modalElement.classList.remove('visible');
+        modalElement.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = ''; // Restore background scrolling
 
-            if (modalElement === galleryModal && modalGalleryContent) {
-                const panZoomContainers = modalGalleryContent.querySelectorAll('.image-pan-zoom-container');
-                panZoomContainers.forEach(container => {
-                    resetPanZoom(container);
-                });
-                modalGalleryContent.innerHTML = '';
-            }
-
-            if (modalElement === codeModal) {
-                const modalCodeContainer = modalElement.querySelector('.modal-code-content');
-                if (modalCodeContainer) {
-                    modalCodeContainer.innerHTML = '<pre><code class="language-cpp"><!-- Code content will be injected here --></code></pre>';
-                }
-            }
-        };
-
-        modalCloseButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const modal = button.closest('.modal');
-                if (modal) {
-                    closeModal(modal);
-                }
+        // Clear modal content and reset states
+        if (modalElement === galleryModal) {
+            // Reset pan/zoom on all images within the modal before clearing
+            const panZoomContainers = modalGalleryContent.querySelectorAll('.image-pan-zoom-container');
+            panZoomContainers.forEach(container => {
+                resetPanZoom(container);
             });
-        });
-
-        galleryModal.addEventListener('click', (event) => {
-            if (event.target === galleryModal) {
-                closeModal(galleryModal);
+            modalGalleryContent.innerHTML = ''; // Clear content
+        }
+        if (modalElement === codeModal) {
+            // Find the container and clear its innerHTML
+            const modalCodeContainer = modalElement.querySelector('.modal-code-content');
+            if (modalCodeContainer) {
+                modalCodeContainer.innerHTML = '<pre><code class="language-cpp"><!-- Code content will be injected here --></code></pre>'; // Reset to placeholder
             }
+        }
+    }
+
+    // Close button listeners
+    modalCloseButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            closeModal(button.closest('.modal'));
         });
+    });
 
-        codeModal.addEventListener('click', (event) => {
-            if (event.target === codeModal) {
-                closeModal(codeModal);
-            }
-        });
+    // Close modal if clicking outside the content area
+    galleryModal.addEventListener('click', (event) => {
+        if (event.target === galleryModal) { // Check if click is on the backdrop
+            closeModal(galleryModal);
+        }
+    });
+    codeModal.addEventListener('click', (event) => {
+        if (event.target === codeModal) { // Check if click is on the backdrop
+            closeModal(codeModal);
+        }
+    });
 
-        const galleryExpandButtons = document.querySelectorAll('.gallery-expand-button');
-        galleryExpandButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const galleryFrame = button.closest('.gallery-frame');
-                if (!galleryFrame || !modalGalleryContent) {
-                    return;
-                }
-
+    // Click Listener for Gallery Expand Buttons
+    const galleryExpandButtons = document.querySelectorAll('.gallery-expand-button');
+    galleryExpandButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const galleryFrame = button.closest('.gallery-frame'); // Find frame relative to button
+            if (galleryFrame) {
+                // --- Find the active index in the *original* gallery ---
                 const originalItems = galleryFrame.querySelectorAll('.gallery-item');
                 let activeIndex = 0;
                 originalItems.forEach((item, index) => {
@@ -678,31 +544,43 @@ document.addEventListener('DOMContentLoaded', () => {
                         activeIndex = index;
                     }
                 });
+                // --- End find active index ---
 
+                // Clone the entire gallery frame for the modal
                 const frameClone = galleryFrame.cloneNode(true);
+
+                // Find and remove the expand button from the *clone* to avoid duplication in modal
                 const clonedExpandButton = frameClone.querySelector('.gallery-expand-button');
-                if (clonedExpandButton) {
+                 if (clonedExpandButton) {
+                    // Remove the expand button from the modal clone as it's redundant here
                     clonedExpandButton.remove();
-                }
+                 }
 
-                modalGalleryContent.innerHTML = '';
-                modalGalleryContent.appendChild(frameClone);
+                modalGalleryContent.innerHTML = ''; // Clear previous content
+                modalGalleryContent.appendChild(frameClone); // Add the cloned frame
 
+                // Initialize gallery logic specifically for the cloned frame inside the modal,
+                // starting at the index that was active in the original gallery.
                 initializeGallery(frameClone, activeIndex);
 
                 openModal(galleryModal);
-            });
-        });
-
-        document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape') {
-                const visibleModal = document.querySelector('.modal.visible');
-                if (visibleModal) {
-                    closeModal(visibleModal);
-                }
             }
         });
-    }
+    });
+
+
+    // Expand Code Button Listeners (Removed - functionality integrated into toggle button)
+    // const expandCodeButtons = document.querySelectorAll('.expand-code'); ...
+
+    // Close modal with Escape key
+     document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            const visibleModal = document.querySelector('.modal.visible');
+            if (visibleModal) {
+                closeModal(visibleModal);
+            }
+        }
+    });
 
     // No initial highlightAll needed if highlighting on demand
     // if (window.hljs) {

@@ -66,6 +66,7 @@ function App() {
         // Read current state and remove consumed card
         setCards(prevCards => {
           // Filter out ALL consumed cards (including this one and any board cards)
+          // Always filter based on ref to prevent any consumed cards from appearing
           const cardsToShuffle = prevCards.filter(c => !consumedCardsRef.current.has(c.id));
           
           // Determine which cards to show next
@@ -90,6 +91,7 @@ function App() {
           // Immediately shuffle with the filtered cards (consumed cards already excluded)
           shuffleAndDrawCards(filteredNewCards, 0, cardsToShuffle);
           
+          // Return filtered cards to ensure consumed cards are never in state
           return cardsToShuffle;
         });
       }, 2800); // Animation duration for 4 flips plus smooth burst
@@ -113,8 +115,10 @@ function App() {
       // After animation completes, remove card
       setTimeout(() => {
         setConsumingCardId(null);
+        // Add to ref FIRST before removing from state to prevent race conditions
         consumedCardsRef.current.add(card.id);
-        setCards(prevCards => prevCards.filter(c => c.id !== card.id));
+        // Use functional update that also filters based on ref to prevent reappearance
+        setCards(prevCards => prevCards.filter(c => c.id !== card.id && !consumedCardsRef.current.has(c.id)));
       }, 1000); // Animation duration
     }
   };
@@ -131,19 +135,13 @@ function App() {
       setShufflingCardIds(new Set());
       
       // Set new cards with drawing animation
-      // Use functional update to ensure we're setting exactly what we want
-      setCards(() => {
-        // Remove any consumed cards that might still be in the new cards array
+      // Use functional update that reads from previous state to prevent race conditions
+      setCards(prevCards => {
+        // First filter out any consumed cards from previous state
+        const filteredPrev = prevCards.filter(c => !consumedCardsRef.current.has(c.id));
+        // Then filter out consumed cards from new cards
         const filteredNewCards = newCards.filter(c => !consumedCardsRef.current.has(c.id));
-        
-        // Clean up consumed cards ref: remove IDs that are no longer in the cards array
-        // This keeps the ref current without clearing everything
-        consumedCardsRef.current.forEach(id => {
-          if (!filteredNewCards.some(c => c.id === id)) {
-            consumedCardsRef.current.delete(id);
-          }
-        });
-        
+        // Return new cards, but ensure we're not including anything from prev that shouldn't be there
         return filteredNewCards;
       });
       setDrawingCardIds(new Set(newCards.map(c => c.id)));
